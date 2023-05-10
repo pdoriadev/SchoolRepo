@@ -1,0 +1,4 @@
+﻿  RadixSort.cpp
+C:\Users\peter\devProjects\School\CS22-StrAndAlg\SelfStudy\RadixSort\RadixSort\RadixSort\RadixSort.cpp(189,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\devProjects\School\CS22-StrAndAlg\SelfStudy\RadixSort\RadixSort\RadixSort\RadixSort.cpp(192,13): warning C4018: '<': signed/unsigned mismatch
+  RadixSort.vcxproj -> C:\Users\peter\devProjects\School\CS22-StrAndAlg\SelfStudy\RadixSort\RadixSort\Debug\RadixSort.exe

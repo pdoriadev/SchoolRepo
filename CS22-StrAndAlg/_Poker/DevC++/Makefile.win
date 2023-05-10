@@ -1,0 +1,42 @@
+# Project: _Poker
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+RES      = _Poker_private.res
+OBJ      = peterdoria_CS22_Program2_card.o peterdoria_CS22_Program2_deck.o peterdoria_CS22_Program2_hand.o peterdoria_CS22_Program2_main.o $(RES)
+LINKOBJ  = peterdoria_CS22_Program2_card.o peterdoria_CS22_Program2_deck.o peterdoria_CS22_Program2_hand.o peterdoria_CS22_Program2_main.o $(RES)
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = _Poker.exe
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+peterdoria_CS22_Program2_card.o: peterdoria_CS22_Program2_card.cpp
+	$(CPP) -c peterdoria_CS22_Program2_card.cpp -o peterdoria_CS22_Program2_card.o $(CXXFLAGS)
+
+peterdoria_CS22_Program2_deck.o: peterdoria_CS22_Program2_deck.cpp
+	$(CPP) -c peterdoria_CS22_Program2_deck.cpp -o peterdoria_CS22_Program2_deck.o $(CXXFLAGS)
+
+peterdoria_CS22_Program2_hand.o: peterdoria_CS22_Program2_hand.cpp
+	$(CPP) -c peterdoria_CS22_Program2_hand.cpp -o peterdoria_CS22_Program2_hand.o $(CXXFLAGS)
+
+peterdoria_CS22_Program2_main.o: peterdoria_CS22_Program2_main.cpp
+	$(CPP) -c peterdoria_CS22_Program2_main.cpp -o peterdoria_CS22_Program2_main.o $(CXXFLAGS)
+
+_Poker_private.res: _Poker_private.rc 
+	$(WINDRES) -i _Poker_private.rc --input-format=rc -o _Poker_private.res -O coff 
+

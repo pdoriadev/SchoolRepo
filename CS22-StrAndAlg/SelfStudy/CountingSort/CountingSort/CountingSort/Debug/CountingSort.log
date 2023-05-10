@@ -1,0 +1,4 @@
+﻿  CountingSort.cpp
+C:\Users\peter\devProjects\School\CS22-StrAndAlg\SelfStudy\CountingSort\CountingSort\CountingSort\CountingSort.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\devProjects\School\CS22-StrAndAlg\SelfStudy\CountingSort\CountingSort\CountingSort\CountingSort.cpp(115,13): warning C4018: '<': signed/unsigned mismatch
+  CountingSort.vcxproj -> C:\Users\peter\devProjects\School\CS22-StrAndAlg\SelfStudy\CountingSort\CountingSort\Debug\CountingSort.exe

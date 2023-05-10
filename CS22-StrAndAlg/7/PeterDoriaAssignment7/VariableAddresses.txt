@@ -1,0 +1,104 @@
+
+Max stars in a line: 4
+ Pre-Call:  i = 1   Address = 004FFB30
+ Pre-Call:  i = 2   Address = 004FFA28
+ Pre-Call:  i = 3   Address = 004FF920
+ Pre-Call:  i = 4   Address = 004FF818
+ Pre-Call:  i = 3   Address = 004FF710
+ Pre-Call:  i = 2   Address = 004FF608
+ Pre-Call:  i = 1   Address = 004FF500
+ Post-Call: i = 1   Address = 004FF500
+ Post-Call: i = 2   Address = 004FF608
+ Post-Call: i = 3   Address = 004FF710
+ Post-Call: i = 4   Address = 004FF818
+ Post-Call: i = 3   Address = 004FF920
+ Post-Call: i = 2   Address = 004FFA28
+ Post-Call: i = 1   Address = 004FFB30
+Diamond Complete. 
+
+Max stars in a line: 8
+ Pre-Call:  i = 1   Address = 004FFB30
+ Pre-Call:  i = 2   Address = 004FFA28
+ Pre-Call:  i = 3   Address = 004FF920
+ Pre-Call:  i = 4   Address = 004FF818
+ Pre-Call:  i = 5   Address = 004FF710
+ Pre-Call:  i = 6   Address = 004FF608
+ Pre-Call:  i = 7   Address = 004FF500
+ Pre-Call:  i = 8   Address = 004FF3F8
+ Pre-Call:  i = 7   Address = 004FF2F0
+ Pre-Call:  i = 6   Address = 004FF1E8
+ Pre-Call:  i = 5   Address = 004FF0E0
+ Pre-Call:  i = 4   Address = 004FEFD8
+ Pre-Call:  i = 3   Address = 004FEED0
+ Pre-Call:  i = 2   Address = 004FEDC8
+ Pre-Call:  i = 1   Address = 004FECC0
+ Post-Call: i = 1   Address = 004FECC0
+ Post-Call: i = 2   Address = 004FEDC8
+ Post-Call: i = 3   Address = 004FEED0
+ Post-Call: i = 4   Address = 004FEFD8
+ Post-Call: i = 5   Address = 004FF0E0
+ Post-Call: i = 6   Address = 004FF1E8
+ Post-Call: i = 7   Address = 004FF2F0
+ Post-Call: i = 8   Address = 004FF3F8
+ Post-Call: i = 7   Address = 004FF500
+ Post-Call: i = 6   Address = 004FF608
+ Post-Call: i = 5   Address = 004FF710
+ Post-Call: i = 4   Address = 004FF818
+ Post-Call: i = 3   Address = 004FF920
+ Post-Call: i = 2   Address = 004FFA28
+ Post-Call: i = 1   Address = 004FFB30
+Diamond Complete. 
+
+Max stars in a line: 12
+ Pre-Call:  i = 1   Address = 004FFB30
+ Pre-Call:  i = 2   Address = 004FFA28
+ Pre-Call:  i = 3   Address = 004FF920
+ Pre-Call:  i = 4   Address = 004FF818
+ Pre-Call:  i = 5   Address = 004FF710
+ Pre-Call:  i = 6   Address = 004FF608
+ Pre-Call:  i = 7   Address = 004FF500
+ Pre-Call:  i = 8   Address = 004FF3F8
+ Pre-Call:  i = 9   Address = 004FF2F0
+ Pre-Call:  i = 10   Address = 004FF1E8
+ Pre-Call:  i = 11   Address = 004FF0E0
+ Pre-Call:  i = 12   Address = 004FEFD8
+ Pre-Call:  i = 11   Address = 004FEED0
+ Pre-Call:  i = 10   Address = 004FEDC8
+ Pre-Call:  i = 9   Address = 004FECC0
+ Pre-Call:  i = 8   Address = 004FEBB8
+ Pre-Call:  i = 7   Address = 004FEAB0
+ Pre-Call:  i = 6   Address = 004FE9A8
+ Pre-Call:  i = 5   Address = 004FE8A0
+ Pre-Call:  i = 4   Address = 004FE798
+ Pre-Call:  i = 3   Address = 004FE690
+ Pre-Call:  i = 2   Address = 004FE588
+ Pre-Call:  i = 1   Address = 004FE480
+ Post-Call: i = 1   Address = 004FE480
+ Post-Call: i = 2   Address = 004FE588
+ Post-Call: i = 3   Address = 004FE690
+ Post-Call: i = 4   Address = 004FE798
+ Post-Call: i = 5   Address = 004FE8A0
+ Post-Call: i = 6   Address = 004FE9A8
+ Post-Call: i = 7   Address = 004FEAB0
+ Post-Call: i = 8   Address = 004FEBB8
+ Post-Call: i = 9   Address = 004FECC0
+ Post-Call: i = 10   Address = 004FEDC8
+ Post-Call: i = 11   Address = 004FEED0
+ Post-Call: i = 12   Address = 004FEFD8
+ Post-Call: i = 11   Address = 004FF0E0
+ Post-Call: i = 10   Address = 004FF1E8
+ Post-Call: i = 9   Address = 004FF2F0
+ Post-Call: i = 8   Address = 004FF3F8
+ Post-Call: i = 7   Address = 004FF500
+ Post-Call: i = 6   Address = 004FF608
+ Post-Call: i = 5   Address = 004FF710
+ Post-Call: i = 4   Address = 004FF818
+ Post-Call: i = 3   Address = 004FF920
+ Post-Call: i = 2   Address = 004FFA28
+ Post-Call: i = 1   Address = 004FFB30
+Diamond Complete. 
+
+
+Recursion is like a mirror, or a boomerang. If you know the address of something in the last ouput as shown here, 
+	you know that output exists in the first call of the function. 
+First to Base-case, Base-case to First call.

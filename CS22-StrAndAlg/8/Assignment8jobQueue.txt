@@ -1,0 +1,16 @@
+ Volume in drive C has no label.
+ Volume Serial Number is E236-FA14
+
+ Directory of C:\Users\peter\devProjects\School\CS22-StrAndAlg\8
+
+05/04/2023  01:25 PM                 2 triangle17.txt
+05/04/2023  01:26 PM                 2 triangle19.txt
+05/04/2023  01:24 PM                 2 triangle202305011.txt
+05/02/2023  05:49 PM                 2 triangle20230501141741.txt
+05/02/2023  05:49 PM                 2 triangle20230501141746.txt
+05/02/2023  05:49 PM                 2 triangle20230501141751.txt
+05/04/2023  01:26 PM                 2 triangle23.txt
+05/04/2023  01:26 PM                 2 triangle27.txt
+05/04/2023  01:27 PM                 2 triangle29.txt
+               9 File(s)             18 bytes
+               0 Dir(s)  59,744,841,728 bytes free

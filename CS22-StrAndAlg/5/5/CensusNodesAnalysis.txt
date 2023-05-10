@@ -1,0 +1,15 @@
+1. The addresses are different between the two runs of the program. 
+1b.My guess is the operating system is not guaranteed to provide the same block(s) of
+memory to a program every time that program is used. The program gets whatever memory
+is most convenient (performant?) at the time. This kind of automoatic memory "blocking"
+might happen at higher levels (i.e. within a program). So, maybe visual studio is 
+doing the same kind of process I ascribed to the operating system. 
+
+2. The node addresses are not adjacent.
+2b. I assume, regardless of whether two memory addresses are adjacent or not, I 
+don't think "memory adjacency" is necessarily *the reason* to select memory for
+a new object. I'm not sure exactly what the process for actually selecting 
+memory, but I know I can't rely on memory being adjacent unless I use/create
+a data structure (like an array) that could explicitly make objects adjacent.
+
+
