@@ -1,3 +1,4 @@
 https://stackoverflow.com/questions/5968937/binary-search-vs-binary-search-tree,
 https://dzone.com/articles/performance-of-array-vs-linked-list-on-modern-comp,
 https://afteracademy.com/blog/binary-search-tree-vs-hash-table/,
+https://www.tutorialspoint.com/data_structures_algorithms/tree_data_structure.htm
