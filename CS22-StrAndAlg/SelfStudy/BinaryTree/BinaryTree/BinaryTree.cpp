@@ -85,14 +85,10 @@ treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
         // left child is less than parent. right child is greater than parent.
             // all right child's descendents m-ust be greater than the child's parent
             // all left child's descendents must be less than the child's parent
-        bool greaterThan = arr[i] > parentNode->data;
-        bool equal = arr[i] == parentNode->data;
-        if (greaterThan && arr[i] > parentNode->Parent->data)
+        for (int i = 0; i < arrSize; i++)
         {
-            return AddNewNodeToTree(arr, arrSize, i, parentNode->Parent, true);
+            InsertNewValueIntoBST(arr[i], parentNode);
         }
-        if (greaterThan &&)
-
     }
 
     if (parentNode == NULL)
@@ -127,10 +123,11 @@ treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
 
 /*************************************************** 
     Returns node where value is inserted
+    Compares value to value of node passed into function.
         i.e. node with data less than value param
         i.e. node with data greater than value param
 ****************************************************/
-treeNode* InsertValueIntoCorrectPositionInTree(int value, treeNode * node)
+treeNode* InsertNewValueIntoBST(int value, treeNode* node)
 {
     if (node->Parent == NULL && node == NULL)
     {
@@ -138,90 +135,98 @@ treeNode* InsertValueIntoCorrectPositionInTree(int value, treeNode * node)
         return node;
     }
 
-    if (node == NULL)
-    {
-        std::cout << "No null non-new-root nodes allowed" << '\n';
-        return NULL;
-    }
-
     bool greaterThanNode = value > node->data;
     bool equalToNode = value == node->data;
+    bool isRoot = node->Parent == NULL;
 
-    if (equalToNode && node->Parent)
+
+    if (equalToNode)
     {
-        treeNode* newNode = new treeNode(value, node->onRightSideOfTree);
         if (node->Left == NULL)
         {
-            node->Left = newNode;
+            bool rightSide = isRoot ? false : node->onRightSideOfTree;
+            node->Left = new treeNode(value, node, rightSide);
             return node->Left;
         }
-
         if (node->Right == NULL)
         {
-            node->Right = newNode;
+            bool rightSide = isRoot ? true : node->onRightSideOfTree;
+            node->Right = new treeNode(value, node, rightSide);
             return node->Right;
         }
 
-        newNode->Left = node->Left;
-        InsertValueIntoCorrectPositionInTree(node->Left->data, node->Parent);
-            // TODO --> may need to do recursive call here to find position for node that has been moved, starting from nearby position, either the
-                // parent or the node that was just added
+        bool hasLeft = node->Left->Left;
+        bool hasRight = node->Right->Right;
+        if (!hasLeft && !hasRight)
+        {
+            int oldLeftValue = node->Left->data;
+            bool rightSide = node->Left->onRightSideOfTree;
+            delete node->Left;
+            node->Left = new treeNode(value, node, rightSide);
+            return InsertNewValueIntoBST(oldLeftValue, node->Left);
+        }
+        hasLeft = node->Right->Left;
+        hasRight = node->Right->Right;
+        if (!hasLeft && !hasRight)
+        {
+            int oldRightValue = node->Right->data;
+            bool rightSide = node->Right->onRightSideOfTree;
+            delete node->Right;
+            node->Right = new treeNode(value, node, rightSide);
+            return InsertNewValueIntoBST(oldRightValue, node->Right);
+        }
+        
+        int oldLeftValue = node->Left->data;
+        bool rightSide = node->Left->onRightSideOfTree;
         delete node->Left;
-        node->Left = newNode;
+        node->Left = new treeNode(value, node, rightSide);
+        return InsertNewValueIntoBST(oldLeftValue, node->Left);              
     }
 
-    if (equalToNode && node->Parent == NULL)
+
+    if (greaterThanNode == false)
     {
-        treeNode* newNode = new treeNode(value, node->onRightSideOfTree);
         if (node->Left == NULL)
         {
-            node->Left = newNode;
-            node->Left->onRightSideOfTree = false;
+            bool rightSide = node->Parent == NULL ? true : node->onRightSideOfTree;
+            node->Left = new treeNode(value, node, rightSide);
             return node->Left;
         }
 
+        if (value < node->Left->data)
+        {
+            int oldLeftValue = node->Left->data;
+            bool rightSide = node->Left->onRightSideOfTree;
+            delete node->Left;
+            node->Left = new treeNode(value, node, rightSide);
+            return InsertNewValueIntoBST(oldLeftValue, node->Right);
+        }
+
+        return InsertNewValueIntoBST(value, node->Right);
+    }
+
+    if (greaterThanNode)
+    {
         if (node->Right == NULL)
         {
-            node->Right = newNode;
-            node->Right->onRightSideOfTree = true;
+            bool rightSide = node->Parent == NULL ? true : node->onRightSideOfTree;
+            node->Right = new treeNode(value, node, rightSide);
             return node->Right;
         }
+
+        if (value < node->Right->data)
+        {
+            int oldRightValue = node->Right->data;
+            bool rightSide = node->Right->onRightSideOfTree;
+            delete node->Right;
+            node->Right = new treeNode(value, node, rightSide);
+            return InsertNewValueIntoBST(oldRightValue, node->Right);
+        }
+        
+        return InsertNewValueIntoBST(value, node->Right);
     }
 
-    if (node->onRightSideOfTree)
-    {
-        if (greaterThanNode && !equalToNode)
-        {
-            if (node->Right == NULL)
-            {
-                node->Right = new treeNode(value, node, node->onRightSideOfTree);
-                return node->Right;
-            }
-            
-            return InsertValueIntoCorrectPositionInTree(value, node->Right);
-        }
-
-        if (greaterThanNode && equalToNode)
-        {
-            if (node->Right == NULL)
-            {
-
-            }
-        }
-    }
-
-
-    if (node->data >= value)
-    {
-        if (node->onRightSideOfTree)
-        {
-
-        }
-    }
-
-    
-
-     
+    // possible later optimization: move nodes instead of deleting them. Requires move nodes function.     
 }
 
 
