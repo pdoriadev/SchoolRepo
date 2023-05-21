@@ -45,7 +45,10 @@ struct treeNode
 
 
 treeNode* MakeGeneralTree(int * arr, int arrSize);
+treeNode* MakeBST(int * arr, int arrSize);
+treeNode* TraverseToRoot(treeNode* node);
 treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentNode);
+treeNode* InsertNewValueIntoBST(int value, treeNode* node);
 void outputTreeContents(treeNode* node, Relation relation);
 
 int main()
@@ -53,8 +56,8 @@ int main()
     int sortedArray[5] = { 0, 1, 2, 3, 4 };
     int unSortedArray[5] = { 1, 0, 3, 4, 2 };
 
-    treeNode* sortedRoot = MakeGeneralTree(sortedArray, 5);
-    treeNode* unsortedRoot = MakeGeneralTree(unSortedArray, 5);
+    treeNode* sortedRoot = MakeBST(sortedArray, 5);
+    treeNode* unsortedRoot = MakeBST(unSortedArray, 5);
 
     outputTreeContents(sortedRoot, Relation(Root));
     outputTreeContents(unsortedRoot, Relation(Root));
@@ -66,35 +69,38 @@ int main()
 *****************************************/
 treeNode* MakeGeneralTree(int * arr, int arrSize)
 {
-    treeNode* tree = AddNewNodeToTree(arr, arrSize, 0, NULL, false);
+    treeNode* tree = AddNewNodeToTree(arr, arrSize, 0, NULL);
     return tree;
+}
+
+treeNode* MakeBST(int* arr, int arrSize)
+{
+    treeNode* node = NULL;
+    for (int i = 0; i < arrSize; i++)
+    {
+        if (i == 0)
+        {
+            node = InsertNewValueIntoBST(arr[i], node);
+            continue;
+        }
+        
+        InsertNewValueIntoBST(arr[i], node);
+    }
+    return TraverseToRoot(node);
 }
 
 /************************************************
     Recurively adds nodes to create tree
 *************************************************/
-treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentNode, bool isBSP = false)
+treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentNode)
 {
     if (i >= arrSize)
         return NULL;
-    
-    // Make BSP tree
-    if (isBSP)
-    {
-        // dynamically change BSP hierarchy as new values are encountered in order to match BSP rules
-        // left child is less than parent. right child is greater than parent.
-            // all right child's descendents m-ust be greater than the child's parent
-            // all left child's descendents must be less than the child's parent
-        for (int i = 0; i < arrSize; i++)
-        {
-            InsertNewValueIntoBST(arr[i], parentNode);
-        }
-    }
 
     if (parentNode == NULL)
     {
         parentNode = new treeNode(arr[i], false);
-        AddNewNodeToTree(arr, arrSize, i + 1, parentNode, false);
+        AddNewNodeToTree(arr, arrSize, i + 1, parentNode);
         return parentNode;
     }
     
@@ -103,10 +109,10 @@ treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
         if (parentNode->Parent == NULL)
         {
             parentNode->Left = new treeNode(arr[i], parentNode, false);
-            return AddNewNodeToTree(arr, arrSize, i + 1, parentNode->Left, false);
+            return AddNewNodeToTree(arr, arrSize, i + 1, parentNode->Left);
         }
         parentNode->Left = new treeNode(arr[i], parentNode, parentNode->onRightSideOfTree);
-        return AddNewNodeToTree(arr, arrSize, i + 1, parentNode, false);
+        return AddNewNodeToTree(arr, arrSize, i + 1, parentNode);
     }
 
     if (parentNode->Right == NULL)
@@ -114,10 +120,10 @@ treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
         if (parentNode->Parent == NULL)
         {
             parentNode->Right = new treeNode(arr[i], parentNode, true);
-            return AddNewNodeToTree(arr, arrSize, i + 1, parentNode->Left, false);
+            return AddNewNodeToTree(arr, arrSize, i + 1, parentNode->Left);
         }
         parentNode->Right = new treeNode(arr[i], parentNode, parentNode->onRightSideOfTree);
-        return AddNewNodeToTree(arr, arrSize, i + 1, parentNode->Left, false);
+        return AddNewNodeToTree(arr, arrSize, i + 1, parentNode->Left);
     }
 }
 
@@ -126,10 +132,12 @@ treeNode* AddNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
     Compares value to value of node passed into function.
         i.e. node with data less than value param
         i.e. node with data greater than value param
+    Passing null into node param creates a disconnected node
+        (or new tree depeneding on how you look at it)
 ****************************************************/
 treeNode* InsertNewValueIntoBST(int value, treeNode* node)
 {
-    if (node->Parent == NULL && node == NULL)
+    if (node == nullptr)
     {
         node = new treeNode(value, false);
         return node;
@@ -161,8 +169,9 @@ treeNode* InsertNewValueIntoBST(int value, treeNode* node)
         {
             int oldLeftValue = node->Left->data;
             bool rightSide = node->Left->onRightSideOfTree;
+            treeNode* newLeft = new treeNode(value, node, node->Left->Left, node->Left->Right, rightSide);
             delete node->Left;
-            node->Left = new treeNode(value, node, rightSide);
+            node->Left = newLeft;
             return InsertNewValueIntoBST(oldLeftValue, node->Left);
         }
         hasLeft = node->Right->Left;
@@ -171,15 +180,17 @@ treeNode* InsertNewValueIntoBST(int value, treeNode* node)
         {
             int oldRightValue = node->Right->data;
             bool rightSide = node->Right->onRightSideOfTree;
+            treeNode* newRight = new treeNode(value, node, node->Right->Left, node->Right->Right, rightSide);
             delete node->Right;
-            node->Right = new treeNode(value, node, rightSide);
+            node->Right = newRight;
             return InsertNewValueIntoBST(oldRightValue, node->Right);
         }
         
         int oldLeftValue = node->Left->data;
         bool rightSide = node->Left->onRightSideOfTree;
+        treeNode* newLeft = new treeNode(value, node, node->Left->Left, node->Left->Right, rightSide);
         delete node->Left;
-        node->Left = new treeNode(value, node, rightSide);
+        node->Left = newLeft;
         return InsertNewValueIntoBST(oldLeftValue, node->Left);              
     }
 
@@ -193,16 +204,17 @@ treeNode* InsertNewValueIntoBST(int value, treeNode* node)
             return node->Left;
         }
 
-        if (value < node->Left->data)
+        if (value <= node->Left->data)
         {
             int oldLeftValue = node->Left->data;
             bool rightSide = node->Left->onRightSideOfTree;
+            treeNode* newLeft = new treeNode(value, node, node->Left->Left, node->Left->Right, rightSide);
             delete node->Left;
-            node->Left = new treeNode(value, node, rightSide);
-            return InsertNewValueIntoBST(oldLeftValue, node->Right);
+            node->Left = newLeft;
+            return InsertNewValueIntoBST(oldLeftValue, node->Left);
         }
 
-        return InsertNewValueIntoBST(value, node->Right);
+        return InsertNewValueIntoBST(value, node->Left);
     }
 
     if (greaterThanNode)
@@ -214,19 +226,29 @@ treeNode* InsertNewValueIntoBST(int value, treeNode* node)
             return node->Right;
         }
 
-        if (value < node->Right->data)
+        if (value <= node->Right->data)
         {
             int oldRightValue = node->Right->data;
             bool rightSide = node->Right->onRightSideOfTree;
+            treeNode * newRight = new treeNode(value, node, node->Right->Left, node->Right->Right, rightSide);
             delete node->Right;
-            node->Right = new treeNode(value, node, rightSide);
+            node->Right = newRight;
             return InsertNewValueIntoBST(oldRightValue, node->Right);
         }
         
         return InsertNewValueIntoBST(value, node->Right);
     }
 
-    // possible later optimization: move nodes instead of deleting them. Requires move nodes function.     
+    // possible later optimization: move nodes instead of deleting them?
+}
+
+treeNode* TraverseToRoot(treeNode* node)
+{
+    while (node->Parent)
+    {
+        node = node->Parent;
+    }
+    return node;
 }
 
 
@@ -238,14 +260,13 @@ void outputTreeContents(treeNode* node, Relation relation)
 {
     std::stringstream nodeStream;
     nodeStream << node;
-    std::string message = std::string("treeNode ") + nodeStream.str() + std::string(" with data ") + std::to_string(node->data) + std::string(" passed to output tree contents");
-    assert(((message), node != NULL));
+    assert((("Node passed to OutputTreeContents is Null"), node != NULL));
 
+    std::string message = std::string("treeNode ") + nodeStream.str() + std::string(" with data ") + std::to_string(node->data) + std::string(" passed to output tree contents");
     if (relation != Relation(Root))
         std::cout << relation_str[relation] << " of " << node->Parent << ", " << std::to_string(node->data) << ", " << "Location " << nodeStream.str() << '\n';
     else
         std::cout << relation_str[relation] << ", " << std::to_string(node->data) << ", " << "Location " << nodeStream.str() << '\n';
-
 
     if (node->Left != NULL)
         outputTreeContents(node->Left, Relation(Left));
