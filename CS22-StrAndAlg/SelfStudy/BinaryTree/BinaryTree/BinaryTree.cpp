@@ -285,14 +285,9 @@ treeNode* traverseToSuccessor(treeNode * node)
 	assert(("Cannot search for NULL node's successor. It doesn't exist."), node != NULL);
 	if (node->Right)
 		return node->Right;
-	if (node->onRightSideOfTree == false)
+	if (node->onRightSideOfTree == false && node->Parent)
 	{
-		if (node->Parent)
-		{
-			return traverseToSuccessor(node->Parent);
-
-		}
-		
+		return traverseToSuccessor(node->Parent);
 	}
 	return node;
 }
