@@ -1,13 +1,15 @@
-// BinaryTree.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/*
+Peter Doria
+Sample code for a tree
+*/
 
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <assert.h>
 
-enum Relation {Root, Parent, Left, Right};
-static const char* relation_str[] = { "Root", "Parent", "Left", "Right"};
+enum Relation {None, Root, Parent, Left, Right};
+static const char* relation_str[] = {"None", "Root", "Parent", "Left", "Right"};
 
 struct treeNode
 {
@@ -16,15 +18,12 @@ struct treeNode
 	treeNode* Left;
 	treeNode* Right;
 	bool onRightSideOfTree;
-	bool full;
-	int depth;
 	treeNode(const int _data, bool _onRightSideOfTree)
 	{
 		data = _data;
 		Parent = NULL;
 		Left = NULL;
 		Right = NULL;
-		full = Left && Right;
 		onRightSideOfTree = _onRightSideOfTree;
 	}
 	treeNode(const int _data, treeNode* _parent, bool _onRightSideOfTree)
@@ -51,8 +50,12 @@ treeNode* makeBST(int * arr, int arrSize);
 treeNode* traverseToRoot(treeNode* node);
 treeNode* addNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentNode);
 treeNode* insertNewValueIntoBST(int value, treeNode* node);
+treeNode* traverseToPredecessor(treeNode* node);
+treeNode* traverseToSuccessor(treeNode* node);
+treeNode* traverseToLeftMostPredecessor(treeNode* node);
+void outputTreeContentsFromRoot(treeNode* node, Relation relation, bool isFirstOutput = true);
+void outputTreeContentsInOrder(treeNode* node, Relation relation, bool isFirstOutput = true);
 treeNode* balanceBST(treeNode * node);
-void outputTreeContents(treeNode* node, Relation relation);
 
 int main()
 {
@@ -69,11 +72,23 @@ int main()
 	treeNode* equalsMixRoot = makeBST(equalsMixArr, 6);
 	treeNode* equalsMixRootGeneral = makeGeneralTree(equalsMixArr, 6);
 
-	outputTreeContents(sortedRoot, Relation(Root));
+	outputTreeContentsFromRoot(sortedRoot, Relation(Root));
+	outputTreeContentsInOrder(sortedRoot, Relation(Root));
+	std::cout << "Root Predecessor: " << traverseToPredecessor(sortedRoot) << '\n';
+	std::cout << "Root Successor: " << traverseToSuccessor(sortedRoot) << '\n';
+	std::cout << "Left Most Predecessor: " << traverseToLeftMostPredecessor(sortedRoot) << '\n';
 	std::cout << std::endl;
-	outputTreeContents(unsortedRoot, Relation(Root));
+	outputTreeContentsFromRoot(unsortedRoot, Relation(Root));
+	outputTreeContentsInOrder(unsortedRoot, Relation(Root));
+	std::cout << "Root Predecessor: " << traverseToPredecessor(unsortedRoot) << '\n';
+	std::cout << "Root Successor: " << traverseToSuccessor(unsortedRoot) << '\n';
+	std::cout << "Left Most Predecessor: " << traverseToLeftMostPredecessor(unsortedRoot) << '\n';
 	std::cout << std::endl;
-	outputTreeContents(equalsMixRoot, Relation(Root));
+	outputTreeContentsFromRoot(equalsMixRoot, Relation(Root));
+	outputTreeContentsInOrder(equalsMixRoot, Relation(Root));
+	std::cout << "Root Predecessor: " << traverseToPredecessor(equalsMixRoot) << '\n';
+	std::cout << "Root Successor: " << traverseToSuccessor(equalsMixRoot) << '\n';
+	std::cout << "Left Most Predecessor: " << traverseToLeftMostPredecessor(equalsMixRoot) << '\n';
 	std::cout << std::endl;
 }
 
@@ -84,7 +99,7 @@ int main()
 treeNode* makeGeneralTree(int * arr, int arrSize)
 {
 	treeNode* tree = addNewNodeToTree(arr, arrSize, 0, NULL);
-	assert(("must return root"), tree->Parent == NULL);
+	assert((("must return root"), tree->Parent == NULL));
 	return tree;
 }
 
@@ -173,7 +188,7 @@ treeNode* insertNewValueIntoBST(int value, treeNode* node)
 			return node->Right;
 		}
 
-		if (!node->Left->full)
+		if (!node->Left->Left && !node->Left->Right)
 		{ 
 			int oldLeftValue = node->Left->data;
 			treeNode* newLeft = new treeNode(value, node, node->Left->Left, node->Left->Right, node->Left->onRightSideOfTree);
@@ -182,7 +197,7 @@ treeNode* insertNewValueIntoBST(int value, treeNode* node)
 			return insertNewValueIntoBST(oldLeftValue, node->Left);
 		}
 
-		if (!node->Right->full)
+		if (!node->Right->Left && !node->Right->Right)
 		{
 			int oldRightValue = node->Right->data;
 			bool rightSide = node->Right->onRightSideOfTree;
@@ -203,7 +218,6 @@ treeNode* insertNewValueIntoBST(int value, treeNode* node)
 
 	if (value < node->data)
 	{
-
 		if (node->Left == NULL)
 		{
 			bool rightSide = node->Parent == NULL ? false : node->onRightSideOfTree;
@@ -238,28 +252,104 @@ treeNode* traverseToRoot(treeNode* node)
 	return node;
 }
 
+treeNode* traverseToPredecessor(treeNode * node)
+{
+	assert((("Cannot search for a NULL node's predecessor. It doesn't exist.")), node != NULL);
+	if (node->Left)
+		return node->Left;
+	if (node->onRightSideOfTree)
+	{
+		return traverseToPredecessor(node->Parent);
+	}
+	return node;
+}
 
+treeNode* traverseToLeftMostPredecessor(treeNode* node)
+{
+	assert(("Cannot search for NULL node's predecessor. It doesn't exist."), (node != NULL));
+	treeNode* predecessor = NULL;
+	treeNode* tempNode = traverseToPredecessor(node);
+	while (predecessor != tempNode)
+	{
+		predecessor = tempNode;
+		tempNode = traverseToPredecessor(predecessor);
+	}
+	if (predecessor == NULL)
+		return node;
+
+	return predecessor;
+}
+
+treeNode* traverseToSuccessor(treeNode * node)
+{
+	assert(("Cannot search for NULL node's successor. It doesn't exist."), node != NULL);
+	if (node->Right)
+		return node->Right;
+	if (node->onRightSideOfTree == false)
+	{
+		if (node->Parent)
+		{
+			return traverseToSuccessor(node->Parent);
+
+		}
+		
+	}
+	return node;
+}
 
 /************************************************
 	Recursively outputs data on each node in 
 		tree to console
 *************************************************/
-void outputTreeContents(treeNode* node, Relation relation)
+void outputTreeContentsFromRoot(treeNode* node, Relation relation, bool isFirstOutput)
 {
+	assert((("Node passed to OutputTreeContents is Null"), node != NULL));
+	
 	std::stringstream nodeStream;
 	nodeStream << node;
-	assert((("Node passed to OutputTreeContents is Null"), node != NULL));
 
-	std::string message = std::string("treeNode ") + nodeStream.str() + std::string(" with data ") + std::to_string(node->data) + std::string(" passed to output tree contents");
-	if (relation != Relation(Root))
-		std::cout << relation_str[relation] << " of " << node->Parent << ", " << std::to_string(node->data) << ", " << "Location " << nodeStream.str() << '\n';
+	if (node->Parent == NULL)
+		std::cout << "Relation to previous node:" << relation_str[relation] 
+		<< ", Data: " << std::to_string(node->data) 
+		<< ", " << "Location " << nodeStream.str() 
+		<< ", *IsRoot* " << '\n';
 	else
-		std::cout << relation_str[relation] << ", " << std::to_string(node->data) << ", " << "Location " << nodeStream.str() << '\n';
+		std::cout << "Relation to previous node:" << relation_str[relation] 
+		<< ", Data: " << std::to_string(node->data) 
+		<< ", " << "Location " << nodeStream.str() << '\n';
+	
 
 	if (node->Left != NULL)
-		outputTreeContents(node->Left, Relation(Left));
+		outputTreeContentsFromRoot(node->Left, Relation(Left), false);
 	if (node->Right != NULL)
-		outputTreeContents(node->Right, Relation(Right));
+		outputTreeContentsFromRoot(node->Right, Relation(Right), false);
 
 }
 
+void outputTreeContentsInOrder(treeNode* node, Relation relation, bool isFirstOutput)
+{
+	assert(("Node passed to Ouput Tree is NULL"), node != NULL);
+	if (node->Left)
+		outputTreeContentsInOrder(node->Left, Relation(Right), false);
+
+	std::stringstream nodeStream;
+	nodeStream << node;
+	if (node->Parent == NULL)
+	{
+		std::cout <<
+			"Relation to next node:" << relation_str[relation] 
+			<< ", Data: " << std::to_string(node->data) 
+			<< ", Location: " << nodeStream.str() 
+			<< ", *isRoot* " << '\n';
+	}
+	else
+	{
+		std::cout <<
+			"Relation to next node:" << relation_str[relation]
+			<< ", Data: " << std::to_string(node->data)
+			<< ", Location: " << nodeStream.str() << '\n';
+	}
+	
+	if (node->Right)
+		outputTreeContentsInOrder(node->Right, Relation(Right), false);
+}
