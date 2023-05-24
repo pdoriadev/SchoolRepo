@@ -86,7 +86,7 @@ struct foundStatus
 
 foundStatus searchForNodeWithValue(treeNode* node, std::string word);
 treeNode* searchAndInsertValueInBST(treeNode* node, std::string word);
-bool userSearchForWord();
+bool userSearchForWord(treeNode * node);
 bool isValidInput(std::string input);
 
 int main()
@@ -116,10 +116,7 @@ int main()
         foundStatus status = searchForNodeWithValue(root, word);
     }
 
-    while (userSearchForWord())
-    {
-
-    }
+    userSearchForWord(root);
    
 }
 
@@ -183,8 +180,40 @@ treeNode* InsertValueIntoBST(foundStatus status, std::string word)
 
 }
 
-bool userSearchForWord()
+bool userSearchForWord(treeNode * node)
 {
+    std::cout << "Do you want to search for a word? Input 'y' for yes. Input 'n' for no." << '\n';
+    char yesOrNoInput;
+    std::cin >> yesOrNoInput;
+    bool validInput = yesOrNoInput == 'y' || yesOrNoInput == 'n';
+    while (!validInput)
+    {
+        std::cout << yesOrNoInput << " is not valid input. Please type in 'y' for yes or 'n' for no." << '\n';
+    }
+    bool want = yesOrNoInput == 'y' ? true : false;
+    while (want)
+    {
+        std::cout << "Type in a word you would like to search for : ";
+        std::string searchWord; 
+        while (!isValidInput(searchWord))
+        {
+            std::cout << searchWord << " is not valid search word. Please type in a word made of only letters. No spaces, punctuation, or special characters." << '\n';
+            std::cin >> searchWord;
+        }
+        
+        foundStatus status = searchForNodeWithValue(node, searchWord);
+        if (status.found)
+        {
+            std::cout << "Found " << searchWord << " " << status.foundOrPreviousNode->count << " times!" << '\n';
+        }
+        else
+        {
+            std::cout << "Did not find word in document. Would you like to search for another word?" << '\n';
+        }
+    }
+
+    std::cout << "User search time completed." << '\n';
+
     // want to search , return true
     // DONT want to search, return false
 }
