@@ -213,9 +213,6 @@ bool userSearchForWord(treeNode * node)
     }
 
     std::cout << "User search time completed." << '\n';
-
-    // want to search , return true
-    // DONT want to search, return false
 }
 
 bool isValidInput(std::string input)
