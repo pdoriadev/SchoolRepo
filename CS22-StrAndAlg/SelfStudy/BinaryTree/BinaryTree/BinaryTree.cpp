@@ -13,11 +13,21 @@ static const char* relation_str[] = {"None", "Root", "Parent", "Left", "Right"};
 
 struct treeNode
 {
+	std::string word;
 	int data;
 	treeNode* Parent;
 	treeNode* Left;
 	treeNode* Right;
 	bool onRightSideOfTree;
+	treeNode(std::string w)
+	{
+		word = w;
+		data = 0;
+		Parent = NULL;
+		Left = NULL;
+		Right = NULL;
+		onRightSideOfTree = false;
+	}
 	treeNode(const int _data, bool _onRightSideOfTree)
 	{
 		data = _data;
@@ -48,11 +58,12 @@ struct treeNode
 treeNode* makeGeneralTree(int * arr, int arrSize);
 treeNode* makeBST(int * arr, int arrSize);
 treeNode* traverseToRoot(treeNode* node);
-treeNode* addNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentNode);
+treeNode* createTreeFromArray(int* arr, int arrSize, const int i, treeNode* parentNode);
 treeNode* insertNewValueIntoBST(int value, treeNode* node);
 treeNode* traverseToPredecessor(treeNode* node);
 treeNode* traverseToSuccessor(treeNode* node);
 treeNode* traverseToLeftMostPredecessor(treeNode* node);
+void outputArray(int* arr, int size);
 void outputTreeContentsFromRoot(treeNode* node, Relation relation, bool isFirstOutput = true);
 void outputTreeContentsInOrder(treeNode* node, Relation relation, bool isFirstOutput = true);
 treeNode* balanceBST(treeNode * node);
@@ -72,24 +83,33 @@ int main()
 	treeNode* equalsMixRoot = makeBST(equalsMixArr, 6);
 	treeNode* equalsMixRootGeneral = makeGeneralTree(equalsMixArr, 6);
 
+	std::cout << "Original Array: ";
+	outputArray(sortedArray, 5);
+	std::cout << '\n';
 	outputTreeContentsFromRoot(sortedRoot, Relation(Root));
 	outputTreeContentsInOrder(sortedRoot, Relation(Root));
 	std::cout << "Root Predecessor: " << traverseToPredecessor(sortedRoot) << '\n';
 	std::cout << "Root Successor: " << traverseToSuccessor(sortedRoot) << '\n';
 	std::cout << "Left Most Predecessor: " << traverseToLeftMostPredecessor(sortedRoot) << '\n';
 	std::cout << std::endl;
+	outputArray(unSortedArray, 5);
+	std::cout << '\n';
 	outputTreeContentsFromRoot(unsortedRoot, Relation(Root));
 	outputTreeContentsInOrder(unsortedRoot, Relation(Root));
 	std::cout << "Root Predecessor: " << traverseToPredecessor(unsortedRoot) << '\n';
 	std::cout << "Root Successor: " << traverseToSuccessor(unsortedRoot) << '\n';
 	std::cout << "Left Most Predecessor: " << traverseToLeftMostPredecessor(unsortedRoot) << '\n';
 	std::cout << std::endl;
+	outputArray(equalsMixArr, 6);
+	std::cout << '\n';
 	outputTreeContentsFromRoot(equalsMixRoot, Relation(Root));
 	outputTreeContentsInOrder(equalsMixRoot, Relation(Root));
 	std::cout << "Root Predecessor: " << traverseToPredecessor(equalsMixRoot) << '\n';
 	std::cout << "Root Successor: " << traverseToSuccessor(equalsMixRoot) << '\n';
 	std::cout << "Left Most Predecessor: " << traverseToLeftMostPredecessor(equalsMixRoot) << '\n';
 	std::cout << std::endl;
+
+	treeNode* node = new treeNode("poopee");
 }
 
 /***************************************
@@ -98,7 +118,7 @@ int main()
 *****************************************/
 treeNode* makeGeneralTree(int * arr, int arrSize)
 {
-	treeNode* tree = addNewNodeToTree(arr, arrSize, 0, NULL);
+	treeNode* tree = createTreeFromArray(arr, arrSize, 0, NULL);
 	assert((("must return root"), tree->Parent == NULL));
 	return tree;
 }
@@ -122,7 +142,7 @@ treeNode* makeBST(int* arr, int arrSize)
 /************************************************
 	Recurively adds nodes to create tree
 *************************************************/
-treeNode* addNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentNode)
+treeNode* createTreeFromArray(int* arr, int arrSize, const int i, treeNode* parentNode)
 {
 	if (i >= arrSize)
 		return NULL;
@@ -130,7 +150,7 @@ treeNode* addNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
 	if (parentNode == NULL)
 	{
 		parentNode = new treeNode(arr[i], false);
-		addNewNodeToTree(arr, arrSize, i + 1, parentNode);
+		createTreeFromArray(arr, arrSize, i + 1, parentNode);
 		return parentNode;
 	}
 
@@ -139,10 +159,10 @@ treeNode* addNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
 		if (parentNode->Parent == NULL)
 		{
 			parentNode->Left = new treeNode(arr[i], parentNode, false);
-			return addNewNodeToTree(arr, arrSize, i + 1, parentNode->Left);
+			return createTreeFromArray(arr, arrSize, i + 1, parentNode->Left);
 		}
 		parentNode->Left = new treeNode(arr[i], parentNode, parentNode->onRightSideOfTree);
-		return addNewNodeToTree(arr, arrSize, i + 1, parentNode);
+		return createTreeFromArray(arr, arrSize, i + 1, parentNode);
 	}
 
 	if (parentNode->Right == NULL)
@@ -150,11 +170,13 @@ treeNode* addNewNodeToTree(int* arr, int arrSize, const int i, treeNode* parentN
 		if (parentNode->Parent == NULL)
 		{
 			parentNode->Right = new treeNode(arr[i], parentNode, true);
-			return addNewNodeToTree(arr, arrSize, i + 1, parentNode->Left);
+			return createTreeFromArray(arr, arrSize, i + 1, parentNode->Left);
 		}
 		parentNode->Right = new treeNode(arr[i], parentNode, parentNode->onRightSideOfTree);
-		return addNewNodeToTree(arr, arrSize, i + 1, parentNode->Left);
+		return createTreeFromArray(arr, arrSize, i + 1, parentNode->Left);
 	}
+
+	assert(("Missed case"), false);
 }
 
 /*************************************************** 
@@ -240,7 +262,7 @@ treeNode* insertNewValueIntoBST(int value, treeNode* node)
 		return insertNewValueIntoBST(value, node->Right);
 	}
 
-	// possible later optimization: move nodes instead of deleting them?
+	assert(("Missed case"), false);
 }
 
 treeNode* traverseToRoot(treeNode* node)
@@ -254,7 +276,7 @@ treeNode* traverseToRoot(treeNode* node)
 
 treeNode* traverseToPredecessor(treeNode * node)
 {
-	assert((("Cannot search for a NULL node's predecessor. It doesn't exist.")), node != NULL);
+	assert(("Cannot search for a NULL node's predecessor. It doesn't exist.", node != NULL));
 	if (node->Left)
 		return node->Left;
 	if (node->onRightSideOfTree)
@@ -266,7 +288,7 @@ treeNode* traverseToPredecessor(treeNode * node)
 
 treeNode* traverseToLeftMostPredecessor(treeNode* node)
 {
-	assert(("Cannot search for NULL node's predecessor. It doesn't exist."), (node != NULL));
+	assert(("Cannot search for NULL node's predecessor. It doesn't exist.", node != NULL));
 	treeNode* predecessor = NULL;
 	treeNode* tempNode = traverseToPredecessor(node);
 	while (predecessor != tempNode)
@@ -282,7 +304,7 @@ treeNode* traverseToLeftMostPredecessor(treeNode* node)
 
 treeNode* traverseToSuccessor(treeNode * node)
 {
-	assert(("Cannot search for NULL node's successor. It doesn't exist."), node != NULL);
+	assert(("Cannot search for NULL node's successor. It doesn't exist.", node != NULL));
 	if (node->Right)
 		return node->Right;
 	if (node->onRightSideOfTree == false && node->Parent)
@@ -290,6 +312,21 @@ treeNode* traverseToSuccessor(treeNode * node)
 		return traverseToSuccessor(node->Parent);
 	}
 	return node;
+}
+
+void outputArray(int* arr, int size)
+{
+	std::cout << "[";
+	for (int i = 0; i < size; i++)
+	{
+		if (i + 1 < size)
+		{
+			std::cout << " " << arr[i] << ", ";
+		}
+		else std::cout << " " << arr[i] << " ";
+
+	}
+	std::cout << "]";
 }
 
 /************************************************
@@ -323,7 +360,7 @@ void outputTreeContentsFromRoot(treeNode* node, Relation relation, bool isFirstO
 
 void outputTreeContentsInOrder(treeNode* node, Relation relation, bool isFirstOutput)
 {
-	assert(("Node passed to Ouput Tree is NULL"), node != NULL);
+	assert(("Node passed to Ouput Tree is NULL", node != NULL));
 	if (node->Left)
 		outputTreeContentsInOrder(node->Left, Relation(Right), false);
 
