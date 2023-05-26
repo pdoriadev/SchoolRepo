@@ -36,14 +36,22 @@ struct trieNode
     }
 };
 
+struct foundStatus
+{
+    bool found;
+    trieNode* foundOrLastMatchingNode;
+    foundStatus(bool _found, trieNode* _foundOrLastMatchingNode)
+    {
+        found = _found;
+        foundOrLastMatchingNode = _foundOrLastMatchingNode;
+    }
+};
+
 int main()
 {
     std::vector<std::string> arrOfStrings = { "sap", "sap", "cat", "cattle", "dung", "dungheap", "a", "apple", "appalachia", "appalachian", "cap" };
     trieNode* root = new trieNode();
-    for (int i = 0; i < arrOfStrings.size(); i++)
-    {
-        trieInsert(root, arrOfStrings[i]);
-    }
+    
 
     std::cout << "========================" << '\n';
     std::cout << "         Trie" << '\n';
@@ -51,14 +59,68 @@ int main()
 
 }
 
-trieNode* trieSearch(trieNode* node, std::string wordToSearchFor)
+foundStatus trieSearchForLetterConnectedToNode(trieNode* node, char letter)
+{
+    if (letter == node->letter)
+    {
+        return foundStatus(true, node);
+    }
+
+    for (int i = 0; i < node->nextNodes.size(); i++)
+    {
+        if (letter == node->nextNodes[i]->letter)
+        {
+            return foundStatus(true, node->nextNodes[i]);
+        }
+    }
+
+    return foundStatus(false, node);
+}
+
+std::vector<foundStatus>& trieSearchForWord(trieNode* node, std::string wordToSearchFor)
+{
+    std::vector<foundStatus> sequenceOfNodeFinds;
+    sequenceOfNodeFinds.reserve(wordToSearchFor.size());
+    for (int i = 0; i < wordToSearchFor.size(); i++)
+    {
+        sequenceOfNodeFinds.push_back(trieSearchForLetterConnectedToNode(node, wordToSearchFor[i]));
+        if (sequenceOfNodeFinds[i].found == false)
+        {
+            return sequenceOfNodeFinds;
+        }
+    }
+    return sequenceOfNodeFinds;
+}
+
+trieNode* trieInsertLetter(trieNode* node, char letter)
 {
 
 }
 
-trieNode* trieInsert(trieNode* node, std::string wordToInsert)
+std::vector<foundStatus>& trieInsertWord(trieNode* node, std::string wordToInsert)
 {
+    std::vector<foundStatus> finds = trieSearchForWord(node, wordToInsert);
+ 
+    if (finds.size() == wordToInsert.size())
+    {
+        return finds;
+    }
 
+    if (finds.empty())
+    {
+        // insert whole word into trie from root
+    }
+
+    std::vector<foundStatus> fullWordSequence = finds;
+    trieNode* insertionNode = finds[finds.size() - 1].foundOrLastMatchingNode; 
+    for (int i = wordToInsert.size() - finds.size() - 1; i < wordToInsert.size(); i++)
+    {
+        insertionNode->nextNodes.push_back(new trieNode(wordToInsert[i], nullptr, false));
+        insertionNode = insertionNode->nextNodes[0];
+        finds.push_back(foundStatus(true, insertionNode->nextNodes[0]));
+    }
+
+    return fullWordSequence;
 }
 
 
