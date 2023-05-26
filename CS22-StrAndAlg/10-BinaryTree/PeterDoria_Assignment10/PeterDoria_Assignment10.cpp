@@ -41,17 +41,20 @@ Rubric:
     Your source code file or files zipped together and named <firstName><lastName>_Assignment10.cpp or <firstName><lastName>_Assignment10.zip.
 
 ******************************************************************************************************************************************************/
+// Libraries for program
 #include <iostream>
 #include <ostream>
 #include <fstream>
-#include <assert.h>
 #include <string>
 #include <unordered_set>
+//Libraries for asserts
+#include <assert.h>
+#include <sstream>
 
 static const std::unordered_set<char> validChars
 { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
-struct treeNode 
+struct treeNode
 {
     std::string word;
     int count = 0;
@@ -64,7 +67,7 @@ struct treeNode
         left = NULL;
         right = NULL;
     }
-    treeNode(const std::string _word, treeNode * _left, treeNode * _right)
+    treeNode(const std::string _word, treeNode* _left, treeNode* _right)
     {
         word = _word;
         left = _left;
@@ -73,6 +76,16 @@ struct treeNode
     }
 };
 
+/********************************************************************
+    Info on whether a value exists in a BST.
+        If exists, 
+            found = true 
+            foundOrPreviousNode caches the found node. 
+        If does not exists
+            found = false
+            foundOrPreviousNode caches the node previous to where
+                we were last looking. 
+********************************************************************/
 struct foundStatus
 {
     bool found;
@@ -84,49 +97,124 @@ struct foundStatus
     }
 };
 
-foundStatus searchForNodeWithValue(treeNode* node, std::string word);
-treeNode* searchAndInsertValueInBST(treeNode* node, std::string word);
-bool userSearchForWord(treeNode * node);
-bool isValidInput(std::string input);
 
+treeNode * addWordToBST(treeNode* node, std::string word);
+foundStatus searchForNodeWithValue(treeNode* node, std::string word);
+treeNode* insertValueIntoBST(foundStatus status, std::string word);
+void userSearchForWord(treeNode * node);
+bool userWantsTo();
+bool isValidWord(std::string input);
+bool wordHasAnyValidLetters(std::string word);
+
+int invalidCharsCount = 0;
 int main()
 {
-    std::ifstream file("USConstitution.txt");
-    assert((("File not open."), file.is_open()));
-    treeNode* root = NULL;
+    std::ifstream inputFile("USConstitution.txt");
+    assert((("File not open."), inputFile.is_open()));
+    std::ofstream outputFile("MatchingDocument.txt");
+    assert(("Output file failed to open.", inputFile.is_open()));
+    treeNode* root = new treeNode("");
     std::string word;
-    while (std::getline(file, word, ' '))
-    {
-        for (int i = 0; i < word.length(); )
-        {
-            if (validChars.count(std::tolower(word[i])) == 0)
-            {
-                word.erase(i, 1);
-                continue;
-            }
-          
-            if (i == 0 && std::isupper(word[i]))
-            {
-                word[i] = std::tolower(word[i]);
-            }
 
-            i++;
+    while (std::getline(inputFile, word, ' '))
+    {
+        if (!wordHasAnyValidLetters(word))
+        {
+            continue;
         }
 
-        foundStatus status = searchForNodeWithValue(root, word);
-    }
+        treeNode* returnedNode = addWordToBST(root, word);
+        if (returnedNode == NULL)
+        {
+            std::stringstream message;
+            message << "Failed to add " << word << " to BST. ";
+            assert((message, false));
+        }
 
-    userSearchForWord(root);
-   
+        outputFile << returnedNode->word << '\n';
+    }
+    outputFile.close();
+    inputFile.close();
+    std::cout << "Do you want to search for a word? " ;
+    while (userWantsTo())
+    {
+        userSearchForWord(root);
+        std::cout << "Want to search for another word? ";
+    }
+    std::cout << "User search time completed." << '\n';
+    
+    std::cout << std::endl
+        << "=======================================" << '\n'
+        << "        Output Tree In Order" << '\n'
+        << "=======================================" << '\n';
+    outputTreeContentsInOrder(root);
+
 }
 
-foundStatus searchForNodeWithValue(treeNode* node, std::string word)
+
+/*******************************************************************
+    Main control function for adding new words into BST.
+********************************************************************/
+treeNode * addWordToBST(treeNode* node, std::string word)
 {
-    if (node == NULL)
+    std::string additionalWord = "";           
+    for (int i = 0; i < word.length(); )
     {
-        return foundStatus(false, NULL);
+        if (validChars.count(std::tolower(word[i])) == 0)
+        {
+            word.erase(i, 1);
+            invalidCharsCount++;
+            continue;
+        }
+
+        if (i == 0 && std::isupper(word[i]))
+        {
+            word[i] = std::tolower(word[i]);
+        }
+        else if (std::isupper(word[i]))
+        {
+            for (int j = i; j < word.length(); j++)
+            {
+                additionalWord.push_back(word[j]);
+            }
+            word.erase(i);
+            continue;
+        }
+
+        i++;
     }
 
+    if (word.length() > 0)
+    {
+
+        if (node->word == "")
+        {
+            node->word = word;
+            return node;
+        }
+
+        foundStatus status = searchForNodeWithValue(node, word);
+        treeNode * wordNode = insertValueIntoBST(status, word);
+        if (additionalWord.length() == 0)
+        {
+            return wordNode;
+        }
+
+        return addWordToBST(node, additionalWord);
+    }
+
+    assert(("Didn't think execution would get here. Missed a case when writing function", false));
+    return NULL;
+}
+
+/********************************************************************
+    Searches node with particular value in BST. 
+    Returns different foundStatus depending on if the value was 
+        found and where it was/wasn't found.
+********************************************************************/
+foundStatus searchForNodeWithValue(treeNode* node, std::string word)
+{
+    assert(("Passed in NULL pointer", node != NULL));
     assert(("Word has no length", word.length() > 0));
 
     if (word == node->word)
@@ -137,7 +225,7 @@ foundStatus searchForNodeWithValue(treeNode* node, std::string word)
     {
         if (node->left)
         {
-            return searchForNodeWithValue(node->right, word);
+            return searchForNodeWithValue(node->left, word);
         }
 
         return foundStatus(false, node);
@@ -146,17 +234,22 @@ foundStatus searchForNodeWithValue(treeNode* node, std::string word)
     {
         if (node->right)
         {
-            return searchForNodeWithValue(node->left, word);
+            return searchForNodeWithValue(node->right, word);
         }
 
         return foundStatus(false, node);
     }
 
-    assert(("Missed a case when looking for a node value", true));
+    assert(("Missed a case when looking for a node value", false));
     return foundStatus(false, NULL);
 }
 
-treeNode* InsertValueIntoBST(foundStatus status, std::string word)
+/********************************************************************
+    Inserts values into BST. If value is not in BST, creates 
+        a new node for the value. If value is already in BST,
+        iterates the count in that value's node. 
+********************************************************************/
+treeNode* insertValueIntoBST(foundStatus status, std::string word)
 {
     if (status.found)
     {
@@ -165,6 +258,10 @@ treeNode* InsertValueIntoBST(foundStatus status, std::string word)
     }
     if (status.found == false)
     {
+        if (status.foundOrPreviousNode == NULL)
+        {
+            return new treeNode(word);
+        }
         if (word < status.foundOrPreviousNode->word)
         {
             status.foundOrPreviousNode->left = new treeNode(word);
@@ -175,57 +272,111 @@ treeNode* InsertValueIntoBST(foundStatus status, std::string word)
             status.foundOrPreviousNode->right = new treeNode(word);
             return status.foundOrPreviousNode->right;
         }
-
     }
-
 }
 
-bool userSearchForWord(treeNode * node)
+/********************************************************************
+    Asks the user to type in a word they would like to search for
+        from the document. 
+    Checks if user's search word is valid.
+    Searches for user's search word in document. 
+    Outputs result of search. 
+********************************************************************/
+void userSearchForWord(treeNode * node)
+{    
+    std::cout << "Type in a word you would like to search for: ";
+    std::string searchWord = "";
+    std::cin >> searchWord;
+    while (!isValidWord(searchWord))
+    {
+        std::cout 
+            << "'" <<  searchWord << "'"
+            << " is not valid search word. Please type in a word made of only letters. No spaces, punctuation, or special characters." 
+            << '\n' << "New word: ";
+
+        std::cin >> searchWord;
+    }
+        
+    foundStatus status = searchForNodeWithValue(node, searchWord);
+    if (status.found)
+    {
+        std::cout << "Found " << searchWord << " " << status.foundOrPreviousNode->count << " times!" << '\n';
+    }
+    else
+    {
+        std::cout << "Did not find" << " '" << searchWord << "'" << " in document. " << '\n';
+    }
+}
+
+/******************************************************************** 
+    Asks the user to input confirmation if they want to do something. 
+        Returns true if they want to. 
+        Returns false if they don't want to.
+********************************************************************/
+bool userWantsTo()
 {
-    std::cout << "Do you want to search for a word? Input 'y' for yes. Input 'n' for no." << '\n';
+    std::cout << " Input 'y' for yes. Input 'n' for no: ";
     char yesOrNoInput;
     std::cin >> yesOrNoInput;
     bool validInput = yesOrNoInput == 'y' || yesOrNoInput == 'n';
     while (!validInput)
     {
-        std::cout << yesOrNoInput << " is not valid input. Please type in 'y' for yes or 'n' for no." << '\n';
+        std::cout << "'" << yesOrNoInput << "'" <<  " is not valid input. Please type in 'y' for yes or 'n' for no: ";
+        std::cin >> yesOrNoInput;
+        validInput = yesOrNoInput == 'y' || yesOrNoInput == 'n';
     }
-    bool want = yesOrNoInput == 'y' ? true : false;
-    while (want)
-    {
-        std::cout << "Type in a word you would like to search for : ";
-        std::string searchWord; 
-        while (!isValidInput(searchWord))
-        {
-            std::cout << searchWord << " is not valid search word. Please type in a word made of only letters. No spaces, punctuation, or special characters." << '\n';
-            std::cin >> searchWord;
-        }
-        
-        foundStatus status = searchForNodeWithValue(node, searchWord);
-        if (status.found)
-        {
-            std::cout << "Found " << searchWord << " " << status.foundOrPreviousNode->count << " times!" << '\n';
-        }
-        else
-        {
-            std::cout << "Did not find word in document. Would you like to search for another word?" << '\n';
-        }
-    }
-
-    std::cout << "User search time completed." << '\n';
+    if (yesOrNoInput == 'y')
+        return true;
+    return false;
 }
 
-bool isValidInput(std::string input)
+/********************************************************************
+    Checks if given string has all valid symbols.
+        Returns false if an invalid symbol is found.
+        Returns true if there are no invalid symbols.
+********************************************************************/
+bool isValidWord(std::string word)
 {
-    std::string capitalInput = input;
-    capitalInput[0] = std::toupper(capitalInput[0]);
-    for (int i = 0; i < input.length();)
+    for (int i = 0; i < word.length();i++)
     {
-        if (validChars.count(input[i]) == 0 || validChars.count(input[0]) == 0)
+        if (validChars.count(word[i]) == 0 || validChars.count(std::tolower(word[0])) == 0)
         {
             return false;
         }
     }
 
     return true;
+}
+
+/********************************************************************
+    Returns true if the string has any valid symbols.
+    Returns false if no valid symbols are found. 
+********************************************************************/
+bool wordHasAnyValidLetters(std::string word)
+{
+    for (int i = 0; i < word.length();i++)
+    {
+        if (validChars.count(word[i]) > 0 || validChars.count(std::tolower(word[0])) > 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+    
+}
+
+
+void outputTreeContentsInOrder(treeNode* node)
+{
+    assert(("Node passed to Ouput Tree is NULL", node != NULL));
+    if (node->left)
+        outputTreeContentsInOrder(node->left);
+
+    std::cout
+        << "Location: " << node
+        << ", Data : " << node->word << '\n';
+
+    if (node->right)
+        outputTreeContentsInOrder(node->right);
 }
