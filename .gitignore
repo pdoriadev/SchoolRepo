@@ -1,1 +1,4 @@
 *.pdf
+*/build-Project-1-Desktop-Debug/
+*.pro
+*/Project-1/*.user
