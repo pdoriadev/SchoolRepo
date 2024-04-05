@@ -204,8 +204,7 @@ public:
                 leftPos = pos+1;
             }
 
-            highInterestSavings acc = highInterestSavings();
-            acc.initSavings(name, balance, interest);
+            highInterestSavings acc = highInterestSavings(name, balance, interest);
             accountsHighInterestSavings.push_back(acc);
             return result (true, "success");
         }

@@ -72,7 +72,7 @@ public:
             writeCheck
             receiveCheck
 */
-class checkingAccount : protected bankAccount
+class checkingAccount : public bankAccount
 {
 protected:
     std::vector<digitalCheck> writtenChecks;
@@ -92,9 +92,7 @@ protected:
     }
 
 public:
-    const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
-    const unsigned int gBalance() {return balance;}
+
 
     const result didThisAccountWriteThisCheck(digitalCheck *check)
     {
@@ -165,7 +163,7 @@ public:
             No minimum balance
             monthly service charge
 */
-class serviceChargeChecking : protected checkingAccount
+class serviceChargeChecking : public checkingAccount
 {
 protected:
     const unsigned int CHECK_LIMIT = 10;
@@ -173,9 +171,7 @@ protected:
     unsigned int checksThisMonth = 0;
 
 public:
-    const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
-    const unsigned int gBalance() {return balance;}
+
     const unsigned int gCheckLimit() {return CHECK_LIMIT;}
     const unsigned int gChecksThisMonth() { return checksThisMonth;}
 
@@ -249,7 +245,7 @@ noServiceChargeChecking
         Limited number of checks
         Requires minimum balance
 */
-class noServiceChargeChecking : protected checkingAccount
+class noServiceChargeChecking : public checkingAccount
 {
     const double MIN_BALANCE = 30;
     const unsigned int CHECK_LIMIT = 50;
@@ -257,9 +253,7 @@ class noServiceChargeChecking : protected checkingAccount
     double interest = 1.0001;
 
 public:
-    const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
-    const unsigned int gBalance() {return balance;}
+
     const unsigned int gCheckLimit() {return CHECK_LIMIT;}
     const unsigned int gChecksThisMonth() { return checksThisMonth;}
     const double gInterestRate() {return interest;}

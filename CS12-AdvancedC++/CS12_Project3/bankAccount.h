@@ -26,7 +26,6 @@ protected:
 
     unsigned int accountNumber = 0;
     bool hasAccountNumber = false;
-    resultSettable initializationState = resultSettable(false, "Account initialization has not been attempted.");
 
     static unsigned int generateAccountNumber()
     {
@@ -40,48 +39,48 @@ public:
     const std::string gName() {return name;}
     const unsigned int gAccountNumber() {return accountNumber;}
     const double gBalance() {return balance;}
-    const resultSettable gInitializationState() {return initializationState;}
 
     result init(const std::string _name)
     {
-        if (initializationState.gSuccess() == true)
+        resultSettable r;
+        if (r.gSuccess() == true)
         {
             return result(false, "Account has already been created. Cannot re-initialize account.");
         }
 
-        initializationState.success = true;
-        initializationState.message = "";
+        r.success = true;
+        r.message = "";
         if (name == "")
         {
             name = _name;
         }
         else
         {
-            if (initializationState.message != "")
+            if (r.message != "")
             {
-                initializationState.message += "\n";
+                r.message += "\n";
             }
-            initializationState.message += "Account already has a name associated with it. ";
-            initializationState.success = false;
+            r.message += "Account already has a name associated with it. ";
+            r.success = false;
         }
 
         if (!hasAccountNumber)
         {
             accountNumber = generateAccountNumber();
             hasAccountNumber = true;
-            initializationState.message += "Account number successfully generated and assigned";
+            r.message += "Account number successfully generated and assigned";
         }
         else
         {
-            if (initializationState.message != "")
+            if (r.message != "")
             {
-                initializationState.message += "\n";
+                r.message += "\n";
             }
-            initializationState.message += " Account number already exists.";
-            initializationState.success = false;
+            r.message += " Account number already exists.";
+            r.success = false;
         }
 
-        return result(initializationState.success, initializationState.message);
+        return result(r.success, r.message);
     }
 
     result deposit(const double amount)

@@ -40,7 +40,7 @@ public:
 
     const std::string getMonthlyStatement()
     {
-
+        return "Not implemented";
     }
 
 };
@@ -67,54 +67,31 @@ public:
 
     }
 
-    result initSavings (const std::string _name, const double bal, const double _interest)
-    {
-        result r = savingsAccount::init(_name);
-        assert((r.gMessage(), r.gSuccess()));
-
-        r = savingsAccount::deposit(bal);
-        assert((r.gMessage(), r.gSuccess()));
-        if (balance < MIN_BALANCE)
-        {
-            r = result(false, "Balance is less than minimum balance");
-        }
-        else
-        {
-            r = result(true, "Balance is greater than or equal to minimum balance.");
-        }
-        assert((r.gMessage(), r.gSuccess()));
-
-        if (MIN_INTEREST <= 1 || _interest >= 2)
-        {
-            r = result(false, "Interest rate must between " + std::to_string(MIN_INTEREST) + " and 2 (exclusive)");
-        }
-        else
-        {
-            interest = _interest;
-            r = result(true, "Interest rate set to " + std::to_string(_interest));
-        }
-        assert((r.gMessage(), r.gSuccess()));
-
-        initializationState.success = r.gSuccess();
-        initializationState.message = r.gMessage();
-
-        return result(initializationState.success,initializationState.message);
-    }
-
     const std::string gName() {return name;}
     const unsigned int gAccountNumber() {return accountNumber;}
     const double gBalance() {return balance;}
     const double gInterestRate() {return interest;}
-    const resultSettable gInitializationState() {return initializationState;}
 
     result deposit(const double amount)
     {
         return bankAccount::deposit(amount);
     }
 
-    result withdraw(const double amount)
+    result withdraw(const double givenAmount)
     {
-        return bankAccount::withdraw(amount);
+        double actualAmount = givenAmount;
+        if (balance - givenAmount < MIN_BALANCE)
+        {
+            actualAmount -= MIN_BALANCE;
+        }
+
+        result r = bankAccount::withdraw(actualAmount);
+        return r;
+    }
+
+    const std::string getMonthlyStatement()
+    {
+        return "Not implemented";
     }
 
 };
