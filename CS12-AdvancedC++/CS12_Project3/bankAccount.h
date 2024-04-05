@@ -108,7 +108,7 @@ public:
         return result(true, "Withdrew $" + str + ".");;
     }
 
-    virtual const std::string getMonthlyStatement() = 0;
+    virtual std::string getMonthlyStatement() = 0;
 };
 
 

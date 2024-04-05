@@ -33,12 +33,9 @@ public:
         interest = _interest;
     }
 
-    const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
-    const double gBalance() {return balance;}
     const double gInterestRate() {return interest;}
 
-    const std::string getMonthlyStatement()
+    std::string getMonthlyStatement()
     {
         return "Not implemented";
     }
@@ -67,29 +64,22 @@ public:
 
     }
 
-    const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
-    const double gBalance() {return balance;}
-    const double gInterestRate() {return interest;}
-
-    result deposit(const double amount)
-    {
-        return bankAccount::deposit(amount);
-    }
-
     result withdraw(const double givenAmount)
     {
         double actualAmount = givenAmount;
+        std::string supplementaryMess = "";
         if (balance - givenAmount < MIN_BALANCE)
         {
             actualAmount -= MIN_BALANCE;
+            supplementaryMess = "\n    Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
         }
 
         result r = bankAccount::withdraw(actualAmount);
-        return r;
+
+        return result(r.gSuccess(), r.gMessage() + supplementaryMess);
     }
 
-    const std::string getMonthlyStatement()
+    std::string getMonthlyStatement()
     {
         return "Not implemented";
     }

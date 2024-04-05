@@ -39,7 +39,14 @@ public:
         signer = _signer;
         recipient = _recipient;
         dateWritten = _dateWritten;
-        amount = _amount;
+        if (amount < 0)
+        {
+            amount = 0;
+        }
+        else
+        {
+            amount = _amount;
+        }
         account = _account;
         checkNumber = generateCheckNumber();
     }
@@ -93,6 +100,13 @@ protected:
 
 public:
 
+    std::string getMonthlyStatement()
+    {
+        return std::string("Account Info: ") +
+                std::string("\n    ") + std::string("Name: ") + gName()
+                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
+                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance());
+    }
 
     const result didThisAccountWriteThisCheck(digitalCheck *check)
     {
@@ -113,36 +127,20 @@ public:
 
     const result isThisAccountSupposedToReceiveThisCheck (digitalCheck *check)
     {
-        bool success = true;
-        std::string mess = "";
-
-        if (check->gRecipient() != gName())
+        if (check->gRecipient() != name)
         {
-            success = false;
-            mess += "Name of recipient on check does not match account holder's name for account " + std::to_string(gAccountNumber());
+            return result (false, "Name of recipient on check does not match account holder's name for account " + name);
         }
 
         for (unsigned long i =0; i < receivedChecks.size(); i++)
         {
             if (check->gCheckNumber() == receivedChecks[i].gCheckNumber())
             {
-                success = false;
-                if (mess != "")
-                {
-                    mess += '\n';
-                }
-                mess += "Copy of digital check already deposited in this account. Check should be considered void";
+                return result(false, "Copy of digital check already deposited in this account. Check should be considered void");
             }
         }
 
-
-        if (success)
-        {
-            mess = "Account and check match. Check can be deposited in this account.";
-        }
-
-        return result(success, mess);
-
+        return result(true, "Account and check match. Check can be deposited in this account.");
     }
 
     virtual digitalCheck writeCheck(std::string signer, std::string recipient, double amount,
@@ -172,20 +170,20 @@ protected:
 
 public:
 
-    const unsigned int gCheckLimit() {return CHECK_LIMIT;}
-    const unsigned int gChecksThisMonth() { return checksThisMonth;}
+    unsigned int gCheckLimit() {return CHECK_LIMIT;}
+    unsigned int gChecksThisMonth() { return checksThisMonth;}
 
-    const result didThisAccountWriteThisCheck(digitalCheck *check)
+    result didThisAccountWriteThisCheck(digitalCheck *check)
     {
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
 
-    const std::string getMonthlyStatement()
+    std::string getMonthlyStatement()
     {
-        return std::string("Account Info: ") +
-                std::string("\n    ") + std::string("Name: ") + gName()
-                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance());
+        return checkingAccount::getMonthlyStatement()
+                + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT);
+
     }
 
     serviceChargeChecking(std::string _name, double _bal, unsigned int _checksThisMonth)
@@ -200,21 +198,11 @@ public:
         checksThisMonth = _checksThisMonth;
     }
 
-    result deposit(double amount)
-    {
-        return checkingAccount::deposit(amount);
-    }
-
-    result withdraw(double amount)
-    {
-        return checkingAccount::withdraw(amount);
-    }
-
     digitalCheck writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
     {
         digitalCheck check(signer, recipient, amount, date, accountNumber);
         writtenChecks.push_back(check);
-        return  check;
+        return check;
     }
 
     result receiveCheck(digitalCheck c)
@@ -222,11 +210,14 @@ public:
         result r = checkingAccount::isThisAccountSupposedToReceiveThisCheck(&c);
         if (r.gSuccess() == false) { return r; }
 
+        r = checkingAccount::deposit(c.gAmount());
+        if (r.gSuccess() == false) { return r; }
+
         receivedChecks.push_back(c);
         time_t now = time(0);
         dateReceivedChecks.push_back(std::ctime(&now));
 
-        return result(true, "Check deposited.");
+        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient() +" deposited.");
     }
 
     result payServiceCharge()
@@ -258,15 +249,15 @@ public:
     const unsigned int gChecksThisMonth() { return checksThisMonth;}
     const double gInterestRate() {return interest;}
 
-    const std::string getMonthlyStatement()
+    std::string getMonthlyStatement()
     {
         return std::string("Account Info: ") +
                 std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(MIN_BALANCE)
-                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT)
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT)
                 + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
     }
 
@@ -295,29 +286,37 @@ public:
     {
         digitalCheck check(signer, recipient, amount, date, accountNumber);
         writtenChecks.push_back(check);
-        return  check;
+        return check;
     }
+
     result receiveCheck(digitalCheck c)
     {
         result r = checkingAccount::isThisAccountSupposedToReceiveThisCheck(&c);
+        if (r.gSuccess() == false) { return r; }
+
+        r = checkingAccount::deposit(c.gAmount());
         if (r.gSuccess() == false) { return r; }
 
         receivedChecks.push_back(c);
         time_t now = time(0);
         dateReceivedChecks.push_back(std::ctime(&now));
 
-        return result(true, "Check deposited.");
+        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient() +" deposited.");
     }
 
-    result deposit (double amount)
+    result withdraw(const double givenAmount)
     {
-        return bankAccount::deposit(amount);
-    }
+        double actualAmount = givenAmount;
+        std::string supplementaryMess = "";
+        if (balance - givenAmount < MIN_BALANCE)
+        {
+            actualAmount -= MIN_BALANCE;
+            supplementaryMess = "\n    Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
+        }
 
-    result withdraw (double amount)
-    {
-        return bankAccount::withdraw(amount);
-        // TODO: Check for min_balance in withdraw
+        result r = bankAccount::withdraw(actualAmount);
+
+        return result(r.gSuccess(), r.gMessage() + supplementaryMess);
     }
 };
 
