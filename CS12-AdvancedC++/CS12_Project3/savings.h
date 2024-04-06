@@ -18,6 +18,18 @@ protected:
 
 public:
 
+    savingsAccount (const std::string _name, const double bal, const double _interest)
+    {
+        result r = bankAccount::init(_name);
+        assert((r.gMessage(), r.gSuccess()));
+
+        r = bankAccount::deposit(bal);
+        assert((r.gMessage(), r.gSuccess()));
+
+        assert(_interest >= gMIN_INTEREST() && _interest <= gMAX_INTEREST() && "Interest is an invalid value.");
+        interest = _interest;
+    }
+
     static double gMIN_INTEREST()
     {
         static constexpr double MIN_INTEREST = 1.000001;
@@ -28,19 +40,6 @@ public:
     {
         static constexpr double MAX_INTEREST = 1.9999999;
         return MAX_INTEREST;
-    }
-
-
-    savingsAccount (const std::string _name, const double bal, const double _interest)
-    {
-        result r = bankAccount::init(_name);
-        assert((r.gMessage(), r.gSuccess()));
-
-        r = bankAccount::deposit(bal);
-        assert((r.gMessage(), r.gSuccess()));
-
-        assert(_interest >= gMAX_INTEREST() && _interest <= gMAX_INTEREST() && "Interest is an invalid value.");
-        interest = _interest;
     }
 
     const double gInterestRate() {return interest;}
@@ -79,12 +78,6 @@ public:
             std::cout << "Balance must be greater than or equal to minimum balance of " << gMIN_BALANCE()
                         << ". Balance given is: " << bal <<".";
         }
-    }
-
-    static double gMIN_INTEREST()
-    {
-        static constexpr double MIN_INTEREST = 1.01;
-        return MIN_INTEREST;
     }
 
     static double gMIN_BALANCE()
