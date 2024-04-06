@@ -12,6 +12,7 @@ class AccountManager
 {
     std::vector<serviceChargeChecking> accountsServiceChargeChecking;
     std::vector<noServiceChargeChecking> accountsNoServiceChargeCheckings;
+    std::vector<highInterestChecking> accountsHighInterestChecking;
     std::vector<savingsAccount> accountsSavings;
     std::vector<highInterestSavings> accountsHighInterestSavings;
     std::vector<certificateOfDeposit> CDs;
@@ -120,6 +121,52 @@ public:
 
             noServiceChargeChecking acc(name, balance, checksThisMonth, interest);
             accountsNoServiceChargeCheckings.push_back(acc);
+            return result (true, "success");
+        }
+        else if(accountType == "hich")
+        {
+            unsigned int checksThisMonth = 0;
+            double interest = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (!foundLastSpace)
+                {
+                    pos = accountData.find(' ', leftPos);
+                    if (pos == lastSpace)
+                    {
+                        foundLastSpace = true;
+                    }
+                }
+                else
+                {
+                    pos = accountData.length() - 1;
+                }
+                assert(("Bad data or bad search", pos != std::string::npos));
+                std::string substring = accountData.substr(leftPos, pos - leftPos);
+
+                switch(i)
+                {
+                    case 0:
+                        name = substring;
+                        break;
+                    case 1:
+                        balance = std::stod(substring);
+                        break;
+                    case 2:
+                        checksThisMonth = std::stoul(substring);
+                        break;
+                    case 3:
+                        interest = std::stod(substring);
+                        break;
+                    default:
+                        assert(("Case has not been accounted for.", false));
+                }
+
+                leftPos = pos+1;
+            }
+
+            highInterestChecking acc(name, balance, checksThisMonth, interest);
+            accountsHighInterestChecking.push_back(acc);
             return result (true, "success");
         }
         else if(accountType == "sav")

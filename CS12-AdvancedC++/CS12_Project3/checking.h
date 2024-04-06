@@ -100,14 +100,6 @@ protected:
 
 public:
 
-    std::string getMonthlyStatement()
-    {
-        return std::string("Account Info: ") +
-                std::string("\n    ") + std::string("Name: ") + gName()
-                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance());
-    }
-
     result didThisAccountWriteThisCheck(digitalCheck check)
     {
         for (unsigned long i = 0; i < writtenChecks.size(); i++)
@@ -217,6 +209,7 @@ public:
     std::string getMonthlyStatement()
     {
         return checkingAccount::getMonthlyStatement()
+                + std::string("\n    Account Type: Service Charge Checking")
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT);
 
@@ -327,8 +320,9 @@ public:
 
     std::string getMonthlyStatement()
     {
-        return std::string("Account Info: ") +
-                std::string("\n    ") + std::string("Name: ") + gName()
+        return std::string("Account Info: ")
+                + std::string("\n    Account Type: No Service Charge Checking")
+                + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
@@ -338,15 +332,14 @@ public:
     }
 };
 
-////////
-/// highInterestChecking
-///     - No monthly service charge
-///     - higher interest than noServiceChargeChecking
-///     - minimum balance
-///     -
+//////////////////////////////////////
+/* highInterestChecking
+    - No monthly service charge
+    - higher interest than noServiceChargeChecking
+    - minimum balance
+*/
 class highInterestChecking : public noServiceChargeChecking
 {
-
 public :
     highInterestChecking(std::string _name, double _bal, unsigned int _checksThisMonth, double _interest)
             : noServiceChargeChecking(_name, _bal, _checksThisMonth, _interest)
@@ -370,8 +363,9 @@ public :
 
     std::string getMonthlyStatement()
     {
-        return std::string("Account Info: ") +
-                std::string("\n    ") + std::string("Name: ") + gName()
+        return std::string("Account Info: ")
+                + std::string("\n    Account Type: High Interest Checking")
+                + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())

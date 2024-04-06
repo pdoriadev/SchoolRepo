@@ -32,7 +32,7 @@ public:
 
     static double gMIN_INTEREST()
     {
-        static constexpr double MIN_INTEREST = 1.000001;
+        static constexpr double MIN_INTEREST = 1.001;
         return MIN_INTEREST;
     }
 
@@ -46,7 +46,12 @@ public:
 
     std::string getMonthlyStatement()
     {
-        return "Not implemented";
+        return std::string("Account Info: ")
+                + std::string("\n    Account Type: Savings Account")
+                + std::string("\n    ") + std::string("Name: ") + gName()
+                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
+                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
+                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
     }
 
 };
@@ -80,9 +85,15 @@ public:
         }
     }
 
+    static double gMIN_INTEREST()
+    {
+        static constexpr double MIN_INTEREST = 1.01;
+        return MIN_INTEREST;
+    }
+
     static double gMIN_BALANCE()
     {
-        static constexpr double MIN_BALANCE = 50;
+        static constexpr double MIN_BALANCE = 300;
         return MIN_BALANCE;
     }
 
@@ -103,7 +114,13 @@ public:
 
     std::string getMonthlyStatement()
     {
-        return "Not implemented";
+        return std::string("Account Info: ")
+                + std::string("\n    Account Type: Savings Account")
+                + std::string("\n    ") + std::string("Name: ") + gName()
+                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
+                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
+                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
+                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
     }
 
 };
