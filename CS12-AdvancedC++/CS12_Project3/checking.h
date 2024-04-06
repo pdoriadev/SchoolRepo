@@ -165,13 +165,14 @@ public:
         r = bankAccount::deposit(_bal);
         assert((r.gMessage(), r.gSuccess()));
 
-        assert(("Given value for checks this month is less than 0 or greater than the check limit.", _checksThisMonth <= CHECK_LIMIT));
+        assert(("Given value for checks this month is less than 0 or greater than the check limit.", _checksThisMonth <= gCHECK_LIMIT()));
         checksThisMonth = _checksThisMonth;
     }
 
-    unsigned int gChecksThisMonth() { return checksThisMonth;}
     const unsigned int gCHECK_LIMIT() {return 50;}
     const double gSERVICE_CHARGE_AMOUNT() { return 9.99;}
+
+    unsigned int gChecksThisMonth() { return checksThisMonth;}
 
     result didThisAccountWriteThisCheck(digitalCheck check)
     {
@@ -218,7 +219,7 @@ public:
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
-                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT);
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT());
 
     }
 };
@@ -261,8 +262,8 @@ public:
     double gMIN_BALANCE() { return 50 ; }
     double gMIN_INTEREST(){ return 1.001; }
     double gMAX_INTEREST(){ return 1.9999;}
-
     const unsigned int gCHECK_LIMIT() {return 50;}
+
     const unsigned int gChecksThisMonth() { return checksThisMonth;}
     const double gInterestRate() {return interest;}
 
@@ -324,7 +325,7 @@ public:
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
-                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT)
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT())
                 + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
     }
 };
@@ -357,7 +358,7 @@ public :
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
-                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT)
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT())
                 + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
     }
 };
