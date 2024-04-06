@@ -15,7 +15,7 @@ class AccountManager
     std::vector<highInterestChecking> accountsHighInterestChecking;
     std::vector<savingsAccount> accountsSavings;
     std::vector<highInterestSavings> accountsHighInterestSavings;
-    std::vector<certificateOfDeposit> CDs;
+    std::vector<certificateOfDeposit> accountsCDs;
 
 public:
     static AccountManager* getInstance() {
@@ -64,7 +64,7 @@ public:
                         balance = std::stod(substring);
                         break;
                     case 2:
-                        checksThisMonth = std::stoul(substring);
+                        checksThisMonth = std::stoi(substring);
                         break;
                     default:
                         assert(("Case has not been accounted for.", false));
@@ -107,7 +107,7 @@ public:
                         balance = std::stod(substring);
                         break;
                     case 2:
-                        checksThisMonth = std::stoul(substring);
+                        checksThisMonth = std::stoi(substring);
                         break;
                     case 3:
                         interest = std::stod(substring);
@@ -153,7 +153,7 @@ public:
                         balance = std::stod(substring);
                         break;
                     case 2:
-                        checksThisMonth = std::stoul(substring);
+                        checksThisMonth = std::stoi(substring);
                         break;
                     case 3:
                         interest = std::stod(substring);
@@ -255,8 +255,11 @@ public:
         }
         else if(accountType == "cd")
         {
-            double interest = 0;
-            for (int i = 0; i < 3; i++)
+            double interest = -1;
+            int monthCreated = -1;
+            int yearCreated = -1;
+            int CDPeriod = -1;
+            for (int i = 0; i < 6; i++)
             {
                 if (!foundLastSpace)
                 {
@@ -284,6 +287,15 @@ public:
                     case 2:
                         interest = std::stod(substring );
                         break;
+                    case 3:
+                        monthCreated = std::stoi(substring);
+                        break;
+                    case 4:
+                        yearCreated = std::stoi(substring);
+                        break;
+                    case 5:
+                        CDPeriod = std::stoi(substring );
+                        break;
                     default:
                         assert(("Case has not been accounted for.", false));
                 }
@@ -291,10 +303,9 @@ public:
                 leftPos = pos+1;
             }
 
-            highInterestSavings acc = highInterestSavings(name, balance, interest);
-            accountsHighInterestSavings.push_back(acc);
-            return result (true, "success");
-
+            certificateOfDeposit acc = certificateOfDeposit(name, balance,
+                                 interest, monthCreated, yearCreated, CDPeriod);
+            accountsCDs.push_back(acc);
             return result (true, "success");
         }
 
