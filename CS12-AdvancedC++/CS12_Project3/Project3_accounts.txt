@@ -9,4 +9,4 @@ sav George 16384 1.0011
 sav Jer 131072 1.0014
 sav Cary 2048 1.012
 cd Ernesto 256 1.014 1 2024 3
-cd Francesco 8192 1.001 9 2022 24
+cd Francesco 8192 1.018 9 2022 24
