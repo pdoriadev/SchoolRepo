@@ -1,5 +1,6 @@
 *.pdf
 
+####################
 # QTCreator ignores
 *.pro
 *.pro.user
