@@ -8,6 +8,5 @@ hisav David 4096 1.013
 sav George 16384 1.0011
 sav Jer 131072 1.0014
 sav Cary 2048 1.012
-BROKEN
-cd Ernesto 256 320 1.014
-cd Francesco 8192 1.001
+cd Ernesto 256 1.014 1 2024 3
+cd Francesco 8192 1.001 9 2022 24
