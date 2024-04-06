@@ -63,7 +63,7 @@ public:
                         balance = std::stod(substring);
                         break;
                     case 2:
-                        checksThisMonth = std::stoi(substring);
+                        checksThisMonth = std::stoul(substring);
                         break;
                     default:
                         assert(("Case has not been accounted for.", false));
@@ -74,7 +74,6 @@ public:
 
             serviceChargeChecking acc(name, balance, checksThisMonth);
             accountsServiceChargeChecking.push_back(acc);
-
             return result(true, "success");
         }
         else if(accountType == "nsc")
@@ -107,7 +106,7 @@ public:
                         balance = std::stod(substring);
                         break;
                     case 2:
-                        checksThisMonth = std::stoi(substring);
+                        checksThisMonth = std::stoul(substring);
                         break;
                     case 3:
                         interest = std::stod(substring);
@@ -125,7 +124,6 @@ public:
         }
         else if(accountType == "sav")
         {
-            unsigned int checksThisMonth = 0;
             double interest = 0;
             for (int i = 0; i < 3; i++)
             {

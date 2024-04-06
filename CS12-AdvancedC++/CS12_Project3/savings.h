@@ -12,14 +12,24 @@ savingsAccount
 */
 class savingsAccount : protected bankAccount
 {
-private:
-    static constexpr double MIN_INTEREST = 1.00001;
 
 protected:
-    static constexpr double MAX_INTEREST = 1.9999999;
-    double interest = MIN_INTEREST;
+    double interest = gMIN_INTEREST();
 
 public:
+
+    static double gMIN_INTEREST()
+    {
+        static constexpr double MIN_INTEREST = 1.000001;
+        return MIN_INTEREST;
+    }
+
+    static double gMAX_INTEREST()
+    {
+        static constexpr double MAX_INTEREST = 1.9999999;
+        return MAX_INTEREST;
+    }
+
 
     savingsAccount (const std::string _name, const double bal, const double _interest)
     {
@@ -29,7 +39,7 @@ public:
         r = bankAccount::deposit(bal);
         assert((r.gMessage(), r.gSuccess()));
 
-        assert(_interest >= MIN_INTEREST && _interest <= MAX_INTEREST && "Interest is an invalid value.");
+        assert(_interest >= gMAX_INTEREST() && _interest <= gMAX_INTEREST() && "Interest is an invalid value.");
         interest = _interest;
     }
 
@@ -53,24 +63,43 @@ highInterestSavings
 */
 class highInterestSavings : protected savingsAccount
 {
-private:
-    static constexpr double MIN_INTEREST = 1.01;
-    const double MIN_BALANCE = 50;
-
 public:
     highInterestSavings(const std::string _name, const double bal, const double _interest) : savingsAccount(_name, bal, _interest)
     {
-        assert(balance >= MIN_BALANCE && "Balance must be greater than or equal to minimum balance.");
+        assert(balance >= gMIN_BALANCE() && "Balance must be greater than or equal to minimum balance.");
+        try
+        {
+            if (balance < gMIN_BALANCE())
+            {
+                throw balance;
+            }
+        }
+        catch(double bal)
+        {
+            std::cout << "Balance must be greater than or equal to minimum balance of " << gMIN_BALANCE()
+                        << ". Balance given is: " << bal <<".";
+        }
+    }
 
+    static double gMIN_INTEREST()
+    {
+        static constexpr double MIN_INTEREST = 1.01;
+        return MIN_INTEREST;
+    }
+
+    static double gMIN_BALANCE()
+    {
+        static constexpr double MIN_BALANCE = 50;
+        return MIN_BALANCE;
     }
 
     result withdraw(const double givenAmount)
     {
         double actualAmount = givenAmount;
         std::string supplementaryMess = "";
-        if (balance - givenAmount < MIN_BALANCE)
+        if (balance - givenAmount < gMIN_BALANCE())
         {
-            actualAmount -= MIN_BALANCE;
+            actualAmount -= gMIN_BALANCE();
             supplementaryMess = "\n    Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
         }
 
