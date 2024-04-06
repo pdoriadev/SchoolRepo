@@ -208,8 +208,11 @@ public:
 
     std::string getMonthlyStatement()
     {
-        return checkingAccount::getMonthlyStatement()
+        return "Account Info: "
                 + std::string("\n    Account Type: Service Charge Checking")
+                + std::string("\n    ") + std::string("Name: ") + gName()
+                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
+                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT);
 
@@ -254,23 +257,9 @@ public:
 
     static constexpr unsigned int CHECK_LIMIT = 50;
 
-    static double gMIN_BALANCE()
-    {
-        static constexpr double MIN_BALANCE = 50;
-        return MIN_BALANCE;
-    }
-
-    static double gMIN_INTEREST()
-    {
-        static constexpr double MIN_INTEREST = 1.000001;
-        return MIN_INTEREST;
-    }
-
-    static double gMAX_INTEREST()
-    {
-        static constexpr double MAX_INTEREST = 1.9999999;
-        return MAX_INTEREST;
-    }
+    double gMIN_BALANCE() { return 50 ; }
+    double gMIN_INTEREST(){ return 1.001; }
+    double gMAX_INTEREST(){ return 1.9999;}
 
     const unsigned int gCheckLimit() {return CHECK_LIMIT;}
     const unsigned int gChecksThisMonth() { return checksThisMonth;}
@@ -349,17 +338,8 @@ public :
                 "If this triggers, then will need to reconsider static inheritance for balance and interest." );
     }
 
-    static double gMIN_BALANCE()
-    {
-        static constexpr double MIN_BALANCE = 500;
-        return MIN_BALANCE;
-    }
-
-    static double gMIN_INTEREST()
-    {
-        static constexpr double MIN_INTEREST = 1.01;
-        return MIN_INTEREST;
-    }
+    double gMIN_BALANCE() { return 500 ; }
+    double gMIN_INTEREST(){ return 1.01; }
 
     std::string getMonthlyStatement()
     {

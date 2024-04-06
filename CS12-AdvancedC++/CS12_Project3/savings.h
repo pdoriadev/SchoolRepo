@@ -30,19 +30,9 @@ public:
         interest = _interest;
     }
 
-    static double gMIN_INTEREST()
-    {
-        static constexpr double MIN_INTEREST = 1.001;
-        return MIN_INTEREST;
-    }
-
-    static double gMAX_INTEREST()
-    {
-        static constexpr double MAX_INTEREST = 1.9999999;
-        return MAX_INTEREST;
-    }
-
-    const double gInterestRate() {return interest;}
+    double gMIN_INTEREST() { return 1.001; }
+    double gMAX_INTEREST() { return 1.9999999; }
+    double gInterestRate() {return interest;}
 
     std::string getMonthlyStatement()
     {
@@ -85,17 +75,8 @@ public:
         }
     }
 
-    static double gMIN_INTEREST()
-    {
-        static constexpr double MIN_INTEREST = 1.01;
-        return MIN_INTEREST;
-    }
-
-    static double gMIN_BALANCE()
-    {
-        static constexpr double MIN_BALANCE = 300;
-        return MIN_BALANCE;
-    }
+    double gMIN_INTEREST() { return 1.01; }
+    double gMIN_BALANCE() { return 300; }
 
     result withdraw(const double givenAmount)
     {
