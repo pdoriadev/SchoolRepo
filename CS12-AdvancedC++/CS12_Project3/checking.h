@@ -4,7 +4,7 @@
 #include "bankAccount.h"
 #include <vector>
 #include <ctime>
-
+#include <memory>
 
 ///////////////////////////////
 /// digitalCheck to be sent by checkingAccounts.
@@ -169,10 +169,9 @@ public:
         checksThisMonth = _checksThisMonth;
     }
 
-    static constexpr unsigned int CHECK_LIMIT = 10;
-    static constexpr double SERVICE_CHARGE_AMOUNT = 9.99;
-
     unsigned int gChecksThisMonth() { return checksThisMonth;}
+    const unsigned int gCHECK_LIMIT() {return 50;}
+    const double gSERVICE_CHARGE_AMOUNT() { return 9.99;}
 
     result didThisAccountWriteThisCheck(digitalCheck check)
     {
@@ -203,7 +202,7 @@ public:
 
     result payServiceCharge()
     {
-        return withdraw(SERVICE_CHARGE_AMOUNT);
+        return withdraw(gSERVICE_CHARGE_AMOUNT());
     }
 
     std::string getMonthlyStatement()
@@ -247,21 +246,18 @@ public:
         assert((r.gMessage(), r.gSuccess()));
         assert(balance >= gMIN_BALANCE() && "Balance must be greater than or equal to MIN_BALANCE");
 
-        assert(_checksThisMonth <= CHECK_LIMIT && "Given value for checks this month is less than 0 or greater than the check limit.");
+        assert(_checksThisMonth <= gCHECK_LIMIT() && "Given value for checks this month is less than 0 or greater than the check limit.");
         checksThisMonth = _checksThisMonth;
 
         assert(_interest >= gMIN_INTEREST() && _interest <= gMAX_INTEREST() && "Interest is an invalid value.");
         interest = _interest;
     }
 
-
-    static constexpr unsigned int CHECK_LIMIT = 50;
-
     double gMIN_BALANCE() { return 50 ; }
     double gMIN_INTEREST(){ return 1.001; }
     double gMAX_INTEREST(){ return 1.9999;}
 
-    const unsigned int gCheckLimit() {return CHECK_LIMIT;}
+    const unsigned int gCHECK_LIMIT() {return 50;}
     const unsigned int gChecksThisMonth() { return checksThisMonth;}
     const double gInterestRate() {return interest;}
 
@@ -269,6 +265,8 @@ public:
     {
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
+
+    // MAY NEED TO DO SHARED POINTER HERE. HMM. YEA. THAT'D PROBABLY WORK BEST.
 
     digitalCheck writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
     {
@@ -333,7 +331,6 @@ public :
     highInterestChecking(std::string _name, double _bal, unsigned int _checksThisMonth, double _interest)
             : noServiceChargeChecking(_name, _bal, _checksThisMonth, _interest)
     {
-        std::cout << "This value should be 500: " << gMIN_BALANCE();
         assert(balance >= gMIN_BALANCE() &&
                 "If this triggers, then will need to reconsider static inheritance for balance and interest." );
     }
