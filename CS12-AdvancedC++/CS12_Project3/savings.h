@@ -43,7 +43,6 @@ public:
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
                 + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
     }
-
 };
 
 
