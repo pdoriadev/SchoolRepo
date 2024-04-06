@@ -63,7 +63,7 @@ public:
         assert(_interest >= gMIN_INTEREST() && _interest <= gMAX_INTEREST() && "Interest is not valid value.");
         interest = _interest;
 
-        assert(monthCreated > 0 && monthCreated <= 12 && "Month created is invalid");
+        assert(_monthCreated > 0 && _monthCreated <= 12 && "Month created is invalid");
         monthCreated = _monthCreated;
 
         assert(_yearCreated > 0 && _yearCreated <= gCurrentYear() && "Year of creation cannot be after current year.");
