@@ -135,7 +135,7 @@ public:
         return result(true, "Account and check match. Check can be deposited in this account.");
     }
 
-    virtual digitalCheck writeCheck(std::string signer, std::string recipient, double amount,
+    virtual digitalCheck * writeCheck(std::string signer, std::string recipient, double amount,
                                         std::string date, unsigned int account) = 0;
     virtual result receiveCheck(const digitalCheck c) = 0;
 };
@@ -178,11 +178,16 @@ public:
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
 
-    digitalCheck writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
+    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
     {
+        if (checksThisMonth == gCHECK_LIMIT())
+        {
+            return NULL;
+        }
+
         digitalCheck check(signer, recipient, amount, date, accountNumber);
         writtenChecks.push_back(check);
-        return check;
+        return &writtenChecks[writtenChecks.size() -1];
     }
 
     result receiveCheck(digitalCheck c)
@@ -268,11 +273,16 @@ public:
 
     // MAY NEED TO DO SHARED POINTER HERE. HMM. YEA. THAT'D PROBABLY WORK BEST.
 
-    digitalCheck writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
+    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
     {
+        if (checksThisMonth == gCHECK_LIMIT())
+        {
+            return NULL;
+        }
+
         digitalCheck check(signer, recipient, amount, date, accountNumber);
         writtenChecks.push_back(check);
-        return check;
+        return &writtenChecks[writtenChecks.size() -1];
     }
 
     result receiveCheck(digitalCheck c)
