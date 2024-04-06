@@ -165,9 +165,6 @@ protected:
     unsigned int checksThisMonth = 0;
 
 public:
-    static constexpr unsigned int CHECK_LIMIT = 10;
-    static constexpr double SERVICE_CHARGE_AMOUNT = 9.99;
-
     serviceChargeChecking(std::string _name, double _bal, unsigned int _checksThisMonth)
     {
         result r = bankAccount::init(_name);
@@ -179,6 +176,9 @@ public:
         assert(("Given value for checks this month is less than 0 or greater than the check limit.", _checksThisMonth <= CHECK_LIMIT));
         checksThisMonth = _checksThisMonth;
     }
+
+    static constexpr unsigned int CHECK_LIMIT = 10;
+    static constexpr double SERVICE_CHARGE_AMOUNT = 9.99;
 
     unsigned int gChecksThisMonth() { return checksThisMonth;}
 
@@ -239,8 +239,6 @@ class noServiceChargeChecking : public checkingAccount
     double interest = 1.0001;
 
 public:
-    const double MIN_BALANCE = 30;
-    static constexpr unsigned int CHECK_LIMIT = 50;
 
     noServiceChargeChecking(std::string _name, double _bal, unsigned int _checksThisMonth, double _interest)
     {
@@ -254,8 +252,23 @@ public:
         assert(_checksThisMonth <= CHECK_LIMIT && "Given value for checks this month is less than 0 or greater than the check limit.");
         checksThisMonth = _checksThisMonth;
 
-        assert(_interest >= 1 && _interest <= 2 && "Interest is an invalid value.");
+        assert(_interest >= gMIN_INTEREST() && _interest <= gMAX_INTEREST() && "Interest is an invalid value.");
         interest = _interest;
+    }
+
+    const double MIN_BALANCE = 30;
+    static constexpr unsigned int CHECK_LIMIT = 50;
+
+    static double gMIN_INTEREST()
+    {
+        static constexpr double MIN_INTEREST = 1.000001;
+        return MIN_INTEREST;
+    }
+
+    static double gMAX_INTEREST()
+    {
+        static constexpr double MAX_INTEREST = 1.9999999;
+        return MAX_INTEREST;
     }
 
     const unsigned int gCheckLimit() {return CHECK_LIMIT;}
