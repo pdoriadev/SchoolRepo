@@ -46,7 +46,7 @@ protected:
     {
         time_t now = time(0);
         std::string time = (std::ctime(&now));
-        int year = std::stoul(time.substr(time.length() - 5, 4));
+        int year = std::stoi(time.substr(time.length() - 5, 4));
         assert (year >= yearCreated && "Current year cannot be year of CD creation.");\
         return year;
     }
@@ -66,7 +66,7 @@ public:
         assert(monthCreated > 0 && monthCreated <= 12 && "Month created is invalid");
         monthCreated = _monthCreated;
 
-        assert(_yearCreated <= gCurrentYear() && "Year of creation cannot be after current year.");
+        assert(_yearCreated > 0 && _yearCreated <= gCurrentYear() && "Year of creation cannot be after current year.");
         yearCreated = _yearCreated;
 
         assert(_CDPeriod > 0 && _CDPeriod <= 12 && "Period of CD is invalid");
