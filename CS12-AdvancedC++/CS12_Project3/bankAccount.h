@@ -20,12 +20,13 @@
 */
 class bankAccount
 {
+    bool initialized = false;
+    bool hasAccountNumber = false;
+    unsigned int accountNumber = 0;
+
 protected:
     std::string name = "";
     double balance = 0;
-
-    unsigned int accountNumber = 0;
-    bool hasAccountNumber = false;
 
     static unsigned int generateAccountNumber()
     {
@@ -34,22 +35,17 @@ protected:
         return number;
     }
 
-public:
-
-    const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
-    const double gBalance() {return balance;}
-
     result init(const std::string _name)
     {
-        resultSettable r;
-        if (r.gSuccess() == true)
+        if (initialized == true)
         {
             return result(false, "Account has already been created. Cannot re-initialize account.");
         }
 
+        resultSettable r;
         r.success = true;
         r.message = "";
+
         if (name == "")
         {
             name = _name;
@@ -80,8 +76,16 @@ public:
             r.success = false;
         }
 
+        initialized = true;
         return result(r.success, r.message);
     }
+
+public:
+
+    const std::string gName() {return name;}
+    const unsigned int gAccountNumber() {return accountNumber;}
+    const double gBalance() {return balance;}
+
 
     result deposit(const double amount)
     {
