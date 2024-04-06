@@ -30,6 +30,11 @@ int main(int argc, char *argv[])
 
 
     // Test different functionality of accounts
+        // Beginning
+            // Get monthly statements
+        // General
+            // Withdrawal
+            // Deposit
         // service charge Checking
             // write checks
             // receive (and validate) checks
@@ -37,6 +42,9 @@ int main(int argc, char *argv[])
             // write checks
             // receive and validate checks
         // savings
+            // Withdrawal
+            // Deposit
+        // Get monthly statements
 
      return 0;
 }
