@@ -103,8 +103,15 @@ public:
         return false;
     }
 
-    // TODO: withdraw override. Stop from withdrawing if CD hasn't matured.
+    result withdraw(double amount)
+    {
+        if (!gIsMatured())
+        {
+            return result (false, "CD has not matured yet.");
+        }
 
+        bankAccount::withdraw(amount);
+    }
 };
 
 #endif // CD_H
