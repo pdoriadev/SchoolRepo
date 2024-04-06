@@ -19,12 +19,12 @@ private:
     std::string recipient = "";
     std::string dateWritten = "";
     double amount = 0;
-    unsigned int account = 0;
+    int account = 0;
 
 
-    unsigned int checkNumber = 0;
+    int checkNumber = 0;
     static int generateCheckNumber() {
-        unsigned int num = 0;
+        int num = 0;
         num++;
         return num;
     }
@@ -34,7 +34,7 @@ private:
 public:
 
     digitalCheck(std::string _signer, std::string _recipient, double _amount,
-                    std::string _dateWritten, unsigned int _account)
+                    std::string _dateWritten, int _account)
     {
         signer = _signer;
         recipient = _recipient;
@@ -57,8 +57,8 @@ public:
     std::string gRecipient() { return recipient; }
     std::string gDateWritten() { return dateWritten; }
     double gAmount() { return amount; }
-    unsigned int gAccountNumber() { return account; }
-    unsigned int gCheckNumber() { return checkNumber; }
+    int gAccountNumber() { return account; }
+    int gCheckNumber() { return checkNumber; }
 
     void outputCheckContents()
     {
@@ -136,7 +136,7 @@ public:
     }
 
     virtual digitalCheck * writeCheck(std::string signer, std::string recipient, double amount,
-                                        std::string date, unsigned int account) = 0;
+                                        std::string date, int account) = 0;
     virtual result receiveCheck(const digitalCheck c) = 0;
 };
 
@@ -154,10 +154,10 @@ public:
 class serviceChargeChecking : public checkingAccount
 {
 protected:
-    unsigned int checksThisMonth = 0;
+    int checksThisMonth = 0;
 
 public:
-    serviceChargeChecking(std::string _name, double _bal, unsigned int _checksThisMonth)
+    serviceChargeChecking(std::string _name, double _bal, int _checksThisMonth)
     {
         result r = bankAccount::init(_name);
         assert((r.gMessage(), r.gSuccess()));
@@ -169,17 +169,17 @@ public:
         checksThisMonth = _checksThisMonth;
     }
 
-    const unsigned int gCHECK_LIMIT() {return 50;}
+    const int gCHECK_LIMIT() {return 50;}
     const double gSERVICE_CHARGE_AMOUNT() { return 9.99;}
 
-    unsigned int gChecksThisMonth() { return checksThisMonth;}
+    int gChecksThisMonth() { return checksThisMonth;}
 
     result didThisAccountWriteThisCheck(digitalCheck check)
     {
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
 
-    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
+    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, int accountNumber)
     {
         if (checksThisMonth == gCHECK_LIMIT())
         {
@@ -238,12 +238,12 @@ class noServiceChargeChecking : public checkingAccount
 {
 
 protected:
-    unsigned int checksThisMonth = 0;
+    int checksThisMonth = 0;
     double interest = 1.0001;
 
 public:
 
-    noServiceChargeChecking(std::string _name, double _bal, unsigned int _checksThisMonth, double _interest)
+    noServiceChargeChecking(std::string _name, double _bal, int _checksThisMonth, double _interest)
     {
         result r = checkingAccount::init(_name);
         assert((r.gMessage(), r.gSuccess()));
@@ -262,9 +262,9 @@ public:
     double gMIN_BALANCE() { return 50 ; }
     double gMIN_INTEREST(){ return 1.001; }
     double gMAX_INTEREST(){ return 1.9999;}
-    const unsigned int gCHECK_LIMIT() {return 50;}
+    const int gCHECK_LIMIT() {return 50;}
 
-    const unsigned int gChecksThisMonth() { return checksThisMonth;}
+    const int gChecksThisMonth() { return checksThisMonth;}
     const double gInterestRate() {return interest;}
 
     result didThisAccountWriteThisCheck(digitalCheck check)
@@ -274,7 +274,7 @@ public:
 
     // MAY NEED TO DO SHARED POINTER HERE. HMM. YEA. THAT'D PROBABLY WORK BEST.
 
-    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, unsigned int accountNumber)
+    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, int accountNumber)
     {
         if (checksThisMonth == gCHECK_LIMIT())
         {
@@ -339,7 +339,7 @@ public:
 class highInterestChecking : public noServiceChargeChecking
 {
 public :
-    highInterestChecking(std::string _name, double _bal, unsigned int _checksThisMonth, double _interest)
+    highInterestChecking(std::string _name, double _bal, int _checksThisMonth, double _interest)
             : noServiceChargeChecking(_name, _bal, _checksThisMonth, _interest)
     {
         assert(balance >= gMIN_BALANCE() &&

@@ -22,15 +22,15 @@ class bankAccount
 {
     bool initialized = false;
     bool hasAccountNumber = false;
-    unsigned int accountNumber = 0;
+    int accountNumber = 0;
 
 protected:
     std::string name = "";
     double balance = 0;
 
-    static unsigned int generateAccountNumber()
+    static int generateAccountNumber()
     {
-        static unsigned int number = 0;
+        static int number = 0;
         number++;
         return number;
     }
@@ -83,7 +83,7 @@ protected:
 public:
 
     const std::string gName() {return name;}
-    const unsigned int gAccountNumber() {return accountNumber;}
+    const int gAccountNumber() {return accountNumber;}
     const double gBalance() {return balance;}
 
 

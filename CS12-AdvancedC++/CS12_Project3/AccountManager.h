@@ -37,7 +37,7 @@ public:
         double balance = -1;
         if (accountType == "sc")
         {
-            unsigned int checksThisMonth = 0;
+            int checksThisMonth = 0;
             for (int i = 0; i < 3; i++)
             {
                 if (!foundLastSpace)
@@ -79,7 +79,7 @@ public:
         }
         else if(accountType == "nsc")
         {
-            unsigned int checksThisMonth = 0;
+            int checksThisMonth = 0;
             double interest = 0;
             for (int i = 0; i < 4; i++)
             {
@@ -125,7 +125,7 @@ public:
         }
         else if(accountType == "hich")
         {
-            unsigned int checksThisMonth = 0;
+            int checksThisMonth = 0;
             double interest = 0;
             for (int i = 0; i < 4; i++)
             {
@@ -255,6 +255,46 @@ public:
         }
         else if(accountType == "cd")
         {
+            double interest = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (!foundLastSpace)
+                {
+                    pos = accountData.find(' ', leftPos);
+                    if (pos == lastSpace)
+                    {
+                        foundLastSpace = true;
+                    }
+                }
+                else
+                {
+                    pos = accountData.length() - 1;
+                }
+                assert(("Bad data or bad search", pos != std::string::npos));
+                std::string substring = accountData.substr(leftPos, pos - leftPos);
+
+                switch(i)
+                {
+                    case 0:
+                        name = substring;
+                        break;
+                    case 1:
+                        balance = std::stod(substring);
+                        break;
+                    case 2:
+                        interest = std::stod(substring );
+                        break;
+                    default:
+                        assert(("Case has not been accounted for.", false));
+                }
+
+                leftPos = pos+1;
+            }
+
+            highInterestSavings acc = highInterestSavings(name, balance, interest);
+            accountsHighInterestSavings.push_back(acc);
+            return result (true, "success");
+
             return result (true, "success");
         }
 
