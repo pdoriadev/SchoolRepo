@@ -235,6 +235,8 @@ noServiceChargeChecking
 */
 class noServiceChargeChecking : public checkingAccount
 {
+
+protected:
     unsigned int checksThisMonth = 0;
     double interest = 1.0001;
 
@@ -247,7 +249,7 @@ public:
 
         r = checkingAccount::deposit(_bal);
         assert((r.gMessage(), r.gSuccess()));
-        assert(balance >= MIN_BALANCE && "Balance must be greater than or equal to MIN_BALANCE");
+        assert(balance >= gMIN_BALANCE() && "Balance must be greater than or equal to MIN_BALANCE");
 
         assert(_checksThisMonth <= CHECK_LIMIT && "Given value for checks this month is less than 0 or greater than the check limit.");
         checksThisMonth = _checksThisMonth;
@@ -256,8 +258,14 @@ public:
         interest = _interest;
     }
 
-    const double MIN_BALANCE = 30;
+
     static constexpr unsigned int CHECK_LIMIT = 50;
+
+    static double gMIN_BALANCE()
+    {
+        static constexpr double MIN_BALANCE = 50;
+        return MIN_BALANCE;
+    }
 
     static double gMIN_INTEREST()
     {
@@ -306,9 +314,9 @@ public:
     {
         double actualAmount = givenAmount;
         std::string supplementaryMess = "";
-        if (balance - givenAmount < MIN_BALANCE)
+        if (balance - givenAmount < gMIN_BALANCE())
         {
-            actualAmount -= MIN_BALANCE;
+            actualAmount -= gMIN_BALANCE();
             supplementaryMess = "\n    Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
         }
 
@@ -323,7 +331,50 @@ public:
                 std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
-                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(MIN_BALANCE)
+                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
+                + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT)
+                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
+    }
+};
+
+////////
+/// highInterestChecking
+///     - No monthly service charge
+///     - higher interest than noServiceChargeChecking
+///     - minimum balance
+///     -
+class highInterestChecking : public noServiceChargeChecking
+{
+
+public :
+    highInterestChecking(std::string _name, double _bal, unsigned int _checksThisMonth, double _interest)
+            : noServiceChargeChecking(_name, _bal, _checksThisMonth, _interest)
+    {
+        std::cout << "This value should be 500: " << gMIN_BALANCE();
+        assert(balance >= gMIN_BALANCE() &&
+                "If this triggers, then will need to reconsider static inheritance for balance and interest." );
+    }
+
+    static double gMIN_BALANCE()
+    {
+        static constexpr double MIN_BALANCE = 500;
+        return MIN_BALANCE;
+    }
+
+    static double gMIN_INTEREST()
+    {
+        static constexpr double MIN_INTEREST = 1.01;
+        return MIN_INTEREST;
+    }
+
+    std::string getMonthlyStatement()
+    {
+        return std::string("Account Info: ") +
+                std::string("\n    ") + std::string("Name: ") + gName()
+                + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
+                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
+                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(CHECK_LIMIT)
                 + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
