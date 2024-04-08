@@ -83,8 +83,9 @@ public:
         std::string supplementaryMess = "";
         if (balance - givenAmount < gMIN_BALANCE())
         {
-            actualAmount -= gMIN_BALANCE();
-            supplementaryMess = "\n    Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
+            actualAmount = balance - gMIN_BALANCE();
+            supplementaryMess = " -- Supplementary Message: Withdraw amount adjusted to "
+                    + std::to_string(actualAmount) + "to avoid bringing account below minimum balance.";
         }
 
         result r = bankAccount::withdraw(actualAmount);
