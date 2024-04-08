@@ -10,7 +10,7 @@ savingsAccount
     Features
         pays interest
 */
-class savingsAccount : protected bankAccount
+class savingsAccount : public bankAccount
 {
 
 protected:
@@ -54,7 +54,7 @@ highInterestSavings
         Requires minimum balance
         pays higher interest than typical savings account
 */
-class highInterestSavings : protected savingsAccount
+class highInterestSavings : public savingsAccount
 {
 public:
     highInterestSavings(const std::string _name, const double bal, const double _interest) : savingsAccount(_name, bal, _interest)
