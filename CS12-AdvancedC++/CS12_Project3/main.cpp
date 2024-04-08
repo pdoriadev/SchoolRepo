@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
     {
         std::cout << std::endl << savingsAccounts->at(i).getMonthlyStatement()
                   << std::endl;
-        savingsAccounts->at(i).bankAccount::deposit(200);
-        savingsAccounts->at(i).bankAccount::withdraw(100);
+        std::cout << '\n' << savingsAccounts->at(i).bankAccount::deposit(200).gMessage();
+        std::cout << '\n' << savingsAccounts->at(i).bankAccount::withdraw(100).gMessage();
         std::cout << std::endl << savingsAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
     {
         std::cout << std::endl << highInterestSavings->at(i).getMonthlyStatement()
                   << std::endl;
-        highInterestSavings->at(i).bankAccount::deposit(100);
-        highInterestSavings->at(i).bankAccount::withdraw(200);
+        std::cout << '\n' << highInterestSavings->at(i).deposit(100).gMessage();
+        std::cout << '\n' << highInterestSavings->at(i).withdraw(200).gMessage();
         std::cout << std::endl << highInterestSavings->at(i).getMonthlyStatement()
                   << std::endl;
     }
@@ -58,8 +58,14 @@ int main(int argc, char *argv[])
     std::vector<certificateOfDeposit> * CDs = man.getCDAccounts();
     for (int i = 0; i < CDs->size(); i++)
     {
-
+        std::cout << std::endl << CDs->at(i).getMonthlyStatement()
+                  << std::endl;
+        std::cout << '\n' << CDs->at(i).withdraw(300).gMessage();
+        std::cout << std::endl << CDs->at(i).getMonthlyStatement()
+                  << std::endl;
     }
+
+
 
     // Test different functionality of accounts
         // Beginning
