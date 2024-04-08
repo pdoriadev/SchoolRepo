@@ -40,8 +40,8 @@ public:
                 + std::string("\n    Account Type: Savings Account")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
-                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
+                + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
+                + std::string("\n    ") + std::string("Interest: ") + roundToLeastSignificantOrHundredth(std::to_string(interest)) + "%";
     }
 };
 
@@ -98,9 +98,9 @@ public:
                 + std::string("\n    Account Type: Savings Account")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
-                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
-                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
+                + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
+                + std::string("\n    ") + std::string("Minimum Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gMIN_BALANCE()))
+                + std::string("\n    ") + std::string("Interest: ") + roundToLeastSignificantOrHundredth(std::to_string(interest)) + "%";
     }
 
 };

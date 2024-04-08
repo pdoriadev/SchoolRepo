@@ -64,7 +64,7 @@ public:
     void outputCheckContents()
     {
         std::cout << '\n' << signer << "'s check to " << recipient
-            << "\n    " << "Amount: $" << amount
+            << "\n    " << "Amount: $" << roundToLeastSignificantOrHundredth(std::to_string(amount))
             << "\n    " << "Account Number: " << account
             << "\n    " << "Check Number: " << checkNumber
             << "\n    " << "Signed date of " << dateWritten
@@ -218,7 +218,7 @@ public:
                 + std::string("\n    Account Type: Service Charge Checking")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
+                + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT());
 
@@ -321,11 +321,11 @@ public:
                 + std::string("\n    Account Type: No Service Charge Checking")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
-                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
+                + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
+                + std::string("\n    ") + std::string("Minimum Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gMIN_BALANCE()))
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT())
-                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
+                + std::string("\n    ") + std::string("Interest: ") + roundToLeastSignificantOrHundredth(std::to_string(interest)) + "%";
     }
 };
 
@@ -354,11 +354,11 @@ public :
                 + std::string("\n    Account Type: High Interest Checking")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
-                + std::string("\n    ") + std::string("Minimum Balance: $") + std::to_string(gMIN_BALANCE())
+                + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
+                + std::string("\n    ") + std::string("Minimum Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gMIN_BALANCE()))
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT())
-                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
+                + std::string("\n    ") + std::string("Interest: ") + roundToLeastSignificantOrHundredth(std::to_string(interest)) + "%";
     }
 };
 

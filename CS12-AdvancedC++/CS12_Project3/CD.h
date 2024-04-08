@@ -116,10 +116,10 @@ public:
                 + std::string("\n    Account Type: Certificate of Deposit Account")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
-                + std::string("\n    ") + std::string("Balance: $") + std::to_string(gBalance())
+                + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
                 + std::string("\n    ") + std::string("CD Period: ") + std::to_string(CDPeriod)
                 + std::string("\n    ") + std::string("Months til maturity: ") + std::to_string(gMonthsTilMatured())
-                + std::string("\n    ") + std::string("Interest: ") + std::to_string(interest) + "%";
+                + std::string("\n    ") + std::string("Interest: ") + roundToLeastSignificantOrHundredth(std::to_string(interest)) + "%";
     }
 };
 
