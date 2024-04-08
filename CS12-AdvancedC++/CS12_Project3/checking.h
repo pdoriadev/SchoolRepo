@@ -170,8 +170,8 @@ public:
         checksThisMonth = _checksThisMonth;
     }
 
-    const int gCHECK_LIMIT() {return 50;}
-    const double gSERVICE_CHARGE_AMOUNT() { return 9.99;}
+    int gCHECK_LIMIT() {return 50;}
+    double gSERVICE_CHARGE_AMOUNT() { return 9.99;}
 
     int gChecksThisMonth() { return checksThisMonth;}
 
@@ -263,10 +263,10 @@ public:
     double gMIN_BALANCE() { return 50 ; }
     double gMIN_INTEREST(){ return 1.001; }
     double gMAX_INTEREST(){ return 1.9999;}
-    const int gCHECK_LIMIT() {return 50;}
+    int gCHECK_LIMIT() {return 50;}
 
-    const int gChecksThisMonth() { return checksThisMonth;}
-    const double gInterestRate() {return interest;}
+    int gChecksThisMonth() { return checksThisMonth;}
+    double gInterestRate() {return interest;}
 
     result didThisAccountWriteThisCheck(digitalCheck check)
     {

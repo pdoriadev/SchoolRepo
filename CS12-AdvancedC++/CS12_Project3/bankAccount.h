@@ -82,9 +82,9 @@ protected:
 
 public:
 
-    const std::string gName() {return name;}
-    const int gAccountNumber() {return accountNumber;}
-    const double gBalance() {return balance;}
+    std::string gName() {return name;}
+    int gAccountNumber() {return accountNumber;}
+    double gBalance() {return balance;}
 
 
     result deposit(const double amount)
