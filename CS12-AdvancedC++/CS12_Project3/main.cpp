@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
 
     std::cout << "========================================\n"
               << "========== Savings Accounts ============\n";
-
     std::vector<savingsAccount> * savingsAccounts = man.getSavingsAccounts();
     for (int i = 0; i < savingsAccounts->size(); i++)
     {
@@ -41,9 +40,22 @@ int main(int argc, char *argv[])
                   << std::endl;
     }
 
-    std::cout << "========================================"
-              << "================ CDs ===================";
-    std::vector<certificateOfDeposit> * CDs = man.getCDAccunts();
+    std::cout << "========================================\n"
+              << "==== High Interest Savings Accounts ====\n";
+    std::vector<highInterestSavings> * highInterestSavings = man.getHighInterestSavingsAccounts();
+    for (int i = 0; i < highInterestSavings->size(); i++)
+    {
+        std::cout << std::endl << highInterestSavings->at(i).getMonthlyStatement()
+                  << std::endl;
+        highInterestSavings->at(i).bankAccount::deposit(100);
+        highInterestSavings->at(i).bankAccount::withdraw(200);
+        std::cout << std::endl << highInterestSavings->at(i).getMonthlyStatement()
+                  << std::endl;
+    }
+
+    std::cout << "========================================\n"
+              << "================ CDs ===================\n";
+    std::vector<certificateOfDeposit> * CDs = man.getCDAccounts();
     for (int i = 0; i < CDs->size(); i++)
     {
 
