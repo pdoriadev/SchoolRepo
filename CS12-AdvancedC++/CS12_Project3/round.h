@@ -21,7 +21,7 @@ void roundToLeastSignificantOrHundredth(std::string* str)
     }
 }
 
-void roundToLeastSignificantOrHundredth(std::string str)
+std::string roundToLeastSignificantOrHundredth(std::string str)
 {
     size_t s = str.length();
     assert(("Passed in empty string", s > 0 ));
@@ -35,6 +35,8 @@ void roundToLeastSignificantOrHundredth(std::string str)
             str.erase(posPeriod + 3, str.length() - posPeriod + 3);
         }
     }
+
+    return str;
 }
 
 #endif // ROUND_H
