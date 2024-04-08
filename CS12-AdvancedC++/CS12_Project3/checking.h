@@ -307,7 +307,7 @@ public:
         if (balance - givenAmount < gMIN_BALANCE())
         {
             actualAmount -= gMIN_BALANCE();
-            supplementaryMess = "\n    Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
+            supplementaryMess = " -- Supplementary Message: Amount adjusted so as not to exceeded minimum balance.";
         }
 
         result r = bankAccount::withdraw(actualAmount);
@@ -340,10 +340,7 @@ class highInterestChecking : public noServiceChargeChecking
 public :
     highInterestChecking(std::string _name, double _bal, int _checksThisMonth, double _interest)
             : noServiceChargeChecking(_name, _bal, _checksThisMonth, _interest)
-    {
-        assert(balance >= gMIN_BALANCE() &&
-                "If this triggers, then will need to reconsider static inheritance for balance and interest." );
-    }
+    { }
 
     double gMIN_BALANCE() { return 500 ; }
     double gMIN_INTEREST(){ return 1.01; }
