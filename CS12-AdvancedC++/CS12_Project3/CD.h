@@ -69,7 +69,7 @@ public:
         assert(_yearCreated > 0 && _yearCreated <= gCurrentYear() && "Year of creation cannot be after current year.");
         yearCreated = _yearCreated;
 
-        assert(_CDPeriod > 0 && _CDPeriod <= 12 && "Period of CD is invalid");
+        assert(_CDPeriod > 0 && "Period of CD is invalid");
         CDPeriod = _CDPeriod;
     }
 
