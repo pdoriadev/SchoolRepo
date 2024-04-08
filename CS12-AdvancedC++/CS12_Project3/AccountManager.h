@@ -334,7 +334,7 @@ public:
         return &accountsHighInterestSavings;
     }
 
-    std::vector<certificateOfDeposit> * getCDAccunts()
+    std::vector<certificateOfDeposit> * getCDAccounts()
     {
         return &accountsCDs;
     }
