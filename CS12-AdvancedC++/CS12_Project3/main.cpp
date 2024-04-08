@@ -27,7 +27,26 @@ int main(int argc, char *argv[])
     }
     accountsCSV.close();
 
+    std::cout << "========================================"
+              << "========== Savings Accounts ============";
+    std::vector<savingsAccount> * savingsAccounts = man.getSavingsAccounts();
+    for (int i = 0; i < savingsAccounts->size(); i++)
+    {
+        std::cout << std::endl << savingsAccounts->at(i).getMonthlyStatement()
+                  << std::endl;
+        savingsAccounts->at(i).bankAccount::deposit(100);
+        savingsAccounts->at(i).bankAccount::withdraw(100);
+        std::cout << std::endl << savingsAccounts->at(i).getMonthlyStatement()
+                  << std::endl;
+    }
 
+    std::cout << "========================================"
+              << "================ CDs ===================";
+    std::vector<certificateOfDeposit> * CDs = man.getCDAccunts();
+    for (int i = 0; i < CDs->size(); i++)
+    {
+
+    }
 
     // Test different functionality of accounts
         // Beginning
