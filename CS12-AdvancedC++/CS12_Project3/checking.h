@@ -7,11 +7,12 @@
 #include <memory>
 
 ///////////////////////////////
-/// digitalCheck to be sent by checkingAccounts.
-///     To be written and received by checking accounts.
-///     Contains data. Does not change data.
-///     checkingValidater serves as bridge between
-///         source checking and recipient checking info.
+/* digitalCheck to be sent by checkingAccounts.
+     To be written and received by checking accounts.
+     Contains data. Does not change data.
+     checkingValidater serves as bridge between source checking
+            and recipient checking info.
+*/
 class digitalCheck
 {
 private:
@@ -271,8 +272,6 @@ public:
     {
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
-
-    // MAY NEED TO DO SHARED POINTER HERE. HMM. YEA. THAT'D PROBABLY WORK BEST.
 
     digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, int accountNumber)
     {
