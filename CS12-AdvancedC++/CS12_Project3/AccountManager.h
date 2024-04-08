@@ -11,17 +11,13 @@ class AccountManager;
 class AccountManager
 {
     std::vector<serviceChargeChecking> accountsServiceChargeChecking;
-    std::vector<noServiceChargeChecking> accountsNoServiceChargeCheckings;
+    std::vector<noServiceChargeChecking> accountsNoServiceChargeChecking;
     std::vector<highInterestChecking> accountsHighInterestChecking;
     std::vector<savingsAccount> accountsSavings;
     std::vector<highInterestSavings> accountsHighInterestSavings;
     std::vector<certificateOfDeposit> accountsCDs;
 
 public:
-    static AccountManager* getInstance() {
-        static AccountManager manager;
-        return &manager;
-    }
 
     result AddAccount (std::string accountData)
     {
@@ -120,7 +116,7 @@ public:
             }
 
             noServiceChargeChecking acc(name, balance, checksThisMonth, interest);
-            accountsNoServiceChargeCheckings.push_back(acc);
+            accountsNoServiceChargeChecking.push_back(acc);
             return result (true, "success");
         }
         else if(accountType == "hich")
@@ -309,10 +305,39 @@ public:
             return result (true, "success");
         }
 
+        assert(false && "Failed to interpret accountData");
         return result (false, "Failed to interpret accountData");
    }
 
+    std::vector<serviceChargeChecking> * getServiceChargeCheckingAccounts()
+    {
+        return &accountsServiceChargeChecking;
+    }
 
+    std::vector<noServiceChargeChecking> * getNoServiceChargeCheckingAccounts()
+    {
+        return &accountsNoServiceChargeChecking;
+    }
+
+    std::vector<highInterestChecking> * getHighInterestCheckingAccoutns()
+    {
+        return &accountsHighInterestChecking;
+    }
+
+    std::vector<savingsAccount> * getSavingsAccounts()
+    {
+        return &accountsSavings;
+    }
+
+    std::vector<highInterestSavings> * getHighInterestSavingsAccounts()
+    {
+        return &accountsHighInterestSavings;
+    }
+
+    std::vector<certificateOfDeposit> * getCDAccunts()
+    {
+        return &accountsCDs;
+    }
 
 };
 

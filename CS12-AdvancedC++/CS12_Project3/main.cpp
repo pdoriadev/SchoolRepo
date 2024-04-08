@@ -13,13 +13,13 @@ int main(int argc, char *argv[])
         assert(("Failed to open file", false));
     }
 
-    AccountManager * man = AccountManager::getInstance();
+    AccountManager man;
     // load in account info from CSV.
     // create account records in account manager.
     std::string line;
     while(std::getline(accountsCSV, line))
     {
-        result r = man->AddAccount(line);
+        result r = man.AddAccount(line);
         if (r.gSuccess() == false)
         {
             assert((r.gMessage(), r.gSuccess()));
