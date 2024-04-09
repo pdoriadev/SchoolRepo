@@ -191,6 +191,7 @@ class serviceChargeChecking : public checkingAccount
 {
 protected:
     int checksThisMonth = 0;
+    bool locked = false;
 
 public:
     serviceChargeChecking(std::string _name, double _bal, int _checksThisMonth)
@@ -210,6 +211,16 @@ public:
 
     int gChecksThisMonth() { return checksThisMonth;}
 
+    result withdraw (double amount)
+    {
+        if (locked)
+        {
+            return result(false, "Account is locked. Cannot withdraw or write checks with account until service charge is paid. Service charge will be automatically paid upon cash or check deposit");
+        }
+
+        return bankAccount::withdraw(amount);
+    }
+
     result didThisAccountWriteThisCheck(digitalCheck check)
     {
         return checkingAccount::didThisAccountWriteThisCheck(check);
@@ -217,6 +228,11 @@ public:
 
     digitalCheck * writeCheck(std::string recipient, double amount)
     {
+        if (locked)
+        {
+            return NULL;
+        }
+
         if (checksThisMonth == gCHECK_LIMIT())
         {
             return NULL;
@@ -256,10 +272,12 @@ public:
     {
         if (balance - gSERVICE_CHARGE_AMOUNT() < 0)
         {
-             return result(false, "Failed to pay service charge");
+            locked = true;
+            return result(false, "Failed to pay service charge. Account is locked. Cannot withdraw or write checks with account until service charge is paid. Service charge will be automatically paid upon cash or check deposit.");
         }
         else
         {
+            locked = false;
             balance -= gSERVICE_CHARGE_AMOUNT();
             return result (true, "Paid service charge of $"
                            + roundToLeastSignificantOrHundredth((std::to_string(gSERVICE_CHARGE_AMOUNT()))) + ".");
@@ -270,6 +288,7 @@ public:
     {
         return "Account Info: "
                 + std::string("\n    Account Type: Service Charge Checking")
+                + std::string("\n    ") + std::string("Is Account locked: " + std::to_string(locked))
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
