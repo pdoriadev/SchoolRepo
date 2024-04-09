@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         std::cout << '\n' << savingsAccounts->at(i).bankAccount::deposit(200).gMessage();
         std::cout << '\n' << savingsAccounts->at(i).bankAccount::withdraw(100).gMessage();
 
-        std::cout << std::endl << savingsAccounts->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << savingsAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         std::cout << '\n' << highInterestSavings->at(i).deposit(100).gMessage();
         std::cout << '\n' << highInterestSavings->at(i).withdraw(200).gMessage();
 
-        std::cout << std::endl << highInterestSavings->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << highInterestSavings->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         // test withdraw functionality. Will only withdraw if matured.
         std::cout << '\n' << CDs->at(i).withdraw(300).gMessage();
 
-        std::cout << std::endl << CDs->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << CDs->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
         std::cout << '\n' << checking->withdraw(512).gMessage();
         std::cout << '\n' << checking->deposit(1024).gMessage();
 
-        std::cout << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
         std::cout << '\n' << checking->withdraw(512).gMessage();
         std::cout << '\n' << checking->deposit(1024).gMessage();
 
-        std::cout << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
@@ -277,7 +277,7 @@ int main(int argc, char *argv[])
         std::cout << '\n' << checking->withdraw(512).gMessage();
         std::cout << '\n' << checking->deposit(1024).gMessage();
 
-        std::cout << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
