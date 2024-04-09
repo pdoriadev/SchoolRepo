@@ -218,7 +218,7 @@ public:
     {
         if (locked)
         {
-            return result(false, "Account is locked. Cannot withdraw or write checks with account until service charge is paid. Service charge will be automatically paid upon cash or check deposit");
+            return result(false, "Account is locked. Cannot withdraw or write checks with account until service charge is paid. Service charge will be automatically paid upon cash or check deposit.");
         }
 
         return bankAccount::withdraw(amount);
@@ -427,7 +427,8 @@ public:
         {
             actualAmount = balance - gMIN_BALANCE();
             supplementaryMess = " -- Supplementary Message: Withdraw amount adjusted to "
-                    + std::to_string(actualAmount) + "to avoid bringing account below minimum balance.";
+                    + roundToLeastSignificantOrHundredth(std::to_string(actualAmount))
+                    + " to avoid bringing account below minimum balance.";
         }
 
         result r = bankAccount::withdraw(actualAmount);
