@@ -319,7 +319,7 @@ public:
         return &accountsNoServiceChargeChecking;
     }
 
-    std::vector<highInterestChecking> * getHighInterestCheckingAccoutns()
+    std::vector<highInterestChecking> * getHighInterestCheckingAccounts()
     {
         return &accountsHighInterestChecking;
     }
