@@ -30,7 +30,7 @@ protected:
     {
         time_t now = time(0);
         std::string time = (std::ctime(&now));
-        std::string month = time.substr(3,3);
+        std::string month = time.substr(4,3);
         for (int i = 0; i < 12; i++)
         {
             if (monthStrings[i] == month)
@@ -82,32 +82,38 @@ public:
     {
         int currentYear = gCurrentYear();
         int currentMonth = gCurrentMonth();
-        int monthsSinceCreation = 0;
 
+        int monthsSinceCreation = 0;
         if (yearCreated > currentYear)
         {
             int monthsYearCreated = 13 - monthCreated;
             int monthsInbetweenYears = (currentYear - yearCreated - 1) * 12;
-            int monthsThisYear = 13 - currentMonth;
 
-            monthsSinceCreation = monthsYearCreated + monthsInbetweenYears + monthsThisYear;
+            monthsSinceCreation = monthsYearCreated + monthsInbetweenYears + currentMonth;
         }
         else
         {
-            monthsSinceCreation = 13 - currentMonth;
+            monthsSinceCreation = currentMonth - monthCreated;
         }
 
-        return CDPeriod - monthsSinceCreation;
+        int monthsTilMaturity = CDPeriod - monthsSinceCreation;
+        if (monthsTilMaturity < 0)
+        {
+            monthsTilMaturity = 0;
+        }
+
+        return monthsTilMaturity;
     }
 
     result withdraw(double amount)
     {
         if (gMonthsTilMatured() > 0)
         {
-            return result (false, "CD has not matured yet.");
+            return result (false, "CD has " + std::to_string(gMonthsTilMatured())
+                           + " months til matured.");
         }
 
-        bankAccount::withdraw(amount);
+        return bankAccount::withdraw(amount);
     }
 
     std::string getMonthlyStatement()
