@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 
 
     // Checks are held here before being deposited in the appropriate account.
-    std::vector<digitalCheck*> checks;
+    std::vector<digitalCheck> checks;
 
 
     // Service Charge Checking
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
             digitalCheck * c = checking->writeCheck("Amir", checking->gBalance());
             if (c != NULL)
             {
-                checks.push_back(c);
+                checks.push_back(*c);
             }
             else std::cout << "\nFailed to write check to Amir for $"
                               + roundToLeastSignificantOrHundredth(std::to_string(checking->gBalance())) + ".";
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
             digitalCheck * c = checking->writeCheck("Bernice", checking->gBalance());
             if (c != NULL)
             {
-                checks.push_back(c);
+                checks.push_back(*c);
             }
             else std::cout << "\nFailed to write check to Bernice for $"
                               + roundToLeastSignificantOrHundredth(std::to_string(checking->gBalance())) + ".";
@@ -152,16 +152,24 @@ int main(int argc, char *argv[])
             digitalCheck * c = checking->writeCheck("Helios", 1024);
             if (c != NULL)
             {
-                checks.push_back(c);
+                checks.push_back(*c);
             }
-            else std::cout << "\nFailed to write check to Helios for $1024.";
+            else std::cout << "\nFailed to write check to Helios for $1024." << std::endl;
+
+            c = NULL;
+            c = checking->writeCheck("Bilbo", 2048);
+            if (c != NULL)
+            {
+                checks.push_back(*c);
+            }
+            else std::cout << "\nFailed to write check to Bilbo for $2048."  << std::endl;
 
         }
 
         // test receive check functionality
         for (int i = 0; i < checks.size(); i++)
         {
-            result r = checking->receiveCheck(*(checks[i]));
+            result r = checking->receiveCheck(checks[i]);
             std::cout << '\n' << r.gMessage() << std::endl;
             if (r.gSuccess())
             {
@@ -202,7 +210,7 @@ int main(int argc, char *argv[])
             digitalCheck * c = checking->writeCheck("Bernice", 512);
             if (c != NULL)
             {
-                checks.push_back(c);
+                checks.push_back(*c);
             }
             else std::cout << "\nFailed to write check to Bernice for $512.";
         }
@@ -211,7 +219,7 @@ int main(int argc, char *argv[])
             digitalCheck * c = checking->writeCheck("Frodo", 5096);
             if (c != NULL)
             {
-                checks.push_back(c);
+                checks.push_back(*c);
             }
             else std::cout << "\nFailed to write check to Frodo for $5096.";
         }
@@ -219,7 +227,7 @@ int main(int argc, char *argv[])
         // test receive check functionality
         for (int i = 0; i < checks.size(); i++)
         {
-            result r = checking->receiveCheck(*(checks[i]));
+            result r = checking->receiveCheck(checks[i]);
             std::cout << '\n' << r.gMessage() << std::endl;
             if (r.gSuccess())
             {
@@ -245,10 +253,10 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "======== High Interest Checking ========\n";
-    std::vector<highInterestChecking> * highInterestChecking = man.getHighInterestCheckingAccounts();
-    for (int i = 0; i < noServiceChargeCheckingAccounts->size(); i++)
+    std::vector<highInterestChecking> * highInterestCheckingAccounts = man.getHighInterestCheckingAccounts();
+    for (int i = 0; i < highInterestCheckingAccounts->size(); i++)
     {
-        noServiceChargeChecking * checking = &(noServiceChargeCheckingAccounts->at(i));
+        highInterestChecking * checking = &(highInterestCheckingAccounts->at(i));
 
         std::cout << "\n======== " << checking->gName() << "'s Account";
         std::cout << std::endl << checking->getMonthlyStatement()
@@ -260,7 +268,7 @@ int main(int argc, char *argv[])
             digitalCheck * c = checking->writeCheck("Bilbo", 512);
             if (c != NULL)
             {
-                checks.push_back(c);
+                checks.push_back(*c);
                 c->outputCheckContents();
             }
             else std::cout << "\nFailed to write check to Bilbo for $512.";
@@ -269,7 +277,7 @@ int main(int argc, char *argv[])
         // test receive check functionality
         for (int i = 0; i < checks.size(); i++)
         {
-            result r = checking->receiveCheck(*(checks[i]));
+            result r = checking->receiveCheck(checks[i]);
             std::cout << '\n' << r.gMessage() << std::endl;
             if (r.gSuccess())
             {
@@ -279,8 +287,10 @@ int main(int argc, char *argv[])
 
         std::cout << '\n' << checking->withdraw(512).gMessage();
         std::cout << '\n' << checking->deposit(1024).gMessage();
+        std::cout << '\n' << checking->withdraw(512).gMessage();
 
-        std::cout << '\n' << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
+
+        std::cout << '\n' << std::endl << highInterestCheckingAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
@@ -290,6 +300,10 @@ int main(int argc, char *argv[])
         assert(false && "Failed to deposit all checks");
     }
 
+
+    std::cout << "===========================\n"
+              << "====== Test Complete ======\n"
+              << "===========================";
 
      return 0;
 }
