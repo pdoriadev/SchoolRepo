@@ -222,7 +222,7 @@ public:
                 + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
                 + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT())
-                + std::string("\n    ") + std::string("Monthly Service Charge: $") + std::to_string(gSERVICE_CHARGE_AMOUNT());
+                + std::string("\n    ") + std::string("Monthly Service Charge: $") + roundToLeastSignificantOrHundredth(std::to_string(gSERVICE_CHARGE_AMOUNT()));
 
     }
 };
