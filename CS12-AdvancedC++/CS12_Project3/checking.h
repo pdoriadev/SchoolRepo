@@ -180,7 +180,8 @@ public:
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
 
-    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, int accountNumber)
+    digitalCheck * writeCheck(std::string signer, std::string recipient,
+                              double amount, std::string date, int accountNumber)
     {
         if (checksThisMonth == gCHECK_LIMIT())
         {
@@ -220,7 +221,8 @@ public:
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
                 + std::string("\n    ") + std::string("Checks written this month: ") + std::to_string(checksThisMonth)
-                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT());
+                + std::string("\n    ") + std::string("Check Limit: ") + std::to_string(gCHECK_LIMIT())
+                + std::string("\n    ") + std::string("Monthly Service Charge: $") + std::to_string(gSERVICE_CHARGE_AMOUNT());
 
     }
 };
