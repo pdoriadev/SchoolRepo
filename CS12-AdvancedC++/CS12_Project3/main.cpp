@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     std::vector<savingsAccount> * savingsAccounts = man.getSavingsAccounts();
     for (int i = 0; i < savingsAccounts->size(); i++)
     {
-        std::cout << "\n======== Next Account ";
+        std::cout << "\n======== " << savingsAccounts->at(i).gName() << "'s Account ";
         std::cout << std::endl << savingsAccounts->at(i).getMonthlyStatement()
                   << std::endl;
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     std::vector<highInterestSavings> * highInterestSavings = man.getHighInterestSavingsAccounts();
     for (int i = 0; i < highInterestSavings->size(); i++)
     {
-        std::cout << "\n======== Next Account ";
+        std::cout << "\n======== " << highInterestSavings->at(i).gName() << "'s Account ";
         std::cout << std::endl << highInterestSavings->at(i).getMonthlyStatement()
                   << std::endl;
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     std::vector<certificateOfDeposit> * CDs = man.getCDAccounts();
     for (int i = 0; i < CDs->size(); i++)
     {
-        std::cout << "\n======== Next Account ";
+        std::cout << "\n======== " << CDs->at(i).gName() << "'s Account ";
         std::cout << std::endl << CDs->at(i).getMonthlyStatement()
                   << std::endl;
 
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     {
         serviceChargeChecking * checking = &(serviceChargeCheckingAccounts->at(i));
 
-        std::cout << "\n======== Next Account ";
+        std::cout << "\n======== " << checking->gName() << "'s Account";
         std::cout << std::endl << checking->getMonthlyStatement()
                   << std::endl;
 
@@ -191,7 +191,8 @@ int main(int argc, char *argv[])
     for (int i = 0; i < noServiceChargeCheckingAccounts->size(); i++)
     {
         noServiceChargeChecking * checking = &(noServiceChargeCheckingAccounts->at(i));
-        std::cout << "\n======== Next Account ";
+
+        std::cout << "\n======== " << checking->gName() << "'s Account";
         std::cout << std::endl << checking->getMonthlyStatement()
                   << std::endl;
 
@@ -247,9 +248,9 @@ int main(int argc, char *argv[])
     std::vector<highInterestChecking> * highInterestChecking = man.getHighInterestCheckingAccounts();
     for (int i = 0; i < noServiceChargeCheckingAccounts->size(); i++)
     {
-        std::cout << "\n======== Next Account ";
         noServiceChargeChecking * checking = &(noServiceChargeCheckingAccounts->at(i));
 
+        std::cout << "\n======== " << checking->gName() << "'s Account";
         std::cout << std::endl << checking->getMonthlyStatement()
                   << std::endl;
 
