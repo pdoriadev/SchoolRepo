@@ -23,6 +23,7 @@ private:
     int account = 0;
 
 
+    // every digital Check has a unique checkNumber.
     int checkNumber = 0;
     static int generateCheckNumber() {
         int num = 0;
@@ -182,11 +183,6 @@ public:
     digitalCheck * writeCheck(std::string recipient, double amount)
     {
         if (checksThisMonth == gCHECK_LIMIT())
-        {
-            return NULL;
-        }
-
-        if (balance - amount < gMIN_BALANCE())
         {
             return NULL;
         }
