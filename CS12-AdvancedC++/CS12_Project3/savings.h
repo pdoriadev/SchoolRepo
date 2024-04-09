@@ -85,7 +85,8 @@ public:
         {
             actualAmount = balance - gMIN_BALANCE();
             supplementaryMess = " -- Supplementary Message: Withdraw amount adjusted to "
-                    + std::to_string(actualAmount) + "to avoid bringing account below minimum balance.";
+                    + roundToLeastSignificantOrHundredth(std::to_string(actualAmount))
+                    + "to avoid bringing account below minimum balance.";
         }
 
         result r = bankAccount::withdraw(actualAmount);
@@ -96,7 +97,7 @@ public:
     std::string getMonthlyStatement()
     {
         return std::string("Account Info: ")
-                + std::string("\n    Account Type: Savings Account")
+                + std::string("\n    Account Type: High Interest Savings Account")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
