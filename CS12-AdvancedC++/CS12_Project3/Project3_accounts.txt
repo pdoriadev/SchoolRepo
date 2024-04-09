@@ -1,5 +1,6 @@
 sc Alfred 512 9
-sc Ira 65536 10
+sc Ira 5 10
+sc Amir 65536 10
 nsc Bernice 1024 40 1.011
 nsc Helios 32768 50 1.0012
 hich Frodo 500 20 1.018
