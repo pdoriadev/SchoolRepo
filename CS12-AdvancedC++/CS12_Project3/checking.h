@@ -341,7 +341,7 @@ public:
 
         r = checkingAccount::deposit(_bal);
         assert((r.gMessage(), r.gSuccess()));
-        assert(balance >= gMIN_BALANCE() && "Balance must be greater than or equal to MIN_BALANCE");
+        assert(balance >= gMIN_BALANCE() && "Balance must be greater than or equal to MIN_BALANCE.");
 
         assert(_checksThisMonth <= gCHECK_LIMIT() && "Given value for checks this month is less than 0 or greater than the check limit.");
         checksThisMonth = _checksThisMonth;
