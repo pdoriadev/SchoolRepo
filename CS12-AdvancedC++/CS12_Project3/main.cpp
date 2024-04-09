@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
         std::cout << '\n' << checking->withdraw(512).gMessage();
         std::cout << '\n' << checking->deposit(1024).gMessage();
 
-        std::cout << '\n' << std::endl << serviceChargeCheckingAccounts->at(i).getMonthlyStatement()
+        std::cout << '\n' << std::endl << noServiceChargeCheckingAccounts->at(i).getMonthlyStatement()
                   << std::endl;
     }
 
