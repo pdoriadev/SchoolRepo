@@ -109,8 +109,8 @@ public:
     {
         if (gMonthsTilMatured() > 0)
         {
-            return result (false, "CD cannot withdraw yet. CD has "
-                           + std::to_string(gMonthsTilMatured()) + " months til matured.");
+            return result (false, "Withdrawl denied. CD cannot withdraw until matured. "
+                           + std::to_string(gMonthsTilMatured()) + " months until CD is matured.");
         }
 
         return bankAccount::withdraw(amount);
@@ -119,7 +119,7 @@ public:
     std::string getMonthlyStatement()
     {
         return "Account Info: "
-                + std::string("\n    Account Type: Certificate of Deposit Account")
+                + std::string("\n    Account Type: Certificate of Deposit")
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
