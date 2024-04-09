@@ -158,7 +158,10 @@ public:
     {
         if (check.gRecipient() != name)
         {
-            return result (false, "Check declined. Name of recipient on check does not match account holder's name for account " + name);
+            return result (false, "Check declined. Name of recipient ('"
+                           + check.gRecipient() + "') "
+                           + "on check does not match the name associated with this account ('"
+                           + name + "').");
         }
 
         for (unsigned long i =0; i < receivedChecks.size(); i++)
