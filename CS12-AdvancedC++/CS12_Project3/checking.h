@@ -210,7 +210,16 @@ public:
 
     result payServiceCharge()
     {
-        return withdraw(gSERVICE_CHARGE_AMOUNT());
+        if (balance - gSERVICE_CHARGE_AMOUNT() < 0)
+        {
+             return result(false, "Failed to pay service charge");
+        }
+        else
+        {
+            balance -= gSERVICE_CHARGE_AMOUNT();
+            return result (true, "Paid service charge of $"
+                           + roundToLeastSignificantOrHundredth((std::to_string(gSERVICE_CHARGE_AMOUNT()))) + ".");
+        }
     }
 
     std::string getMonthlyStatement()
