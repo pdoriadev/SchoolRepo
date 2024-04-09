@@ -214,6 +214,28 @@ public:
 
     int gChecksThisMonth() { return checksThisMonth;}
 
+    result deposit (double amount)
+    {
+        result r = bankAccount::deposit(amount);
+        if (r.gSuccess() == false) return r;
+
+        std::string accountUnlockMess = "";
+        if (locked)
+        {
+            if (balance >= gSERVICE_CHARGE_AMOUNT())
+            {
+                accountUnlockMess += payServiceCharge().gMessage();
+                accountUnlockMess = " Balance met or exceeded service charge amount. Service charge automatically paid. Account is unlocked. You may now withdraw and write checks at your leisure.";
+            }
+            else
+            {
+                accountUnlockMess = " Failed to pay service charge. Balance does not meet or excced service charge amount. Account is still locked. You cannot withdraw or write checks until the service charge is paid.";
+            }
+        }
+
+        return result (r.gSuccess(), r.gMessage() + accountUnlockMess);
+    }
+
     result withdraw (double amount)
     {
         if (locked)
