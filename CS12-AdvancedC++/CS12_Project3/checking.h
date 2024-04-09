@@ -360,8 +360,13 @@ public:
         if (r.gSuccess() == false) { return r; }
 
         receivedChecks.push_back(c);
+
         time_t now = time(0);
-        dateReceivedChecks.push_back(std::ctime(&now));
+        std::string time = (std::ctime(&now));
+        std::string date = time.substr(time.length() - 5, 4);
+        date += ' ' + time.substr(4,3);
+        date += ' ' + time.substr(8,2);
+        dateReceivedChecks.push_back(date);
 
         return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient() +" deposited.");
     }
