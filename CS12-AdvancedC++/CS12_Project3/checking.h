@@ -136,8 +136,7 @@ public:
         return result(true, "Account and check match. Check can be deposited in this account.");
     }
 
-    virtual digitalCheck * writeCheck(std::string signer, std::string recipient, double amount,
-                                        std::string date, int account) = 0;
+    virtual digitalCheck * writeCheck(std::string recipient, double amount) = 0;
     virtual result receiveCheck(const digitalCheck c) = 0;
 };
 
@@ -180,15 +179,25 @@ public:
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
 
-    digitalCheck * writeCheck(std::string signer, std::string recipient,
-                              double amount, std::string date, int accountNumber)
+    digitalCheck * writeCheck(std::string recipient, double amount)
     {
         if (checksThisMonth == gCHECK_LIMIT())
         {
             return NULL;
         }
 
-        digitalCheck check(signer, recipient, amount, date, accountNumber);
+        if (balance - amount < gMIN_BALANCE())
+        {
+            return NULL;
+        }
+
+        time_t now = time(0);
+        std::string time = (std::ctime(&now));
+        std::string date = time.substr(time.length() - 5, 4);
+        date += ' ' + time.substr(4,3);
+        date += ' ' + time.substr(8,2);
+
+        digitalCheck check(name, recipient, amount, date, gAccountNumber());
         writtenChecks.push_back(check);
         return &writtenChecks[writtenChecks.size() -1];
     }
@@ -203,7 +212,11 @@ public:
 
         receivedChecks.push_back(c);
         time_t now = time(0);
-        dateReceivedChecks.push_back(std::ctime(&now));
+        std::string time = (std::ctime(&now));
+        std::string date = time.substr(time.length() - 5, 4);
+        date += ' ' + time.substr(4,3);
+        date += ' ' + time.substr(8,2);
+        dateReceivedChecks.push_back(date);
 
         return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient() +" deposited.");
     }
@@ -284,14 +297,25 @@ public:
         return checkingAccount::didThisAccountWriteThisCheck(check);
     }
 
-    digitalCheck * writeCheck(std::string signer, std::string recipient, double amount, std::string date, int accountNumber)
+    digitalCheck * writeCheck(std::string recipient, double amount)
     {
         if (checksThisMonth == gCHECK_LIMIT())
         {
             return NULL;
         }
 
-        digitalCheck check(signer, recipient, amount, date, accountNumber);
+        if (balance - amount < gMIN_BALANCE())
+        {
+            return NULL;
+        }
+
+        time_t now = time(0);
+        std::string time = (std::ctime(&now));
+        std::string date = time.substr(time.length() - 5, 4);
+        date += ' ' + time.substr(4,3);
+        date += ' ' + time.substr(8,2);
+
+        digitalCheck check(name, recipient, amount, date, gAccountNumber());
         writtenChecks.push_back(check);
         return &writtenChecks[writtenChecks.size() -1];
     }
