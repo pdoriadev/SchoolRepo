@@ -1,7 +1,6 @@
 // Programming Exercise 5, from pages 897-899,]
 
 #include <fstream>
-
 #include "AccountManager.h"
 
 int main(int argc, char *argv[])
@@ -13,13 +12,13 @@ int main(int argc, char *argv[])
         assert(("Failed to open file", false));
     }
 
-    AccountManager man;
+    AccountManager manager;
     // load in account info from CSV.
     // create account records in account manager.
     std::string line;
     while(std::getline(accountsCSV, line))
     {
-        result r = man.AddAccount(line);
+        result r = manager.AddAccount(line);
         if (r.gSuccess() == false)
         {
             assert((r.gMessage(), r.gSuccess()));
@@ -39,7 +38,7 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "========== Savings Accounts ============\n";
-    std::vector<savingsAccount> * savingsAccounts = man.getSavingsAccounts();
+    std::vector<savingsAccount> * savingsAccounts = manager.getSavingsAccounts();
     for (int i = 0; i < savingsAccounts->size(); i++)
     {
         std::cout << "\n======== " << savingsAccounts->at(i).gName() << "'s Account ";
@@ -61,7 +60,7 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "==== High Interest Savings Accounts ====\n";
-    std::vector<highInterestSavings> * highInterestSavings = man.getHighInterestSavingsAccounts();
+    std::vector<highInterestSavings> * highInterestSavings = manager.getHighInterestSavingsAccounts();
     for (int i = 0; i < highInterestSavings->size(); i++)
     {
         std::cout << "\n======== " << highInterestSavings->at(i).gName() << "'s Account ";
@@ -81,7 +80,7 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "================ CDs ===================\n";
-    std::vector<certificateOfDeposit> * CDs = man.getCDAccounts();
+    std::vector<certificateOfDeposit> * CDs = manager.getCDAccounts();
     for (int i = 0; i < CDs->size(); i++)
     {
         std::cout << "\n======== " << CDs->at(i).gName() << "'s Account ";
@@ -112,7 +111,7 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "======= Service Charge Checking ========\n";
-    std::vector<serviceChargeChecking> * serviceChargeCheckingAccounts = man.getServiceChargeCheckingAccounts();
+    std::vector<serviceChargeChecking> * serviceChargeCheckingAccounts = manager.getServiceChargeCheckingAccounts();
     for (int i = 0; i < serviceChargeCheckingAccounts->size(); i++)
     {
         serviceChargeChecking * checking = &(serviceChargeCheckingAccounts->at(i));
@@ -195,7 +194,7 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "====== No Service Charge Checking ======\n";
-    std::vector<noServiceChargeChecking> * noServiceChargeCheckingAccounts = man.getNoServiceChargeCheckingAccounts();
+    std::vector<noServiceChargeChecking> * noServiceChargeCheckingAccounts = manager.getNoServiceChargeCheckingAccounts();
     for (int i = 0; i < noServiceChargeCheckingAccounts->size(); i++)
     {
         noServiceChargeChecking * checking = &(noServiceChargeCheckingAccounts->at(i));
@@ -253,7 +252,7 @@ int main(int argc, char *argv[])
         // Output Account info after operations
     std::cout << "========================================\n"
               << "======== High Interest Checking ========\n";
-    std::vector<highInterestChecking> * highInterestCheckingAccounts = man.getHighInterestCheckingAccounts();
+    std::vector<highInterestChecking> * highInterestCheckingAccounts = manager.getHighInterestCheckingAccounts();
     for (int i = 0; i < highInterestCheckingAccounts->size(); i++)
     {
         highInterestChecking * checking = &(highInterestCheckingAccounts->at(i));
