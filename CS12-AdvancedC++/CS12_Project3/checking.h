@@ -20,7 +20,7 @@ private:
     std::string recipient = "";
     std::string dateWritten = "";
     double amount = 0;
-    int account = 0;
+    int accountNumber = 0;
 
 
     // every digital Check has a unique checkNumber.
@@ -49,7 +49,7 @@ public:
         {
             amount = _amount;
         }
-        account = _account;
+        accountNumber = _account;
         checkNumber = generateCheckNumber();
     }
     ~digitalCheck() {}
@@ -59,14 +59,49 @@ public:
     std::string gRecipient() { return recipient; }
     std::string gDateWritten() { return dateWritten; }
     double gAmount() { return amount; }
-    int gAccountNumber() { return account; }
+    int gAccountNumber() { return accountNumber; }
     int gCheckNumber() { return checkNumber; }
+
+    result isIdentical(digitalCheck c)
+    {
+        if (signer != c.gSigner())
+        {
+            return result (false, "Checks' signers do not match");
+        }
+
+        if (recipient != c.gRecipient())
+        {
+            return result (false, "Checks' recipients do not match");
+        }
+
+        if (dateWritten != c.gDateWritten())
+        {
+            return result (false, "Checks' dates they were written do not match");
+        }
+
+        if (amount != c.gAmount())
+        {
+            return result(false, "Checks' amounts do not match.");
+        }
+
+        if (accountNumber != c.gAccountNumber())
+        {
+            return result (false, "Checks' account numbers does not match");
+        }
+
+        if (checkNumber != c.gCheckNumber())
+        {
+            return result (false, "Checks' check numbers do not match.");
+        }
+
+        return result(true, "Checks are identical");
+    }
 
     void outputCheckContents()
     {
         std::cout << '\n' << signer << "'s check to " << recipient
             << "\n    " << "Amount: $" << roundToLeastSignificantOrHundredth(std::to_string(amount))
-            << "\n    " << "Account Number: " << account
+            << "\n    " << "Account Number: " << accountNumber
             << "\n    " << "Check Number: " << checkNumber
             << "\n    " << "Signed date of " << dateWritten
             << std::endl;
@@ -123,14 +158,14 @@ public:
     {
         if (check.gRecipient() != name)
         {
-            return result (false, "Name of recipient on check does not match account holder's name for account " + name);
+            return result (false, "Check declined. Name of recipient on check does not match account holder's name for account " + name);
         }
 
         for (unsigned long i =0; i < receivedChecks.size(); i++)
         {
             if (check.gCheckNumber() == receivedChecks[i].gCheckNumber())
             {
-                return result(false, "Copy of digital check already deposited in this account. Check should be considered void");
+                return result(false, "Check declined. Copy of digital check already deposited in this account. Check should be considered void");
             }
         }
 

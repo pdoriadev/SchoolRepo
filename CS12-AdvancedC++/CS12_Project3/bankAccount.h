@@ -93,7 +93,7 @@ public:
         roundToLeastSignificantOrHundredth(&str);
 
         if (amount <= 0) {
-            return result(false, "Failed to deposit. Attempted to add " + str + " 0 or negative amount to balance.");
+            return result(false, "Failed to deposit. Attempted to add " + str + ", a zero or negative amount to balance.");
         }
 
         balance += amount;
