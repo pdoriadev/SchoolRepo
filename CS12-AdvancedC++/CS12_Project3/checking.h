@@ -302,9 +302,19 @@ public:
 
     std::string getMonthlyStatement()
     {
+        std::string lockedState;
+        if (locked)
+        {
+            lockedState = "Account is locked. Cannot withdraw cash or write checks. Pay service charge to unlock account.";
+        }
+        else
+        {
+            lockedState = "Account is not locked.";
+        }
+
         return "Account Info: "
                 + std::string("\n    Account Type: Service Charge Checking")
-                + std::string("\n    ") + std::string("Is Account locked: " + std::to_string(locked))
+                + std::string("\n    ") + lockedState
                 + std::string("\n    ") + std::string("Name: ") + gName()
                 + std::string("\n    ") + std::string("Account Number: ") + std::to_string(gAccountNumber())
                 + std::string("\n    ") + std::string("Balance: $") + roundToLeastSignificantOrHundredth(std::to_string(gBalance()))
