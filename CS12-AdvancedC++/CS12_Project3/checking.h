@@ -225,7 +225,7 @@ public:
             if (balance >= gSERVICE_CHARGE_AMOUNT())
             {
                 accountUnlockMess += payServiceCharge().gMessage();
-                accountUnlockMess = " Balance met or exceeded service charge amount. Service charge automatically paid. Account is unlocked. You may now withdraw and write checks at your leisure.";
+                accountUnlockMess += " Balance met or exceeded service charge amount. Service charge automatically paid. Account is unlocked. You may now withdraw and write checks at your leisure.";
             }
             else
             {
