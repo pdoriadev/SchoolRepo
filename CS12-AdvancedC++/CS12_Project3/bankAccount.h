@@ -105,7 +105,7 @@ public:
         roundToLeastSignificantOrHundredth(&str);
 
         if (balance - amount < 0) {
-            return result(false, "Withdraw amount of $" + str + " exceeds account balance.");
+            return result(false, "Withdrawl denied. Withdraw amount of $" + str + " exceeds account balance.");
         }
 
         balance -= amount;
