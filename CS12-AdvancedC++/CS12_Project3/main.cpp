@@ -134,7 +134,8 @@ int main(int argc, char *argv[])
             {
                 checks.push_back(c);
             }
-            else std::cout << "\nFailed to write check to Amir for $" + std::to_string(checking->gBalance()) + ".";
+            else std::cout << "\nFailed to write check to Amir for $"
+                              + roundToLeastSignificantOrHundredth(std::to_string(checking->gBalance())) + ".";
         }
         else if (checking->gName() == "Ira")
         {
@@ -143,7 +144,8 @@ int main(int argc, char *argv[])
             {
                 checks.push_back(c);
             }
-            else std::cout << "\nFailed to write check to Bernice for $" + std::to_string(checking->gBalance()) + ".";
+            else std::cout << "\nFailed to write check to Bernice for $"
+                              + roundToLeastSignificantOrHundredth(std::to_string(checking->gBalance())) + ".";
         }
         else if (checking->gName() == "Amir")
         {
