@@ -219,13 +219,13 @@ public:
         result r = bankAccount::deposit(amount);
         if (r.gSuccess() == false) return r;
 
-        std::string accountUnlockMess = "";
+        std::string accountUnlockMess = "Was not locked. Is unlocked.";
         if (locked)
         {
             if (balance >= gSERVICE_CHARGE_AMOUNT())
             {
-                accountUnlockMess += payServiceCharge().gMessage();
-                accountUnlockMess += " Balance met or exceeded service charge amount. Service charge automatically paid. Account is unlocked. You may now withdraw and write checks at your leisure.";
+                accountUnlockMess = payServiceCharge().gMessage();
+                accountUnlockMess += " Service charge automatically paid. Account is unlocked. You may now withdraw and write checks at your leisure.";
             }
             else
             {
@@ -233,7 +233,7 @@ public:
             }
         }
 
-        return result (r.gSuccess(), r.gMessage() + accountUnlockMess);
+        return result (r.gSuccess(), "Deposit message: " + r.gMessage() + "\nAccount Unlock Message: " + accountUnlockMess);
     }
 
     result withdraw (double amount)
@@ -290,7 +290,7 @@ public:
         date += ' ' + time.substr(8,2);
         dateReceivedChecks.push_back(date);
 
-        std::string accountUnlockMess = "";
+        std::string accountUnlockMess = "Was not locked. Is unlocked.";
         if (locked)
         {
             if (balance >= gSERVICE_CHARGE_AMOUNT())
@@ -306,9 +306,9 @@ public:
         }
 
 
-        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient()
+        return result(true, "Check Deposit Message: Check from " + c.gSigner() + " to " + c.gRecipient()
                       + " for " + roundToLeastSignificantOrHundredth(std::to_string(c.gAmount()))
-                      + " has been deposited. " + accountUnlockMess);
+                      + " has been deposited. " + "\nAccount Unlock Message: " + accountUnlockMess);
     }
 
     result payServiceCharge()
@@ -492,6 +492,24 @@ public :
 
     double gMIN_BALANCE() { return 500 ; }
     double gMIN_INTEREST(){ return 1.01; }
+
+    result withdraw(const double givenAmount)
+    {
+        double actualAmount = givenAmount;
+        std::string supplementaryMess = "";
+        if (balance - givenAmount < gMIN_BALANCE())
+        {
+            actualAmount = balance - gMIN_BALANCE();
+            supplementaryMess = " -- Supplementary Message: Withdraw amount adjusted from $"
+                    + roundToLeastSignificantOrHundredth(std::to_string(givenAmount)) + " to $"
+                    + roundToLeastSignificantOrHundredth(std::to_string(actualAmount))
+                    + " to avoid bringing account below minimum balance.";
+        }
+
+        result r = bankAccount::withdraw(actualAmount);
+
+        return result(r.gSuccess(), r.gMessage() + supplementaryMess);
+    }
 
     std::string getMonthlyStatement()
     {
