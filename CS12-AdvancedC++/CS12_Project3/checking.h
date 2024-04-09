@@ -306,7 +306,9 @@ public:
         }
 
 
-        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient() +" deposited. " + accountUnlockMess);
+        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient()
+                      + " for " + roundToLeastSignificantOrHundredth(std::to_string(c.gAmount()))
+                      + " has been deposited. " + accountUnlockMess);
     }
 
     result payServiceCharge()
@@ -438,7 +440,9 @@ public:
         date += ' ' + time.substr(8,2);
         dateReceivedChecks.push_back(date);
 
-        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient() +" deposited.");
+        return result(true, "Check from " + c.gSigner() + " to " + c.gRecipient()
+                      + " for " + roundToLeastSignificantOrHundredth(std::to_string(c.gAmount()))
+                      + " has been deposited. ");
     }
 
     result withdraw(const double givenAmount)
