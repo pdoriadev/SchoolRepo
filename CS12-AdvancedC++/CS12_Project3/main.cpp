@@ -68,11 +68,10 @@ int main(int argc, char *argv[])
 
 
     // Test different functionality of accounts
-        // Beginning
-            // Get monthly statements
         // General
+            // Get monthly statements before and after operations
             // Withdrawal
-            // Deposit^
+            // Deposit
         // service charge Checking
             // write checks
             // receive (and validate) checks
