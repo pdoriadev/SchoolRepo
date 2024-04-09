@@ -84,7 +84,7 @@ public:
         int currentMonth = gCurrentMonth();
 
         int monthsSinceCreation = 0;
-        if (yearCreated > currentYear)
+        if (currentYear > yearCreated)
         {
             int monthsYearCreated = 13 - monthCreated;
             int monthsInbetweenYears = (currentYear - yearCreated - 1) * 12;
@@ -109,8 +109,8 @@ public:
     {
         if (gMonthsTilMatured() > 0)
         {
-            return result (false, "CD has " + std::to_string(gMonthsTilMatured())
-                           + " months til matured.");
+            return result (false, "CD cannot withdraw yet. CD has "
+                           + std::to_string(gMonthsTilMatured()) + " months til matured.");
         }
 
         return bankAccount::withdraw(amount);
