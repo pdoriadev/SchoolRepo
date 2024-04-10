@@ -1,0 +1,9 @@
+*.pdf
+
+####################
+# QTCreator ignores
+*.pro
+*.pro.user
+# ignores all directories that start with "Build" or "build"
+*/[Bb]uild*/
+
