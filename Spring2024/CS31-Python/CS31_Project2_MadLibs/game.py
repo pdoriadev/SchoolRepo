@@ -1,0 +1,4 @@
+
+
+def playGame():
+    return True
