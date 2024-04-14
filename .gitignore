@@ -12,6 +12,7 @@
 ###################
 # Visual Studio ignores
 *.pyproj
+**/__pycache__/
 *.sln
 **/.vs/
 
