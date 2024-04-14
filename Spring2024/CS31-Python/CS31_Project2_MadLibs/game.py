@@ -1,9 +1,9 @@
 def getInputWordAndValidate(inputMessage):
     while True:
-        str = input(inputMessage)
+        words = input(inputMessage)
 
         # no input
-        if (str.len() == 0):
+        if (len(words) == 0):
             print("INVALID INPUT. Please input either letters, dashes, or spaces.")
             continue
 
@@ -11,34 +11,41 @@ def getInputWordAndValidate(inputMessage):
             
         #find all spaces
         startSearchPos = 0
-        while True:
-            pos = string.find(' ', startSearchPos)
+        while startSearchPos < len(words):
+            pos = words.find(' ', startSearchPos)
             if (pos == -1):
                 break
 
             validCharPos.append(pos)
-            startSearchPos = pos
+            startSearchPos = pos + 1
             
         #find all dashes
         startSearchPos = 0
-        while True:
-            pos = string.find('-', startSearchPos)
+        while startSearchPos < len(words):
+            pos = words.find('-', startSearchPos)
             if (pos == -1):
                 break
             
             validCharPos.append(pos)
-            startSearchPos = pos
-        
-        # find all letters
+            startSearchPos = pos + 1
+          
+
+        # find all letters and numbers
         pos = 0
+        anyLetters = False
         while True:
-            if(pos == str.len()):
+            if(pos == len(words)):
                 break
 
-            if (str[pos].isalpha()):
+            if (words[pos].isalnum()):
                 validCharPos.append(pos)
+                anyLetters = True
 
             pos+=1
+
+        if (anyLetters == False):
+            print("There are no letters in your word, which mean it ain't a word. Try again.")
+            continue
 
         # If valid chars list's length is equal to string length,
         #   then all characters in string are valid. If valid chars
@@ -47,10 +54,10 @@ def getInputWordAndValidate(inputMessage):
         # If the valid chars list's length is greater than the
         #   string length, then we have encountered some unexpected
         #   behavior.
-        if (validCharPos.len() == str.len()):
-            return str
+        if (len(validCharPos) == len(words)):
+            return words
         
-        assert validCharPos.len() < str.len(), "Number of valid characters is greater than characters in string. IMPOSSIBLE. Must be logic issue."
+        assert len(validCharPos) < (words), "Number of valid characters is greater than characters in string. IMPOSSIBLE. Must be logic issue."
             
         print("INVALID INPUT. Please input either letters, dashes, or spaces.")
         
@@ -77,7 +84,7 @@ def gameDriver(name):
                 "\n\t1 - Game 1: " + game1Title + \
                 "\n\t2 - Game 2: " + game2Title + \
                 "\n\nGame Choice: ")
-        if (int(choice) != 1 and int(choice) != 2):
+        if (choice != '1' and choice != '2'):
             print("INVALID INPUT - That doesn't match any of the games we have - *you silly bean*.")
             continue
 
@@ -91,14 +98,15 @@ def gameDriver(name):
         verb1 = getInputWordAndValidate("Enter a verb:")
         verb2 = getInputWordAndValidate("Enter a verb:")
         noun1 = getInputWordAndValidate("Enter a plural noun: ")
-        number1 = input("Enter a number: ")
-        adjective1 = input("Enter an adjective: ")
-        dangerItem1, dangerItem2 = input("Enter two *dangerous items* separated by a space: ").split()
-        emotion1 = input("Enter an emotion: ")
-        weapon = input("Enter a weapon: ")
-        groupOfPeople1 = input("Enter any group of people: ")
+        number1 = getInputDigitAndValidate("Enter a number: ")
+        adjective1 = getInputWordAndValidate("Enter an adjective: ")
+        dangerItem1 = getInputWordAndValidate("Enter a *dangerous item/thing*: ")
+        dangerItem2 = getInputWordAndValidate("Enter another *dangerous item/thing*: ")
+        emotion1 = getInputWordAndValidate("Enter an emotion: ")
+        weapon = getInputWordAndValidate("Enter a weapon: ")
+        groupOfPeople1 = getInputWordAndValidate("Enter any group of people: ")
 
-        groupOfPeople1 = groupOfPeople[0].upper() + groupOfPeople1[1:]
+        groupOfPeople1 = groupOfPeople1[0].upper() + groupOfPeople1[1:]
 
         print("\nYOUR ORIGINAL STORY HAS BEEN PROCESSED")
         input("\nPRESS ANY KEY TO REAP THE REWARDS OF YOUR CREATIVITY")
@@ -143,14 +151,14 @@ def gameDriver(name):
         print("=======================================")
         print("== " + game2Title + " ==")
         print("=======================================\n")
-        firstName = input("Enter a first name: ")
-        lastName = input("Enter a last name: ")
-        noun1 = input("Enter a noun: ")
-        hostileForce = input ("Enter the name of what you consider a hostile force (fiction, or otherwise): ")
-        againstHostile = input("Enter the name of something against the hostile force (fiction, or otherwise): ")
-        vehicle = input ("Enter a vehicle: ")
-        place = input("Enter a place: ")
-        electronicDevice = input("Enter an electronic device: ")
+        firstName = getInputWordAndValidate("Enter a first name: ")
+        lastName = getInputWordAndValidate("Enter a last name: ")
+        noun1 = getInputWordAndValidate("Enter a noun: ")
+        hostileForce = getInputWordAndValidate("Enter the name of what you consider a hostile force (fiction, or otherwise): ")
+        againstHostile = getInputWordAndValidate("Enter the name of something against the hostile force (fiction, or otherwise): ")
+        vehicle = getInputWordAndValidate("Enter a vehicle: ")
+        place = getInputWordAndValidate("Enter a place: ")
+        electronicDevice = getInputWordAndValidate("Enter an electronic device: ")
 
         print("\nYOUR ORIGINAL STORY HAS BEEN PROCESSED")
         input("\nPRESS ANY KEY TO REAP THE REWARDS OF YOUR CREATIVITY")
@@ -178,7 +186,8 @@ def gameDriver(name):
             "\non " + place + ". This is our most"                          \
             "\ndesperate hour. Help me, " + firstName +                     \
             "\n" + lastName + ", you're my only hope.")
-
-print("\n========================== THE END ===============================")
-input("\nPress any key to continue.")
     
+    print("\n========================== THE END ===============================")
+    input("\nPress any key to continue.")
+    
+

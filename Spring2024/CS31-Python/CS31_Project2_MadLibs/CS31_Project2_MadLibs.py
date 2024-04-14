@@ -13,11 +13,11 @@
 #           each story please. Your stories should be at a minimum of 4 sentences. 
 #     *Ask if the user would like to play again (use a loop for this). Validate the user input as 
 #           being y/n. If they input something that is NOT one of your options, ask the player to try again. 
-#     Validate the user input for the story selection. If they input something that is NOT one of your options, 
+#     *Validate the user input for the story selection. If they input something that is NOT one of your options, 
 #           ask the player to try again. 
 #     *Create a counter to record how many stories they have created. Display the counter before 
 #           asking if they would like to play again. 
-#     Spend time formatting your output so that it looks nice. 
+#     *Spend time formatting your output so that it looks nice. 
 
 # To Submit
 
@@ -63,15 +63,19 @@ def main():
     print ("================================")
     
     while (wouldYouLikeToPlay()):
-        print("\n\n")
-        print("======== Name, Please? =========")    
+        print("\n======== Name, Please? =========")    
     
         name = input("Incredible! Now, can I get your name: ")         
         game.gameDriver(name)
         global storiesMade 
         storiesMade += 1
         print("================================")
-        print("\nYou've created " + storiesMade + " stories.")
+        if (storiesMade > 1):
+            print("\nYou've created " + str(storiesMade) + " stories.")
+        else:
+            print("\nYou've created " + str(storiesMade) + " story.")
+        
+        input ("\nInput any key to continue. . .")
     
     goodbye()
 
