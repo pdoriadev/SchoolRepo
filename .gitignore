@@ -3,7 +3,16 @@
 ####################
 # QTCreator ignores
 *.pro
+*/Project-1/*.user
 *.pro.user
 # ignores all directories that start with "Build" or "build"
 */[Bb]uild*/
+
+
+###################
+# Visual Studio ignores
+*.pyproj
+**/__pycache__/
+*.sln
+**/.vs/
 
