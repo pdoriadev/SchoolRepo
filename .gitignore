@@ -3,7 +3,8 @@
 ####################
 # QTCreator ignores
 *.pro
-*.pro.user
-# ignores all directories that start with "Build" or "build"
-*/[Bb]uild*/
+*/Project-1/*.user
+*.pyproj
+*.sln
+*/.vs
 
