@@ -29,9 +29,9 @@ SIZE_TYPES = ["COLOSSAL", "MONSTROUS", "AGILE"]
 SIZE_TYPE_IN_METERS = [100, 60, 10]
 
 # Traits given based on size. Kaiju of their given size receive all these traits
-COLOSSAL_TRAITS = ["Slow Movement", "Ignore Half-damage", "Cannot dodge", "Carry Buildings"]
-MONSTROUS_TRAITS = ["Mid Movement", "Dodge", "Leap"]
-AGILE_TRAITS = ["Dextrous", "Dodge", "Climb", "Hide", "Leap", "Takes Double Damage"]
+COLOSSAL_TRAITS = ["Lumbering", "Ignore Half-damage", "Cannot dodge", "Carry Buildings"]
+MONSTROUS_TRAITS = ["Dexterous", "Dodge", "Leap"]
+AGILE_TRAITS = ["Acrobatic", "Dodge", "Climb", "Hide", "Leap", "Takes Double Damage"]
 
 # Different moves depending on the traversal type
 TRAVERSAL_TYPES = ["AERIAL ", "AQUATIC", "DIGGING"]
@@ -46,12 +46,8 @@ SPIRIT_MOVES = ["Channel Past Lives", "Transfer Spirit", "Biting Essence", "Medi
 ATOMIC_MOVES = ["Atomic Breath", "Absorb Energy", "Atomic Immolation", "Fast Healing"]
 ROBOT_MOVES = ["Finger-missiles", "Force-field", "Eye-beams", "Shocking Grasp", "Emergency Repair"]               
 
-legs = random.randrange(0,8,2)
-arms = random.randrange(2,4,2)
-heads = random.randrange(1, 3, 2)
-
-
-# Every kaiju has 4 primary traits:
+# Every kaiju has 4 randomly selected primary traits which can randomly select 
+#   additional identifiers depending on the given trait (i.e. size vs Kaiju Type):
 # 1.  Size (inherits all traits of specified size)
 # 2.  Traversal Type (inherits all tratis of specified size)
 # 3.  Kaiju Type 1 (gives monster identity beyond size or traversal. Defines moves for combat or otherwise)
@@ -59,7 +55,7 @@ heads = random.randrange(1, 3, 2)
 # Note: Each kaiju has two kaijuTypes. This gives each kaiju a unique identity.
 #          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
 # Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
-def generateKaijuTraits():
+def generatePrimaryTraits():
     
     # Randomly select size traits for kaiju
     size = random.randrange(0, len(SIZE_TYPES) - 1, 1)
@@ -161,23 +157,34 @@ def generateKaijuTraits():
     
     return kaijuTraits
 
-    
-# prints generated kaiju data to the console for the user to see
-def printKaijuData(name, traits):
+def generateLimbsAndHeads():
+    limbsAndHeads = []
+    limbsAndHeads.append(random.randrange(0,8,2))
+    limbsAndHeads.append(random.randrange(2,4,2))
+    limbsAndHeads.append(random.randrange(1, 3, 2))
+    return limbsAndHeads
+
+
+# prints generated kaiju data to the console for the user to see. 
+#   Selects data from nested lists depending on the desired stat for output.
+def printKaijuData(name, traits, limbsAndHeads):
     print("================ KAIJU GENERATED ================\n")
     
-    print("\nNAME:\t\t\t" + name)
-    
+    print("NAME:\t\t\t" + name)
+    print("LEGS:\t\t\t" + str(limbsAndHeads[0]))
+    print("ARMS:\t\t\t" + str(limbsAndHeads[1]))
+    print("HEADS:\t\t\t" + str(limbsAndHeads[2]))
+
     print("\nSIZE:\t\t\t" + traits[0][0])
     index = 0
     while index < len(traits[0][1]):
-        print(traits[0][0] + " TRAIT " + str(index) + ":\t" + traits[0][1][index])
+        print(traits[0][0] + " TRAIT " + str(index+1) + ":\t" + traits[0][1][index])
         index+=1
     
     print("\nTRAVERSAL TYPE:\t\t" + traits[1][0])
     index = 0
     while index < len(traits[1][1]):
-        print(traits[1][0] + " TRAIT " + str(index) + ":\t" + traits[1][1][index])
+        print(traits[1][0] + " TRAIT " + str(index+1) + ":\t" + traits[1][1][index])
         index+=1
         
     print("\nTYPE 1:\t\t\t" + traits[2][0])
@@ -205,17 +212,19 @@ def main():
     
     shouldGenerate = input("Would you like to generate a kaiju? " + \
                                 "Input 'n' for no. Input anything else for yes: ")
-    while shouldGenerate != "n" :
-        kaijuTraits = generateKaijuTraits()
-        name = input ("What would you like to name your kaiju: ")
+    # main loop for kaiju generation
+    while shouldGenerate.lower() != "n" :
+        name = str(input ("What would you like to name your kaiju: "))
         name = name.upper()
-        printKaijuData(name, kaijuTraits)
+        kaijuTraits = generatePrimaryTraits()
+        limbsAndHeads = generateLimbsAndHeads()
+        printKaijuData(name, kaijuTraits, limbsAndHeads)
         
         shouldGenerate = input("\n\nWould you like to create a new kaiju? " + \
                                 "Input 'n' for no. Input anything else for yes: ")
         
 
-    print("\n\nRAWR... bye")
+    print("\n\nRAWR...")
     
     
     
