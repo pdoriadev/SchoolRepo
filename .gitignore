@@ -18,9 +18,9 @@
 ##################
 # Visual Studio file extension ignores
 *.pyproj
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
+**/*.vcxproj
+**/*.vcxproj.filters
+**/*.vcxproj.user
 *.sln
 
 
