@@ -10,9 +10,17 @@
 
 
 ###################
-# Visual Studio ignores
-*.pyproj
+# Visual Studio directory ignores
 **/__pycache__/
-*.sln
 **/.vs/
+**/x64/
+
+##################
+# Visual Studio file extension ignores
+*.pyproj
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+
 
