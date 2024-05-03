@@ -7,11 +7,11 @@ Input file provided
 
 Design and implement stock object
 
-Call the class thta captures the various characteristics of a stock object
+Call the class that captures the various characteristics of a stock object
 	store:
-		stock sybmol
-		stock price
-		number of shares
+		*stock sybmol
+		*stock price
+		*number of shares
 	output:
 		opening price
 		closing price
@@ -25,15 +25,17 @@ Call the class thta captures the various characteristics of a stock object
 		show different prices
 		calculate and print percent gain/loss
 		Show number of shares
-			Overload relational operators to compare two stock objects by their symbols
-				Compare closing price
-			Overload insertion operator, <<, for easy output
-			Overloas stream extraction operator, >>, for easy input
+		Overload relational operators to compare two stock objects by their symbols
+			Compare closing price
+		Overload insertion operator, <<, for easy output
+		Overloas stream extraction operator, >>, for easy input
 i.e.
 	infile >> myStock;
 	reads data from the input file and stores it in the object "myStock".
 
 */
+
+
 
 #include <iostream>
 #include <iomanip>
@@ -41,7 +43,7 @@ i.e.
 #include <fstream>
 #include "round.h"
 
-class stockType
+class stock
 {
 private:
 	std::string symbol = "";
@@ -56,8 +58,10 @@ private:
 
 public:
 
-	stockType() { }
-	stockType(double opening, double closing, double high, double low,
+	stock() { }
+
+	// sets stock information
+	stock(double opening, double closing, double high, double low,
 		double previous, double percent, int shares) {
 
 		openingPrice = opening;
@@ -70,20 +74,39 @@ public:
 		totalShares = shares;
 	}
 
+	// getters
+	double getOpeningPrice()	{ return openingPrice; }
+	double getClosingPrice()	{ return closingPrice; }
+	double getHighPrice()		{ return highPrice; }
+	double getPreviousPrice()	{ return previousPrice; }
+	double getPercentGainLoss() { return percentGainLoss; }
+	double getSharePrice()		{ return sharePrice; }
+	int getTotalShares()		{ return totalShares; }
+
 	void printStockInfo()
 	{
 		// need to right/left justify and fill where needed. 
-		std::cout << symbol << openingPrice << closingPrice << highPrice << previousPrice
-			<< percentGainLoss << sharePrice << totalShares;
+		std::cout << symbol << std::to_string(openingPrice) << std::to_string(closingPrice) << std::to_string(highPrice) 
+			<< std::to_string(previousPrice) << std::to_string(percentGainLoss) << std::to_string(sharePrice)
+			<< std::to_string(totalShares);
 	}
 
-	double getOpeningPrice() { return openingPrice; }
-	double getClosingPrice() { return closingPrice; }
-	double getHighPrice() { return highPrice; }
-	double getPreviousPrice() { return previousPrice; }
-	double getPercentGainLoss() { return percentGainLoss; }
-	double getSharePrice() { return sharePrice; }
-	int getTotalShares() { return totalShares; }
+	// print functions
+	void printSymbol()			{ std::cout << symbol; }
+	void printOpeningPrice()	{ std::cout << std::to_string(openingPrice);  }
+	void printClosingPrice()	{ std::cout << std::to_string(closingPrice); }
+	void printSharePrice()		{ std::cout << std::to_string(sharePrice); }
+	void printHighPrice()		{ std::cout << std::to_string(highPrice); }
+	void printLowPrice()		{ std::cout << std::to_string(lowPrice); }
+	void printPreviousPrice()	{ std::cout << std::to_string(previousPrice); }
+	void printPercentGainLoss() { std::cout << std::to_string(percentGainLoss); }
+	void printTotalShares()		{ std::cout << std::to_string(totalShares); }
+		
+	/*set stock information
+		*print stock info
+		*show different prices
+		calculate and print percent gain / loss?? BUT percentGainLoss is given???
+		*Show number of shares*/
 };
 
 void printStocks()
@@ -102,7 +125,7 @@ void printStocks()
 int main()
 {
 
-	stockType stocks[5];
+	stock stocks[5];
 
 	std::ifstream file;
 	file.open("stock.txt");
@@ -136,7 +159,7 @@ int main()
 			else assert("Case not handled");
 		}
 
-		stocks[index] = stockType(openingPrice, closingPrice, highPrice, lowPrice,
+		stocks[index] = stock(openingPrice, closingPrice, highPrice, lowPrice,
 			previousPrice, percentGainLoss, totalShares);
 
 		index++;
