@@ -1,0 +1,40 @@
+HW 9
+=====================
+
+--------------------------------------------------------------------------
+Problem 1:
+
+addi $sp, $sp, -20 	# stack frame equal to [4 arguments + 1 return address] * 4
+sw $a0, 0($sp)		# store a to stack
+sw $a1, 4($sp)		# store b to stack
+sw $a2, 8($sp)		# store c to stack
+sw $a3, 12($sp)		# store d to stack
+sw $ra, 16($sp)		# store return address for caller function
+jal func   	 	# func(a, b)
+
+add $a0, $v0, $zero 	# setting first argument equal to returned value from func(a,b)
+lw $a2, 8($sp)		# load c
+lw $a3, 12($sp)		# load d
+add $a1, $a2, $a3 	# setting argument two equal to c+d
+sw $a2, 8($sp)		# store c back on stack
+sw $a3, 12($sp)		# store d back on stack
+jal func		# func(func(a,b), c + d)
+
+# restore stack for caller
+lw $ra, 16($sp)		# load caller return address back into $ra register
+addi $sp, $sp, 20
+
+jr $ra # return		# return to caller function’s given return address
+
+--------------------------------------------------------------------------
+Problem 2:
+
+$0 	→ N.A.
+$v 	→ N.A.
+$a 	→ caller
+$t 	→ caller
+$s 	→ callee
+$sp 	→ callee
+$ra 	→ caller
+
+--------------------------------------------------------------------------
