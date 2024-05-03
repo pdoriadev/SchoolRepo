@@ -40,6 +40,7 @@ i.e.
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <vector>
 #include <fstream>
 #include "round.h"
 
@@ -75,6 +76,7 @@ public:
 	}
 
 	// getters
+	std::string getSymbol()		{ return symbol; }
 	double getOpeningPrice()	{ return openingPrice; }
 	double getClosingPrice()	{ return closingPrice; }
 	double getHighPrice()		{ return highPrice; }
@@ -109,7 +111,7 @@ public:
 		*Show number of shares*/
 };
 
-void printStocks()
+void printStocks(stock *stockArr, int arrSize)
 {
 	double closingAssets;
 
@@ -119,7 +121,76 @@ void printStocks()
 		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
 		<< std::endl;
 
+	for (int i = 0; i < arrSize; i++)
+	{
+		stockArr[i].printStockInfo();
+	}
+
 	std::cout << "Closing Assets: ";
+}
+
+void printStocksBySymbol(stock *stockArr, int arrSize)
+{
+	double closingAssets;
+
+	std::cout << "**********   Financial Report	  **********\n"
+		<< "Stock				Today				Previous  Percent\n"
+		<< "Symbol   Open    Close   High    Low    Close     Gain          Volume\n"
+		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
+		<< std::endl;
+
+	std::vector<std::string> symbolsUsed;
+	for (int i = 0; i < arrSize; i++)
+	{
+		// if already printed symbol, go to next item in array
+		for (int j = 0; j < symbolsUsed.size(); j++)
+		{
+			if (stockArr[i].getSymbol() == symbolsUsed[j])
+				continue;
+		}
+
+		for (int j = i+1; j < arrSize; j++)
+		{
+			if (stockArr[i].getSymbol() == stockArr[j].getSymbol())
+			{
+				stockArr[i].printStockInfo();
+			}
+		}
+		
+		symbolsUsed.push_back(stockArr[i].getSymbol());
+	}
+
+	std::cout << "Closing Assets: ";
+}
+
+void printStocksByPercentGain(stock *stockArr, int arrSize)
+{
+	double closingAssets;
+
+	std::cout << "**********   Financial Report	  **********\n"
+		<< "Stock				Today				Previous  Percent\n"
+		<< "Symbol   Open    Close   High    Low    Close     Gain          Volume\n"
+		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
+		<< std::endl;
+
+	int *percentGainIndexes = new int [arrSize];
+	for (int i = 0; i < arrSize; i++)
+	{
+		percentGainIndexes[arrSize - i - 1];
+
+		for (int j = 0; j < i; j++)
+		{
+			if (stockArr[i].getPercentGainLoss() < stockArr[percentGainIndexes[j]].getPercentGainLoss())
+			{
+				for (int k = j; k < arrSize - j; k++)
+				{
+					
+				}
+			}
+		}
+	}
+
+	delete [] percentGainIndexes;
 }
 
 int main()
@@ -149,13 +220,13 @@ int main()
 		{
 			file >> variable;
 			if (i == 0) symbol = variable;
-			else if (i == 1) openingPrice = std::stod(variable);
-			else if (i == 2) closingPrice = std::stod(variable);
-			else if (i == 3) highPrice = std::stod(variable);
-			else if (i == 4) lowPrice = std::stod(variable);
-			else if (i == 5) previousPrice = std::stod(variable);
-			else if (i == 6) percentGainLoss = std::stod(variable);
-			else if (i == 7) totalShares = std::stoi(variable);
+			else if (i == 1) openingPrice		= std::stod(variable);
+			else if (i == 2) closingPrice		= std::stod(variable);
+			else if (i == 3) highPrice			= std::stod(variable);
+			else if (i == 4) lowPrice			= std::stod(variable);
+			else if (i == 5) previousPrice		= std::stod(variable);
+			else if (i == 6) percentGainLoss	= std::stod(variable);
+			else if (i == 7) totalShares		= std::stoi(variable);
 			else assert("Case not handled");
 		}
 
@@ -167,5 +238,7 @@ int main()
 
 	file.close();
 
+
+	
 
 }
