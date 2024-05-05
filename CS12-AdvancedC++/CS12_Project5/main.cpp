@@ -35,14 +35,21 @@ i.e.
 
 */
 
-
-
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <vector>
 #include <fstream>
 #include "round.h"
+
+void printStockInfoHeader()
+{
+	std::cout << "**********   Financial Report	  **********\n"
+		<< "Stock				Today				 Previous  Percent\n"
+		<< "Symbol   Open    Close   High    Low     Close     Gain         Volume\n"
+		<< "_______  ______  ______  ______  ______  ________  ________    _______\n"
+		<< std::endl;
+}
 
 class stockType
 {
@@ -62,9 +69,10 @@ public:
 	stockType() { }
 
 	// sets stock information
-	stockType(double opening, double closing, double high, double low,
+	stockType(std::string _symbol, double opening, double closing, double high, double low,
 		double previous, int shares) {
 
+		symbol = _symbol;
 		openingPrice = opening;
 		closingPrice = closing;
 		sharePrice = closing;
@@ -88,15 +96,23 @@ public:
 
 	void printStockInfo()
 	{
-		// TODO need to right/left justify and fill where needed. 
-		std::cout << symbol 
-			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(openingPrice))
-			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(closingPrice))
-			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(highPrice))
-			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(previousPrice))
-			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(percentGainLoss)) 
-			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(sharePrice))
-			<< std::to_string(totalShares);
+		std::string openStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(openingPrice));
+		std::string closeStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(closingPrice));
+		std::string highStr  = "$" + roundToLeastSignificantOrHundredth(std::to_string(highPrice));
+		std::string lowStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(lowPrice));
+		std::string previousStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(previousPrice));
+		std::string percentStr = roundToLeastSignificantOrHundredth(std::to_string(percentGainLoss)) + "%";
+		std::string sharePriceStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(sharePrice));
+
+		std::cout << std::setw(7) << symbol 
+			<< std::setw(6) << openStr << "  "
+			<< std::setw(6) << closeStr << "  "
+			<< std::setw(6) << highStr << "  "
+			<< std::setw(6) << lowStr << "  "
+			<< std::setw(6) << previousStr << "  "
+			<< std::setw(6) << percentStr << "  "
+			<< std::setw(6) << sharePriceStr << "  "
+			<< roundToLeastSignificantOrHundredth(std::to_string(totalShares));
 	}
 };
 
@@ -113,11 +129,7 @@ namespace printTypes
 void printStocks(stockType *stockArr, int arrSize, printTypes::type type)
 {
 
-	std::cout << "**********   Financial Report	  **********\n"
-		<< "Stock				Today				Previous  Percent\n"
-		<< "Symbol   Open    Close   High    Low    Close     Gain          Volume\n"
-		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
-		<< std::endl;
+	printStockInfoHeader();
 
 	switch (type)
 	{
@@ -183,7 +195,6 @@ void printStocks(stockType *stockArr, int arrSize, printTypes::type type)
 
 int main()
 {
-
 	stockType stocks[5];
 
 	std::ifstream file;
@@ -216,7 +227,7 @@ int main()
 			else assert("Case not handled");
 		}
 
-		stocks[index] = stockType(openingPrice, closingPrice, highPrice, lowPrice,
+		stocks[index] = stockType(symbol, openingPrice, closingPrice, highPrice, lowPrice,
 			previousPrice, totalShares);
 
 		index++;
