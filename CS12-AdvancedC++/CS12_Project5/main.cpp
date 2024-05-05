@@ -73,7 +73,7 @@ public:
 		previousPrice = previous;
 		totalShares = shares;
 
-		percentGainLoss = ((opening - closing) / opening) * 100;
+		percentGainLoss = ((closing - opening) / opening) * 100;
 	}
 
 	// getters
@@ -82,15 +82,20 @@ public:
 	double getClosingPrice()	{ return closingPrice; }
 	double getHighPrice()		{ return highPrice; }
 	double getPreviousPrice()	{ return previousPrice; }
-	double getPercentGainLoss() { return roundToLeastSignificantOrHundredth(std::to_string(percentGainLoss));}
+	double getPercentGainLoss() { return percentGainLoss;}
 	double getSharePrice()		{ return sharePrice; }
 	int getTotalShares()		{ return totalShares; }
 
 	void printStockInfo()
 	{
-		// need to right/left justify and fill where needed. 
-		std::cout << symbol << std::to_string(openingPrice) << std::to_string(closingPrice) << std::to_string(highPrice) 
-			<< std::to_string(previousPrice) << std::to_string(percentGainLoss) << std::to_string(sharePrice)
+		// TODO need to right/left justify and fill where needed. 
+		std::cout << symbol 
+			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(openingPrice))
+			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(closingPrice))
+			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(highPrice))
+			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(previousPrice))
+			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(percentGainLoss)) 
+			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(sharePrice))
 			<< std::to_string(totalShares);
 	}
 
@@ -112,9 +117,18 @@ public:
 		*Show number of shares*/
 };
 
-void printStocks(stockType *stockArr, int arrSize)
+namespace printTypes
 {
-	double closingAssets = 0;
+	enum type
+	{
+		AS_IS,	//0
+		SYMBOL,	//1 
+		PERCENT	//2
+	};
+}
+
+void printStocks(stockType *stockArr, int arrSize, printTypes::type type)
+{
 
 	std::cout << "**********   Financial Report	  **********\n"
 		<< "Stock				Today				Previous  Percent\n"
@@ -122,87 +136,66 @@ void printStocks(stockType *stockArr, int arrSize)
 		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
 		<< std::endl;
 
+	switch (type)
+	{
+		case printTypes::AS_IS:
+			// print in order
+			break;
+		case printTypes::SYMBOL:
+			for (int i = 0; i < arrSize - 1; i++)
+			{
+				int insertPos = 0;
+				for (int j = i + 1; j > -1; j--)
+				{
+					if (stockArr[i + 1].getSymbol() > stockArr[j].getSymbol())
+					{
+						insertPos = j + 1;
+						break;
+					}
+				}
+				stockType temp = stockArr[i + 1];
+
+				for (int p = i; p >= insertPos; p--)
+				{
+					stockArr[p + 1] = stockArr[p];
+				}
+				stockArr[insertPos] = temp;
+			}
+			break;
+		case printTypes::PERCENT:
+			for (int i = 0; i < arrSize - 1; i++)
+			{
+				int insertPos = 0;
+				for (int j = i + 1; j > -1; j--)
+				{
+					if (stockArr[i + 1].getPercentGainLoss() > stockArr[j].getPercentGainLoss())
+					{
+						insertPos = j + 1;
+						break;
+					}
+				}
+				stockType temp = stockArr[i + 1];
+
+				for (int p = i; p >= insertPos; p--)
+				{
+					stockArr[p + 1] = stockArr[p];
+				}
+				stockArr[insertPos] = temp;
+			}
+			break;
+		default:
+			assert("Case unaccounted for.");
+	}
+
+	double closingAssets = 0;
 	for (int i = 0; i < arrSize; i++)
 	{
 		stockArr[i].printStockInfo();
-
+		std::cout << "\n";
 		closingAssets += stockArr[i].getSharePrice() * stockArr[i].getTotalShares();
 	} 
 
-	std::cout << "Closing Assets: ";
-}
-
-void printStocksBySymbol(stockType *stockArr, int arrSize)
-{
-	double closingAssets;
-
-	std::cout << "**********   Financial Report	 (by Percent Gain)  **********\n"
-		<< "Stock				Today				Previous  Percent\n"
-		<< "Symbol   Open    Close   High    Low    Close     Gain          Volume\n"
-		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
-		<< std::endl;
-	
-	for (int i = 0; i < arrSize - 1; i++)
-	{
-		int insertPos = 0;
-		for (int j = i + 1; j > -1; j--)
-		{
-			if (stockArr[i + 1].getSymbol() > stockArr[j].getSymbol())
-			{
-				insertPos = j + 1;
-				break;
-			}
-		}
-		stockType temp = stockArr[i + 1];
-
-		for (int p = i; p >= insertPos; p--)
-		{
-			stockArr[p + 1] = stockArr[p];
-		}
-		stockArr[insertPos] = temp;
-	}
-
-	for (int i = 0; i < arrSize; i++)
-	{
-		stockArr->printStockInfo();
-	}
-}
-
-void printStocksByPercentGain(stockType *stockArr, int arrSize)
-{
-	double closingAssets = 0;
-
-	std::cout << "**********   Financial Report	 (by Percent Gain)  **********\n"
-		<< "Stock				Today				Previous  Percent\n"
-		<< "Symbol   Open    Close   High    Low    Close     Gain          Volume\n"
-		<< "_______  ______  ______  ______  _____  ________  __________    _______\n"
-		<< std::endl;
-
-	for (int i = 0; i < arrSize - 1; i++)
-	{
-		int insertPos = 0;
-		for (int j = i + 1; j > -1; j--)
-		{
-			if (stockArr[i+1].getPercentGainLoss() > stockArr[j].getPercentGainLoss())
-			{
-				insertPos = j + 1;
-				break;
-			}
-		}
-		stockType temp = stockArr[i + 1];
-
-		for (int p = i; p >= insertPos; p--)
-		{
-			stockArr[p + 1] = stockArr[p];
-		}
-		stockArr[insertPos] = temp;
-	}
-
-	for (int i = 0; i < arrSize; i++)
-	{
-		stockArr->printStockInfo();
-		closingAssets += stockArr[i].getSharePrice() * stockArr[i].getTotalShares();
-	}
+	std::cout << "\nClosing Assets: $" << std::to_string(closingAssets) << "\n";
 }
 
 int main()
@@ -247,8 +240,7 @@ int main()
 	}
 	file.close();
 
-
-	printStocksByPercentGain(stocks, 5);
-	printStocksBySymbol(stocks, 5);
-
+	printStocks(stocks, 5, printTypes::AS_IS);
+	printStocks(stocks, 5, printTypes::SYMBOL);
+	printStocks(stocks, 5, printTypes::PERCENT);
 }
