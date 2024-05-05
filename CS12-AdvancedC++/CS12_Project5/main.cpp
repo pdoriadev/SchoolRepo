@@ -98,23 +98,6 @@ public:
 			<< "$" << roundToLeastSignificantOrHundredth(std::to_string(sharePrice))
 			<< std::to_string(totalShares);
 	}
-
-	// print functions
-	void printSymbol()			{ std::cout << symbol; }
-	void printOpeningPrice()	{ std::cout << std::to_string(openingPrice);  }
-	void printClosingPrice()	{ std::cout << std::to_string(closingPrice); }
-	void printSharePrice()		{ std::cout << std::to_string(sharePrice); }
-	void printHighPrice()		{ std::cout << std::to_string(highPrice); }
-	void printLowPrice()		{ std::cout << std::to_string(lowPrice); }
-	void printPreviousPrice()	{ std::cout << std::to_string(previousPrice); }
-	void printPercentGainLoss() { std::cout << std::to_string(percentGainLoss); }
-	void printTotalShares()		{ std::cout << std::to_string(totalShares); }
-		
-	/*set stock information
-		*print stock info
-		*show different prices
-		calculate and print percent gain / loss?? BUT percentGainLoss is given???
-		*Show number of shares*/
 };
 
 namespace printTypes
