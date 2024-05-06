@@ -51,6 +51,7 @@ void printStockInfoHeader()
 		<< std::endl;
 }
 
+
 class stockType
 {
 private:
@@ -64,10 +65,16 @@ private:
 	double percentGainLoss = -1;
 	int totalShares = -1;
 
+	std::string openStr;
+	std::string closeStr;
+	std::string highStr;
+	std::string lowStr;
+	std::string previousStr;
+	std::string percentStr;
+	std::string sharePriceStr;
+
 public:
-
 	stockType() { }
-
 	// sets stock information
 	stockType(std::string _symbol, double opening, double closing, double high, double low,
 		double previous, int shares) {
@@ -82,29 +89,109 @@ public:
 		totalShares = shares;
 
 		percentGainLoss = ((closing - opening) / opening) * 100;
+
+		openStr = "$" + roundToPlace(std::to_string(openingPrice), 2);
+		closeStr = "$" + roundToPlace(std::to_string(closingPrice), 2);
+		highStr = "$" + roundToPlace(std::to_string(highPrice), 2);
+		lowStr = "$" + roundToPlace(std::to_string(lowPrice), 2);
+		previousStr = "$" + roundToPlace(std::to_string(previousPrice), 2);
+		percentStr = roundToPlace(std::to_string(percentGainLoss), 2) + "%";
+		sharePriceStr = "$" + roundToPlace(std::to_string(sharePrice), 2);
+	}
+
+	// assignment operator overload
+	void operator=( const stockType& s)
+	{
+		symbol = s.getSymbol();
+		openingPrice = s.getOpeningPrice();
+		closingPrice = s.getClosingPrice();
+		sharePrice = s.getSharePrice();
+		highPrice = s.getHighPrice();
+		lowPrice = s.getLowPrice();
+		previousPrice = s.getPreviousPrice();
+		totalShares = s.getTotalShares();
+		percentGainLoss = s.getPercentGainLoss();
+
+		openStr = "$" + roundToPlace(std::to_string(openingPrice), 2);
+		closeStr = "$" + roundToPlace(std::to_string(closingPrice), 2);
+		highStr = "$" + roundToPlace(std::to_string(highPrice), 2);
+		lowStr = "$" + roundToPlace(std::to_string(lowPrice), 2);
+		previousStr = "$" + roundToPlace(std::to_string(previousPrice), 2);
+		percentStr = roundToPlace(std::to_string(percentGainLoss), 2) + "%";
+		sharePriceStr = "$" + roundToPlace(std::to_string(sharePrice), 2);
+	}
+
+	// relational operator overloads
+	bool operator==(stockType otherStock)
+	{
+		if (symbol == otherStock.getSymbol())
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	bool operator!=(stockType otherStock)
+	{
+		if (symbol != otherStock.getSymbol())
+		{
+			return true;
+		}
+
+		return false;
+	}
+	bool operator>(stockType otherStock)
+	{
+		if (symbol > otherStock.getSymbol())
+		{
+			return true;
+		}
+
+		return false;
+	}
+	bool operator<(stockType otherStock)
+	{
+		if (symbol > otherStock.getSymbol())
+		{
+			return true;
+		}
+
+		return false;
+	}
+	bool operator>=(stockType otherStock)
+	{
+		if (symbol >= otherStock.getSymbol())
+		{
+			return true;
+		}
+
+		return false;
+	}
+	bool operator<=(stockType otherStock)
+	{
+		if (symbol <= otherStock.getSymbol())
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	// getters
-	std::string getSymbol()		{ return symbol; }
-	double getOpeningPrice()	{ return openingPrice; }
-	double getClosingPrice()	{ return closingPrice; }
-	double getHighPrice()		{ return highPrice; }
-	double getPreviousPrice()	{ return previousPrice; }
-	double getPercentGainLoss() { return percentGainLoss;}
-	double getSharePrice()		{ return sharePrice; }
-	int getTotalShares()		{ return totalShares; }
+	std::string getSymbol()			const 	{ return symbol; }
+	double getOpeningPrice()		const 	{ return openingPrice; }
+	double getClosingPrice()		const	{ return closingPrice; }
+	double getHighPrice()			const	{ return highPrice; }
+	double getLowPrice()			const	{ return lowPrice; }
+	double getPreviousPrice()		const 	{ return previousPrice; }
+	double getPercentGainLoss()		const	{ return percentGainLoss;}
+	double getSharePrice()			const	{ return sharePrice; }
+	int getTotalShares()			const	{ return totalShares; }
 
-	void printStockInfo()
+
+	void getStockInfoStream(std::ostream& outputStream) const
 	{
-		std::string openStr = "$" + roundToPlace(std::to_string(openingPrice), 2);
-		std::string closeStr = "$" + roundToPlace(std::to_string(closingPrice), 2);
-		std::string highStr  = "$" + roundToPlace(std::to_string(highPrice), 2);
-		std::string lowStr = "$" + roundToPlace(std::to_string(lowPrice), 2);
-		std::string previousStr = "$" + roundToPlace(std::to_string(previousPrice), 2);
-		std::string percentStr = roundToPlace(std::to_string(percentGainLoss), 2) + "%";
-		std::string sharePriceStr = "$" + roundToPlace(std::to_string(sharePrice), 2);
-
-		std::cout << std::setw(8) << symbol << "  "
+		outputStream << std::setw(8) << symbol << "  "
 			<< std::setw(8) << openStr << "  "
 			<< std::setw(8) << closeStr << "  "
 			<< std::setw(8) << highStr << "  "
@@ -114,6 +201,44 @@ public:
 			<< std::setw(8) << std::to_string(totalShares);
 	}
 };
+
+
+// stream operator overloads
+std::ostream& operator << (std::ostream& osObject, const stockType& stock)
+{
+	stock.getStockInfoStream(osObject);
+	return osObject;
+}
+
+void operator >> (std::istream& isObject, stockType& stock)
+{
+	std::string symbol = "";
+	double openingPrice;
+	double closingPrice;
+	double highPrice;
+	double lowPrice;
+	double previousPrice;
+	int totalShares;
+
+	std::string variable;
+	for (int i = 0; i < 7; i++)
+	{
+		isObject >> variable;
+		if (i == 0) symbol = variable;
+		else if (i == 1) openingPrice = std::stod(variable);
+		else if (i == 2) closingPrice = std::stod(variable);
+		else if (i == 3) highPrice = std::stod(variable);
+		else if (i == 4) lowPrice = std::stod(variable);
+		else if (i == 5) previousPrice = std::stod(variable);
+		else if (i == 6) totalShares = std::stoi(variable);
+		else assert("Case not handled");
+	}
+	const stockType s = stockType(symbol, openingPrice, closingPrice, highPrice, lowPrice,
+		previousPrice, totalShares);
+
+	stock = s;
+}
+
 
 namespace printTypes
 {
@@ -141,7 +266,7 @@ void printStocks(stockType *stockArr, int arrSize, printTypes::type type)
 				int insertPos = 0;
 				for (int j = i + 1; j > -1; j--)
 				{
-					if (stockArr[i + 1].getSymbol() > stockArr[j].getSymbol())
+					if (stockArr[i + 1] > stockArr[j])
 					{
 						insertPos = j + 1;
 						break;
@@ -184,8 +309,7 @@ void printStocks(stockType *stockArr, int arrSize, printTypes::type type)
 	double closingAssets = 0;
 	for (int i = 0; i < arrSize; i++)
 	{
-		stockArr[i].printStockInfo();
-		std::cout << "\n";
+		std::cout << stockArr[i] << "\n";
 		closingAssets += stockArr[i].getSharePrice() * stockArr[i].getTotalShares();
 	} 
 
@@ -201,34 +325,9 @@ int main()
 	assert(file.is_open() && "Failed to open file");
 
 	int index = 0;
-	std::string line;
 	while (!file.eof())
 	{
-		std::string symbol = "";
-		double openingPrice;
-		double closingPrice;
-		double highPrice;
-		double lowPrice;
-		double previousPrice;
-		int totalShares;
-
-		std::string variable;
-		for (int i = 0; i < 7; i++)
-		{
-			file >> variable;
-			if (i == 0) symbol = variable;
-			else if (i == 1) openingPrice		= std::stod(variable);
-			else if (i == 2) closingPrice		= std::stod(variable);
-			else if (i == 3) highPrice			= std::stod(variable);
-			else if (i == 4) lowPrice			= std::stod(variable);
-			else if (i == 5) previousPrice		= std::stod(variable);
-			else if (i == 6) totalShares		= std::stoi(variable);
-			else assert("Case not handled");
-		}
-
-		stocks[index] = stockType(symbol, openingPrice, closingPrice, highPrice, lowPrice,
-			previousPrice, totalShares);
-
+		file >> stocks[index];
 		index++;
 	}
 	file.close();
