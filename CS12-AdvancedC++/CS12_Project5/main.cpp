@@ -45,9 +45,9 @@ i.e.
 void printStockInfoHeader()
 {
 	std::cout << "**********   Financial Report	  **********\n"
-		<< "Stock				Today				 Previous  Percent\n"
-		<< "Symbol   Open    Close   High    Low     Close     Gain         Volume\n"
-		<< "_______  ______  ______  ______  ______  ________  ________    _______\n"
+		<< "Stock               Today                         Previous  Percent\n"
+		<< "Symbol    Open      Close     High      Low       Close     Gain        Volume\n"
+		<< "________  ________  ________  ________  ________  ________  ________    _______\n"
 		<< std::endl;
 }
 
@@ -96,23 +96,22 @@ public:
 
 	void printStockInfo()
 	{
-		std::string openStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(openingPrice));
-		std::string closeStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(closingPrice));
-		std::string highStr  = "$" + roundToLeastSignificantOrHundredth(std::to_string(highPrice));
-		std::string lowStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(lowPrice));
-		std::string previousStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(previousPrice));
-		std::string percentStr = roundToLeastSignificantOrHundredth(std::to_string(percentGainLoss)) + "%";
-		std::string sharePriceStr = "$" + roundToLeastSignificantOrHundredth(std::to_string(sharePrice));
+		std::string openStr = "$" + roundToPlace(std::to_string(openingPrice), 2);
+		std::string closeStr = "$" + roundToPlace(std::to_string(closingPrice), 2);
+		std::string highStr  = "$" + roundToPlace(std::to_string(highPrice), 2);
+		std::string lowStr = "$" + roundToPlace(std::to_string(lowPrice), 2);
+		std::string previousStr = "$" + roundToPlace(std::to_string(previousPrice), 2);
+		std::string percentStr = roundToPlace(std::to_string(percentGainLoss), 2) + "%";
+		std::string sharePriceStr = "$" + roundToPlace(std::to_string(sharePrice), 2);
 
-		std::cout << std::setw(7) << symbol 
-			<< std::setw(6) << openStr << "  "
-			<< std::setw(6) << closeStr << "  "
-			<< std::setw(6) << highStr << "  "
-			<< std::setw(6) << lowStr << "  "
-			<< std::setw(6) << previousStr << "  "
-			<< std::setw(6) << percentStr << "  "
-			<< std::setw(6) << sharePriceStr << "  "
-			<< roundToLeastSignificantOrHundredth(std::to_string(totalShares));
+		std::cout << std::setw(8) << symbol << "  "
+			<< std::setw(8) << openStr << "  "
+			<< std::setw(8) << closeStr << "  "
+			<< std::setw(8) << highStr << "  "
+			<< std::setw(8) << lowStr << "  "
+			<< std::setw(8) << previousStr << "  "
+			<< std::setw(8) << percentStr << " "
+			<< std::setw(8) << std::to_string(totalShares);
 	}
 };
 
