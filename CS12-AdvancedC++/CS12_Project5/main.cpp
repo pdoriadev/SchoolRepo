@@ -189,7 +189,7 @@ void printStocks(stockType *stockArr, int arrSize, printTypes::type type)
 		closingAssets += stockArr[i].getSharePrice() * stockArr[i].getTotalShares();
 	} 
 
-	std::cout << "\nClosing Assets: $" << std::to_string(closingAssets) << "\n";
+	std::cout << "\nClosing Assets: $" << roundToPlace(std::to_string(closingAssets), 2) << "\n";
 }
 
 int main()
