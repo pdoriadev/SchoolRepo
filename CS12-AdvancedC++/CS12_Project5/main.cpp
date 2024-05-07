@@ -41,6 +41,7 @@ i.e.
 #include <vector>
 #include <fstream>
 #include "round.h"
+#include <exception>
 
 void printStockInfoHeader()
 {
@@ -122,7 +123,7 @@ public:
 	}
 
 	// relational operator overloads
-	bool operator==(stockType otherStock)
+	bool operator==(stockType& otherStock)
 	{
 		if (symbol == otherStock.getSymbol())
 		{
