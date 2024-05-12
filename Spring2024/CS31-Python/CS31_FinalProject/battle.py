@@ -32,6 +32,11 @@ class KaijuBattleInstance:
 
 
 
+# Give the kaiju to the status. The status then applies everything to the kaiju. 
+    # Each status could have an "Activate" function that gets called every round    
+        # Each status has limited number of activations. 
+        # Upon activating, tells kaiju what to do / effects kaiju state. 
+        # Kaiju has reference to the status within itself.
 
    #
 
