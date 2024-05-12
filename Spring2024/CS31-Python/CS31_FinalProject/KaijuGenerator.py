@@ -6,11 +6,6 @@
 import kaiju
 import random
 
-def generateKaiju() :
-    name = str(input ("What would you like to name your kaiju: "))
-    name = name.upper()
-    kaijuTraits = generateKaiju()
-    limbsAndHeads = generateLimbsAndHeads()
 
 #TO-DO: # Kaiju creator. random chance that the player is going to get a bonus thing?
 
@@ -27,6 +22,7 @@ def generateKaiju() :
 def generateKaiju():
 
     name = input ("KAIJU NAME: ")
+    name = name.upper()
 
     # Randomly select size traits for kaiju
     sizeType = random.choice(kaiju.ALL_SIZE_TYPES)
@@ -43,25 +39,25 @@ def generateKaiju():
         # that works. 
 
     # Randomly select moves from list based on kaiju's first type
-    kaijuType1 = random.choice(kaiju.ALL_MOVE_TYPES)
+    kaijuType1 = random.choice(kaiju.ALL_KAIJU_MOVES)
     kaijuType1Moves = []
-    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+    move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
     kaijuType1Moves.append(move)
-    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+    move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
     kaijuType1Moves.append(move)
     while kaijuType1Moves[0] == kaijuType1Moves[1] :
-        move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+        move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
         kaijuType1Moves.append(move)
     
     # Randomly select moves from list based on kaiju's second type
-    kaijuType2 = random.choice(kaiju.ALL_MOVE_TYPES)
+    kaijuType2 = random.choice(kaiju.ALL_KAIJU_MOVES)
     kaijuType2Moves = []
-    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType2])
+    move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType2])
     kaijuType1Moves.append(move)
-    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType2])
+    move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType2])
     kaijuType2Moves.append(move)
     while kaijuType2Moves[0] == kaijuType2Moves[1] :
-        move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+        move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
         kaijuType1Moves.append(move)
 
     moveTypes = [kaijuType1, kaijuType2]
@@ -72,8 +68,3 @@ def generateKaiju():
     
     return Kaiju(name, sizeType, sizeTraits, traversalType,
                  traversalTraits, moveTypes, )
-
-
-def generateLimbsAndHeads():
-
-    return limbsAndHeads

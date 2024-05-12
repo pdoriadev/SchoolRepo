@@ -230,14 +230,13 @@ def main():
 #       -- Attacking Result = Attack - Defend
 #           - Positive number = SUCCESS
 #           - 0 or less = FAIL   
-#           - Attack Roll: Dice Roll * Size Modifier
-#           - Defend Roll: Dice Roll 
+#           - Attack Roll: (Number of dice * (size+1) do a Dice Roll + special state from moves 
+#           - Defend Roll: (Number of dice * (number of sizes - size)) do a Dice Roll + special state from moves
 #
 #       -- Special Move = Roll against special move's DC
 #           - Meets it beats it    
 #           - Use HP to empower a special move    
     
-#       
     
     
     
