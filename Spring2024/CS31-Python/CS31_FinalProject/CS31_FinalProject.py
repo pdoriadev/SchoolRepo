@@ -126,7 +126,7 @@
 import random
 import kaiju
 import battle
-import KaijuGenerator
+import copy
 
 #TO-DO: # Kaiju creator. random chance that the player is going to get a bonus thing?
 
@@ -146,21 +146,20 @@ def generateKaiju():
     name = name.upper()
 
     # Randomly select size traits for kaiju
-    sizeType = random.choice(kaiju.ALL_SIZE_TYPES)
-    sizeTraits = []
-    sizeTraits.append(kaiju.ALL_SIZE_TYPES_NAMES[sizeType])
+    sizeType = random.randint(0, len(kaiju.ALL_SIZE_TYPES) - 1)
+    sizeTraits = kaiju.ALL_SIZE_TYPES[sizeType]
  
     # Randomly select traversal traits for kaiju
-    traversalType = random.choice(kaiju.ALL_TRAVERSAL_TYPES)
-    traversalTraits = []
-    traversalTraits.append(kaiju.ALL_TRAVERSAL_TYPES_NAMES[traversalType])   
+    traversalType = random.randint(0, len(kaiju.ALL_TRAVERSAL_TYPES) - 1)
+    traversalTraits = kaiju.ALL_TRAVERSAL_TYPES[traversalType]
 
     #TO-DO: Variable number of kaiju types or moves for a given kaiju??
         # Maybe always four moves, but can be split between types any way
         # that works. 
 
+
     # Randomly select moves from list based on kaiju's first type
-    kaijuType1 = random.choice(kaiju.ALL_KAIJU_MOVES)
+    kaijuType1 = random.randint(0, len(kaiju.ALL_KAIJU_MOVES) - 1)
     kaijuType1Moves = []
     move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
     kaijuType1Moves.append(move)
@@ -168,18 +167,21 @@ def generateKaiju():
     kaijuType1Moves.append(move)
     while kaijuType1Moves[0] == kaijuType1Moves[1] :
         move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
-        kaijuType1Moves.append(move)
+        kaijuType1Moves[1] = (move)
     
     # Randomly select moves from list based on kaiju's second type
-    kaijuType2 = random.choice(kaiju.ALL_KAIJU_MOVES)
+    
+    kaijuType2 = kaijuType1
+    while kaijuType2 == kaijuType1:
+        kaijuType2 = random.randint(0, len(kaiju.ALL_KAIJU_MOVES) - 1)
     kaijuType2Moves = []
     move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType2])
-    kaijuType1Moves.append(move)
+    kaijuType2Moves.append(move)
     move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType2])
     kaijuType2Moves.append(move)
     while kaijuType2Moves[0] == kaijuType2Moves[1] :
-        move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType1])
-        kaijuType1Moves.append(move)
+        move = random.choice(kaiju.ALL_KAIJU_MOVES[kaijuType2])
+        kaijuType2Moves[1] = move
 
     moveTypes = [kaijuType1, kaijuType2]
     moveSets = [kaijuType1Moves, kaijuType2Moves]
@@ -188,9 +190,8 @@ def generateKaiju():
     arms = random.randrange(2,4,2)
     heads = random.randrange(1, 3, 2)
     
-    return Kaiju(name, sizeType, sizeTraits, traversalType,
-                 traversalTraits, moveTypes, moveSets,
-                 legs, arms, heads)
+    kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads)
+    return kai
 
 
 
@@ -199,29 +200,31 @@ def generateKaiju():
 def printKaijuData(_kaiju):
     print("================ KAIJU GENERATED ================\n")
     
-    print("NAME:\t\t\t" + name)
+    print("NAME:\t\t\t" + _kaiju.name)
     print("LEGS:\t\t\t" + str(_kaiju.legs))
     print("ARMS:\t\t\t" + str(_kaiju.arms))
     print("HEADS:\t\t\t" + str(_kaiju.heads))
 
     print("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType])
-    index = 0
-    while index < len(kaiju.ALL_SIZE_TYPES[_kaiju.sizeType]):
-        print(kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType] + " TRAIT " + str(index+1) + ":\t" + kaiju.ALL_SIZE_TYPES[_kaiju.sizeTraits[index]])
-        index+=1
+    j = 0
+    while j < len(_kaiju.sizeTraits) - 1:
+        print(kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType] + " TRAIT " + str(j+1) + ":\t" + _kaiju.sizeTraits[j])
+        j+=1
     
     print("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType])
-    index = 0
-    while index < len(kaiju.ALL_TRAVERSAL_TYPES[_kaiju.traversalType]):
-        print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType] + " TRAIT " + str(index+1) + ":\t" + kaiju.ALL_TRAVERSAL_TYPES[_kaiju.traversalTraits[index]])
-        index+=1
+    j = 0
+    while j < len(_kaiju.traversalTraits):
+        print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType] + " TRAIT " + str(j+1) + ":\t" + _kaiju.traversalTraits[j])
+        j+=1
         
-    for m in _kaiju.moveTypes:
-        print("\nMOVE TYPE 1:\t\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[_kaiju])
-        index = 0
-        while index < len(kaiju.ALL_KAIJU_MOVES[_kaiju]):
-            print(kaiju.ALL_KAIJU_MOVES_NAMES[_kaiju] + " MOVE " + str(index) + ":\t\t" + kaiju.ALL_KAIJU_MOVES[_kaiju.moveTypes[index]])
-            index+=1
+    i = 0
+    for moveType in _kaiju.moveTypes:
+        print("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[moveType])
+        j = 0
+        while j < len(_kaiju.moveSets[i]):
+            print(kaiju.ALL_KAIJU_MOVES_NAMES[moveType] + " MOVE " + str(j+1) + ":\t\t" + _kaiju.moveSets[i][j])
+            j+=1
+        i+=1
     
     print("\nCONFIGURATION: " + kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType] + " " \
         + kaiju.ALL_KAIJU_MOVES_NAMES[_kaiju.moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[_kaiju.moveTypes[1]])
@@ -230,12 +233,11 @@ def printKaijuData(_kaiju):
 
 
 
-
 def main():
     print("!!!!!!!!!!! KAIJU GENERATOR !!!!!!!!!!")
     print()
-    kai = KaijuGenerator.generateKaiju()
-    printKaijuData(_kaijuData)
+    kai = copy.deepcopy(generateKaiju())
+    printKaijuData(kai)
   
 
     

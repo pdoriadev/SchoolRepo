@@ -116,8 +116,7 @@ class Kaiju:
     traversalType = -1
     traversalTraits = []
     moveTypes = []
-    moveset1 = []
-    moveset2 = []
+    moveSets = []
     legs = -1
     arms = -1
     heads = -1
@@ -125,26 +124,24 @@ class Kaiju:
     maxHealth = -1
     baseDiceNumber = -1
 
-    def __init__(_name, _sizeType, _sizeTraits, _traversalType, 
-                   _traversalTraits, _moveTypes, _moveSets,
-                   _legs, _arms, _heads):
-        name = _name
+    def __init__(self, _name, _sizeType, _sizeTraits, _traversalType, _traversalTraits, _moveTypes, _moveSets, _legs, _arms, _heads):
+        self.name = _name
 
-        sizeType = _sizeType
-        sizeTraits = _sizeTraits
+        self.sizeType = _sizeType
+        self.sizeTraits = _sizeTraits
     
-        traversalType = _traversalType
-        traversalTraits = _traversalTraits
+        self.traversalType = _traversalType
+        self.traversalTraits = _traversalTraits
 
-        moveTypes = _moveTypes
-        moveSets = _moveSets
+        self.moveTypes = _moveTypes
+        self.moveSets = _moveSets
 
-        legs = _legs
-        arms = _arms
-        heads = _heads
+        self.legs = _legs
+        self.arms = _arms
+        self.heads = _heads
 
-        maxHealth = SIZE_TYPE_IN_METERS[sizeType]
-        baseDiceNumber = sizeType + 1
+        self.maxHealth = SIZE_TYPE_IN_METERS[self.sizeType]
+        self.baseDiceNumber = self.sizeType + 1
 
       
         
