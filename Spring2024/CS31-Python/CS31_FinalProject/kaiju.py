@@ -5,52 +5,62 @@
 #########################################################################
 
 
-# Kaiju creator. random chance that the player is going to get a bonus thing.
-SIZE_TYPES = ["COLOSSAL", "MONSTROUS", "AGILE"]
-SIZE_TYPE_IN_METERS = [100, 60, 10]
 
 # Traits given based on size. Kaiju of their given size receive all these traits
 COLOSSAL_TRAITS = ["Lumbering", "Ignore Half-damage", "Cannot dodge", "Carry Buildings"]
 MONSTROUS_TRAITS = ["Dexterous", "Dodge", "Leap"]
 AGILE_TRAITS = ["Acrobatic", "Dodge", "Climb", "Hide", "Leap", "Takes Double Damage"]
+ALL_SIZE_TYPES_NAMES = ["COLOSSAL", "MONSTROUS", "AGILE"]
+ALL_SIZE_TYPES = [COLOSSAL_TRAITS, MONSTROUS_TRAITS, AGILE_TRAITS]
+SIZE_TYPE_IN_METERS = [100, 60, 10]
 
 # Different moves depending on the traversal type
-TRAVERSAL_TYPES = ["AERIAL ", "AQUATIC", "DIGGING"]
 AERIAL_MOVES = ["Supersonic", "Dive-bomb", "Air-dodge"]
 AQUATIC_MOVES = ["Hold-breath", "Sonar", "Submerge"]
 DIGGING_MOVES = ["Ground Shake", "Burrow", "Internal Gyroscope"]
+ALL_TRAVERSAL_TYPES = [AERIAL_MOVES, AQUATIC_MOVES, DIGGING_MOVES]
+ALL_TRAVERSAL_TYPES_NAMES = ["AERIAL ", "AQUATIC", "DIGGING"]
 
 # Different abilities based on the kaiju type
-MOVESETS = ["BRAWLER", "SPIRIT", "ATOMIC", "ROBOT"]
 BRAWLER_MOVES = ["Headbutt", "Tail Whip", "Punch", "Claw", "Bite", "Grapple", "Leap"]
 SPIRIT_MOVES = ["Channel Past Lives", "Transfer Spirit", "Biting Essence", "Meditation", "Prophecy"]
 ATOMIC_MOVES = ["Atomic Breath", "Absorb Energy", "Atomic Immolation", "Fast Healing"]
 ROBOT_MOVES = ["Finger-missiles", "Force-field", "Eye-beams", "Shocking Grasp", "Emergency Repair", "Chainsaw Hand"]   
+ALL_MOVE_TYPES = [BRAWLER_MOVES, SPIRIT_MOVES, ATOMIC_MOVES, ROBOT_MOVES]
+ALL_MOVE_TYPES_NAMES = ["BRAWLER", "SPIRIT", "ATOMIC", "ROBOT"]
+
     # TO-DO: Make a move class that has damage or other info??
         # move types - damage, heal, etc. Feels like should be enum??? 
 
 
-#TO-DO: Moves or traits based on number of legs, arms, or heads. 
-    #Or maybe it's just a multiplier? i.e. legs faster, arms more damage, heads more vision, 
-        # heads multi-attack if using a bite or something like that
 
-#TO-DO: Something that determines movement rules? 
-#   i.e. kaiju tells move function they want to move. Kaiju gives move function necessary data
-#           to move that kaiju correctly (movement different between colossal and agile, kaiju
-#           with different traversal types, etc.)
-
+        
 class Kaiju:
+    name = ""
+
     sizeType = -1
     sizeTraits = []
     
     traversalType = -1
     traversalTraits = []
 
-    moveType1 = -1
+    moveTypes = []
     moveset1 = []
-    moveType2 = -1
     moveset2 = []
 
-    def __init__():
-        print()
+    def __init__(_name, _sizeType, _sizeTraits, _traversalType, 
+                   _traversalTraits, _moveTypes, _moveSets,
+                   _legs, _arms, _hands):
+        name = _name
+
+        sizeType = _sizeType
+        sizeTraits = _sizeTraits
+    
+        traversalType = _traversalType
+        traversalTraits = _traversalTraits
+
+        moveTypes = _moveTypes
+        moveSets = _moveSets
+
+      
         

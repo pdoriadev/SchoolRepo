@@ -129,7 +129,7 @@ import kaiju
 
 # prints generated kaiju data to the console for the user to see. 
 #   Selects data from nested lists depending on the desired stat for output.
-def printKaijuData(name, traits, limbsAndHeads):
+def printKaijuData(_kaiju):
     print("================ KAIJU GENERATED ================\n")
     
     print("NAME:\t\t\t" + name)

@@ -9,8 +9,11 @@ import random
 def generateKaiju() :
     name = str(input ("What would you like to name your kaiju: "))
     name = name.upper()
-    kaijuTraits = generatePrimaryTraits()
+    kaijuTraits = generateKaiju()
     limbsAndHeads = generateLimbsAndHeads()
+
+#TO-DO: # Kaiju creator. random chance that the player is going to get a bonus thing?
+
 
 # Every kaiju has 4 randomly selected primary traits which can randomly select 
 #   additional identifiers depending on the given trait (i.e. size vs Kaiju Type):
@@ -21,112 +24,56 @@ def generateKaiju() :
 # Note: Each kaiju has two kaijuTypes. This gives each kaiju a unique identity.
 #          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
 # Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
-def generatePrimaryTraits():
+def generateKaiju():
+
+    name = input ("KAIJU NAME: ")
 
     # Randomly select size traits for kaiju
-    size = random.randrange(0, len(kaiju.SIZE_TYPES) - 1, 1)
+    sizeType = random.choice(kaiju.ALL_SIZE_TYPES)
     sizeTraits = []
-    sizeTraits.append(kaiju.SIZE_TYPES[size])
-    if (size == 0):
-        sizeTraits.append(kaiju.COLOSSAL_TRAITS)
-    elif (size == 1):
-        sizeTraits.append(kaiju.MONSTROUS_TRAITS)
-    elif (size == 2):
-        sizeTraits.append(kaiju.AGILE_TRAITS)
-    else: 
-        assert("Not handled case")
-
+    sizeTraits.append(kaiju.ALL_SIZE_TYPES_NAMES[sizeType])
+ 
     # Randomly select traversal traits for kaiju
-    traversal = random.randrange(0, len(kaiju.TRAVERSAL_TYPES) - 1, 1)
+    traversalType = random.choice(kaiju.ALL_TRAVERSAL_TYPES)
     traversalTraits = []
-    traversalTraits.append(kaiju.TRAVERSAL_TYPES[traversal])
-    if (traversal == 0):
-        traversalTraits.append(kaiju.AERIAL_MOVES)
-    elif (traversal == 1):
-        traversalTraits.append(kaiju.AQUATIC_MOVES)
-    elif (traversal == 2):
-        traversalTraits.append(kaiju.DIGGING_MOVES)
-    else:
-        assert ("Not handled case")
-    
+    traversalTraits.append(kaiju.ALL_TRAVERSAL_TYPES_NAMES[traversalType])   
+
+    #TO-DO: Variable number of kaiju types or moves for a given kaiju??
+        # Maybe always four moves, but can be split between types any way
+        # that works. 
 
     # Randomly select moves from list based on kaiju's first type
-    kaijuType1 = random.randrange(0, len(kaiju.MOVESETS) - 1, 1)
+    kaijuType1 = random.choice(kaiju.ALL_MOVE_TYPES)
     kaijuType1Moves = []
-    kaijuType1Moves.append(kaiju.MOVESETS[kaijuType1])
-    move1 = ""
-    move2 = ""
-    if (kaijuType1 == 0):
-        move1 = random.choice(kaiju.BRAWLER_MOVES)
-        move2 = random.choice(kaiju.BRAWLER_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.BRAWLER_MOVES)
-    elif (kaijuType1 == 1):
-        move1 = random.choice(kaiju.SPIRIT_MOVES)
-        move2 = random.choice(kaiju.SPIRIT_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.SPIRIT_MOVES)
-    elif (kaijuType1 == 2):
-        move1 = random.choice(kaiju.ATOMIC_MOVES)
-        move2 = random.choice(kaiju.ATOMIC_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.ATOMIC_MOVES)
-    elif (kaijuType1 == 3):
-        move1 = random.choice(kaiju.ROBOT_MOVES)
-        move2 = random.choice(kaiju.ROBOT_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.ROBOT_MOVES)
-    else:
-        assert("Case not accounted for.")
-        
-    kaijuType1Moves.append(move1)
-    kaijuType1Moves.append(move2)
+    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+    kaijuType1Moves.append(move)
+    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+    kaijuType1Moves.append(move)
+    while kaijuType1Moves[0] == kaijuType1Moves[1] :
+        move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+        kaijuType1Moves.append(move)
     
     # Randomly select moves from list based on kaiju's second type
-    kaijuType2 = random.randrange(0, len(kaiju.MOVESETS) - 1, 1)
-    while kaijuType2 == kaijuType1:
-        kaijuType2 = random.randrange(0, len(kaiju.MOVESETS) - 1, 1)    
+    kaijuType2 = random.choice(kaiju.ALL_MOVE_TYPES)
     kaijuType2Moves = []
-    kaijuType2Moves.append(kaiju.MOVESETS[kaijuType2])
-    move1 = ""
-    move2 = ""
-    if (kaijuType2 == 0):
-        move1 = random.choice(kaiju.BRAWLER_MOVES)
-        move2 = random.choice(kaiju.BRAWLER_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.BRAWLER_MOVES)  
-    elif (kaijuType2 == 1):
-        move1 = random.choice(kaiju.SPIRIT_MOVES)
-        move2 = random.choice(kaiju.SPIRIT_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.SPIRIT_MOVES)
-    elif (kaijuType2 == 2):
-        move1 = random.choice(kaiju.ATOMIC_MOVES)
-        move2 = random.choice(kaiju.ATOMIC_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.ATOMIC_MOVES)
-    elif (kaijuType2 == 3):
-        move1 = random.choice(kaiju.ROBOT_MOVES)
-        move2 = random.choice(kaiju.ROBOT_MOVES)
-        while move2 == move1:
-            move2 = random.choice(kaiju.ROBOT_MOVES)
+    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType2])
+    kaijuType1Moves.append(move)
+    move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType2])
+    kaijuType2Moves.append(move)
+    while kaijuType2Moves[0] == kaijuType2Moves[1] :
+        move = random.choice(kaiju.ALL_MOVE_TYPES[kaijuType1])
+        kaijuType1Moves.append(move)
+
+    moveTypes = [kaijuType1, kaijuType2]
+      
+    legs = random.randrange(0,8,2)
+    arms = random.randrange(2,4,2)
+    heads = random.randrange(1, 3, 2)
     
-    kaijuType2Moves.append(move1)
-    kaijuType2Moves.append(move2)
-    
-    # append trait lists into a nested list
-    kaijuTraits = []
-    kaijuTraits.append(sizeTraits)
-    kaijuTraits.append(traversalTraits)
-    kaijuTraits.append(kaijuType1Moves)
-    kaijuTraits.append(kaijuType2Moves)
-    
-    return kaijuTraits
+    return Kaiju(name, sizeType, sizeTraits, traversalType,
+                 traversalTraits, moveTypes, )
 
 
 def generateLimbsAndHeads():
-    limbsAndHeads = []
-    limbsAndHeads.append(random.randrange(0,8,2))
-    limbsAndHeads.append(random.randrange(2,4,2))
-    limbsAndHeads.append(random.randrange(1, 3, 2))
+
     return limbsAndHeads
