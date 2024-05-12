@@ -6,7 +6,6 @@
 
 from enum import Enum
 
-
 # Traits given based on size. Kaiju of their given size receive all these traits
 COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building", "CATACLYSMIC ROAR"]
 
@@ -105,10 +104,6 @@ ALL_KAIJU_MOVES_NAMES = ["BRAWLER", "SPIRIT", "ATOMIC", "ROBOT"]
         
 
 
-
-class MoveType(Enum):
-    HEALING = 0
-    ATTACK
     #different move types (i.e. healing, attack, defense, things that change number of dice using)
 
         
@@ -123,13 +118,16 @@ class Kaiju:
     moveTypes = []
     moveset1 = []
     moveset2 = []
+    legs = -1
+    arms = -1
+    heads = -1
 
     maxHealth = -1
     baseDiceNumber = -1
 
     def __init__(_name, _sizeType, _sizeTraits, _traversalType, 
                    _traversalTraits, _moveTypes, _moveSets,
-                   _legs, _arms, _hands):
+                   _legs, _arms, _heads):
         name = _name
 
         sizeType = _sizeType
@@ -140,6 +138,10 @@ class Kaiju:
 
         moveTypes = _moveTypes
         moveSets = _moveSets
+
+        legs = _legs
+        arms = _arms
+        heads = _heads
 
         maxHealth = SIZE_TYPE_IN_METERS[sizeType]
         baseDiceNumber = sizeType + 1

@@ -1,12 +1,36 @@
 import kaiju
+from abc import ABC
+
+class AbstractStatus(ABC):
+    def activate(kaiju: kaiju.Kaiju):
+        pass
+
+class BurningStatus(AbstractStatus):
+    burningDamage = -1
+    def activate (kaiju: kaiju.Kaiju):
+        kaiju.takeDamage(burningDamage, "BURNING STATUS")
+
+    def __init__(_burningDamage):
+        burningDamage = _burningDamage
 
 
-class Status:
-    print()
+class AbstractMove(ABC):
+    def activate(kaiju: kaiju.Kaiju):
+        pass
+
+class AtomicBreath(AbstractMove):
+    cost = 3
+    additionalDice = -1
+    def activate(targetKaiju: kaiju.Kaiju):
+        targetKaiju.takeDamage()
+
+    def __init__(_cost, _additionalDice):
+        cost = _cost
+        additionalDice = _additionalDice
 
 class KaijuBattleInstance:
-    _BASE_KAIJU
-    _health
+    _BASE_KAIJU = None
+    _health = -1
 
     _statuses = []
     _statusTime = []
@@ -19,13 +43,19 @@ class KaijuBattleInstance:
         health = maxHealth
         baseDiceNumber = baseKaiju.sizeType + 1
 
-    def getBaseKaiju(): return _BASE_KAIJU
-    def getMaxHealth(): return _MAX_HEALTH
-    def getBaseDiceNumber(): return _BASE_DICE_NUMBER
-    def getHealth(): return _health
+    def getBaseKaiju():         return _BASE_KAIJU
+    def getHealth():            return _health
+    def getAvailableMoves():    return _availableMoves
+    def getStatuses():          return _statuses
 
-    def generateAvailableMoves():
+    def shuffleAvailableMoves():
         print()
+
+    def takeDamage(amount: int):
+        pass
+    
+    def heal(amount: int):
+        pass
 
     # All moves available to kaiju (unless a random event opens a new move)
         # exist in the base kaiju
@@ -70,7 +100,8 @@ def playerBattle(playerKaiju, AIKaiju):
 
     while playerKaiju.getHealth() > 0 and AIKaiju.getHealth() > 0:
         if (playerTurn):
-            print()
+            playerKaiju.shuffleAvailableMoves()
+            print(playerKaiju.getAvailableMoves.split())
         else :
             print()
 
