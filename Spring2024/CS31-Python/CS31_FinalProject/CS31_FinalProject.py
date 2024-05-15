@@ -243,7 +243,7 @@ def printKaijuList(simple):
      
 
 kaijus = []
-correspondingCharacter = []
+kaijusSelectors = []
 
 menuOptions = [1, 2, 3, 4, 5, 6]
 
@@ -268,12 +268,47 @@ def main():
               "\n\t(i.e. '5A' gets data on kaiju with 'A' next to it))" + 
               "\n" + str(menuOptions[5]) +  " - QUIT" 
               )
-        userInput = ""
-        invalid = True
-        while invalid:
+        
+
+        userInput = ""    
+        invalid = False
+        invalidInfo = ""
+        while True:
+            userInput = input("Input a menu option.")
+            userInput.strip()
+            userInput.replace(" ", "")
+            if (invalid == True):
+                print("Input is invalid. Please give valid input based on menu option descriptions." +
+                      "\n\tInvalid Info: " + invalidInfo
+                      )
+
             # checks
-            # if check passes, break out of loop
-            print("Input is invalid. Please give valid input based on menu option descriptions.")
+            if (len(userInput) == 0):
+                invalidInfo = "Input zero characters."
+                continue
+
+            match userInput[0]:
+                case 1:
+                    if (len(userInput) != 3):
+                        invalid = True
+                        invalidInfo = "KAIJU BATTLE requires 2 monster inputs."
+                        
+                    
+                    
+                    invalid = False
+                case 2:
+                    invalid = False
+                case 3:
+                    invalid = False
+                case 4:
+                    invalid = False
+                case 5:
+                    invalid = False
+                case 6:
+                    invalid = False
+            # if selection check passes, break out of loop
+            
+
 
         kai = generateKaiju()
         printKaijuData(kai)
