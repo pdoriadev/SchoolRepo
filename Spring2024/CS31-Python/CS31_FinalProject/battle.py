@@ -21,8 +21,10 @@ class AbstractMove(ABC):
 class AtomicBreath(AbstractMove):
     cost = 3
     additionalDice = -1
+    burningStatus = BurningStatus()
     def activate(targetKaiju: kaiju.Kaiju):
         targetKaiju.takeDamage()
+        targetKaiju.addStatus(burningStatus)
 
     def __init__(_cost, _additionalDice):
         cost = _cost
