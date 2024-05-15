@@ -124,12 +124,12 @@
 
 # for choosing options from list randomly
 import random
+from re import A
 import kaiju
 import battle
 import copy
 
 #TO-DO: # Kaiju creator. random chance that the player is going to get a bonus thing?
-
 
 # Every kaiju has 4 randomly selected primary traits which can randomly select 
 #   additional identifiers depending on the given trait (i.e. size vs Kaiju Type):
@@ -140,10 +140,9 @@ import copy
 # Note: Each kaiju has two kaijuTypes. This gives each kaiju a unique identity.
 #          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
 # Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
-def generateKaiju():
+def generateKaiju(generateRandom):
 
-    name = input ("KAIJU NAME: ")
-    name = name.upper()
+    name = input ("KAIJU NAME: ").upper()
 
     # Randomly select size traits for kaiju
     sizeType = random.randint(0, len(kaiju.ALL_SIZE_TYPES) - 1)
@@ -193,66 +192,91 @@ def generateKaiju():
     kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads)
     return kai
 
-
-
 # prints generated kaiju data to the console for the user to see. 
 #   Selects data from nested lists depending on the desired stat for output.
-def printKaijuData(_kaiju):
+def printKaijuData(kai):
     print("================ KAIJU GENERATED ================\n")
     
-    print("NAME:\t\t\t" + _kaiju.name)
-    print("LEGS:\t\t\t" + str(_kaiju.legs))
-    print("ARMS:\t\t\t" + str(_kaiju.arms))
-    print("HEADS:\t\t\t" + str(_kaiju.heads))
+    print("NAME:\t\t\t" + kai.name)
+    print("LEGS:\t\t\t" + str(kai.legs))
+    print("ARMS:\t\t\t" + str(kai.arms))
+    print("HEADS:\t\t\t" + str(kai.heads))
 
-    print("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType])
+    print("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType])
     j = 0
-    while j < len(_kaiju.sizeTraits) - 1:
-        print(kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType] + " TRAIT " + str(j+1) + ":\t" + _kaiju.sizeTraits[j])
+    while j < len(kai.sizeTraits) - 1:
+        print(kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " TRAIT " + str(j+1) + ":\t" + kai.sizeTraits[j])
         j+=1
     
-    print("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType])
+    print("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType])
     j = 0
-    while j < len(_kaiju.traversalTraits):
-        print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType] + " TRAIT " + str(j+1) + ":\t" + _kaiju.traversalTraits[j])
+    while j < len(kai.traversalTraits):
+        print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType] + " TRAIT " + str(j+1) + ":\t" + kai.traversalTraits[j])
         j+=1
         
     i = 0
-    for moveType in _kaiju.moveTypes:
+    for moveType in kai.moveTypes:
         print("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[moveType])
         j = 0
-        while j < len(_kaiju.moveSets[i]):
-            print(kaiju.ALL_KAIJU_MOVES_NAMES[moveType] + " MOVE " + str(j+1) + ":\t\t" + _kaiju.moveSets[i][j])
+        while j < len(kai.moveSets[i]):
+            print(kaiju.ALL_KAIJU_MOVES_NAMES[moveType] + " MOVE " + str(j+1) + ":\t\t" + kai.moveSets[i][j])
             j+=1
         i+=1
     
-    print("\nCONFIGURATION: " + kaiju.ALL_SIZE_TYPES_NAMES[_kaiju.sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[_kaiju.traversalType] + " " \
-        + kaiju.ALL_KAIJU_MOVES_NAMES[_kaiju.moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[_kaiju.moveTypes[1]])
+    print("\nCONFIGURATION: " + kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType] + " " \
+        + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[1]])
         
     print("\n====================== END =====================\n")
+    
+def printKaijuList(simple):
+    # print in rows and columns with corresponding letter
+        # A unicode is 41
+    i = ord("A")
+    if (simple):
+        for kai in kaijus:
+            print(chr(i) + " - " + kai.name)       
+    else: 
+        for kai in kaijus:
+            print(chr(i) + " - " + kai.name)
+            print("\n\tCONFIGURATION: " + kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType] + " " \
+        + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[1]])
+     
 
+kaijus = []
+correspondingCharacter = []
+
+menuOptions = [1, 2, 3, 4, 5, 6]
 
 
 def main():
-    print("!!!!!!!!!!! KAIJU GENERATOR !!!!!!!!!!")
-    print()
-    kai = copy.deepcopy(generateKaiju())
-    printKaijuData(kai)
-  
-
-    
-# LOAD KAIJU LIST from CSV. All Kaiju must be valid. 
-  
-# TITLE / Pre-Battle Menu
+    # TITLE / Pre-Battle Menu
+    print("!!!!!!!!!!! KAIJU GENERATOR !!!!!!!!!!")  
 #   - Lists all kaiju (color code them)
+#       - Ge
 #       - Max kaiju of 26 (alphabetized)
-#   - Options: 
-#       - Generate new kaiju --> Kaiju Generation View
-#       - Delete kaiju --> Kaiju deletion menu
-#       - Get more info on kaiju (type in number next to associated kaiju)
-#       - MELEE --> Kaiju Select Menu   
-#       - Random AI Melee --> BATTLE GENERATION
-#       - Quit        
+#           A - Godzilla
+#           B - King Kong    
+    shouldQuit = False
+    while(shouldQuit == False):
+        print("~~~~~~ MENU OPTIONS ~~~~~~")
+        print("\n" + str(menuOptions[0]) + "- KAIJU BATTLE (input 1 plus two letters, one for each kaiju going into battle." + 
+              "\n\tFirst kaiju input is yours. Second is the AI's. (i.e. \"1AZ\", \"1XI\"))" + 
+              "\n" + str(menuOptions[1]) + " - RANDOM AI KAIJU BATTLE (i.e. \"2\")" + 
+              "\n" + str(menuOptions[2]) + " - GENERATE NEW kaiju (i.e. 3) --> Kaiju Generation Seqence / Menu" + 
+              "\n" + str(menuOptions[3]) + " - DELETE KAIJU (i.e. 4A deletes kaiju with 'A' next to them)" + 
+              "\n" + + str(menuOptions[4]) + " - KAIJU DATA (input 5 plus letter of associated kaiju, " + 
+              "\n\t(i.e. '5A' gets data on kaiju with 'A' next to it))" + 
+              "\n" + str(menuOptions[5]) +  " - QUIT" 
+              )
+        userInput = ""
+        invalid = True
+        while invalid:
+            # checks
+            # if check passes, break out of loop
+            print("Input is invalid. Please give valid input based on menu option descriptions.")
+
+        kai = generateKaiju()
+        printKaijuData(kai)
 #   - Options v2: Input the kaiju's letter and the number action you want to do    
 #       1 - KAIJU BATTLE (input two letters, one for each kaiju going into battle.
 #           First kaiju input is yours. Second is the AI's. (i.e. "1AZ", "1XI"))
@@ -263,6 +287,14 @@ def main():
 #       5 - KAIJU DATA (input letter of associated kaiju, (i.e. '5A' gets data on kaiju with 'A' next to it))
 #           ---> KAIJU DATA OUTPUT
 #       6 Quit --> Are you sure you want to Quit Menu
+
+
+  
+
+    
+# LOAD KAIJU LIST from CSV. All Kaiju must be valid. 
+  
+
 
 ###################################    
 # Kaiju Generation
