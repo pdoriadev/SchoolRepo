@@ -56,6 +56,9 @@ class KaijuBattleInstance:
     
     def heal(amount: int):
         pass
+    
+
+
 
     # All moves available to kaiju (unless a random event opens a new move)
         # exist in the base kaiju
@@ -105,6 +108,8 @@ def playerBattle(playerKaiju, AIKaiju):
         else :
             print()
 
+
+    # Maybe have battle on a timer?? Player has to decide move in X time. 
 
     # # It's _____'s turn!
     # Randomly generate moveset for this round? Are moves just cards?

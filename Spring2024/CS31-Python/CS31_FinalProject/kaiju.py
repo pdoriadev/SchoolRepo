@@ -32,7 +32,7 @@ COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building", "CATACLYS
 MONSTROUS_TRAITS = ["Dexterous", "Intimidate"]
 # 
 
-AGILE_TRAITS = ["Acrobatic", "Dodge", "Takes Double Damage"]
+AGILE_TRAITS = ["Double Dodge", "Takes Double Damage"]
 # Acrobatic - CAn
 
 

@@ -257,7 +257,7 @@ def main():
 #       1 - KAIJU BATTLE (input two letters, one for each kaiju going into battle.
 #           First kaiju input is yours. Second is the AI's. (i.e. "1AZ", "1XI"))
 #           ---> BATTLE GENERATION
-#       2 - RANDOM KAIJU BATTLE (i.e. 2) --> BATTLE GENERATION
+#       2 - RANDOM AI KAIJU BATTLE (i.e. 2) --> BATTLE GENERATION
 #       3 - GENERATE NEW kaiju (i.e. 3) --> Kaiju Generation Seqence / Menu    
 #       4 - DELETE KAIJU (i.e. 4A deletes kaiju with 'A' next to them)
 #       5 - KAIJU DATA (input letter of associated kaiju, (i.e. '5A' gets data on kaiju with 'A' next to it))
@@ -268,6 +268,7 @@ def main():
 # Kaiju Generation
 #
 #   - Kaiju Generation View    
+#       - MUST mimic anticipation of dice roll for each set of traits.    
 #       - Ask for a number between 1 and 100 from player
 #       - Generate Kaiju Sequence (Do fun timer stuff)... let player skip to end if they want
 #           - give player mini-quiz that if they get stuff right will... have not affect. But they won't know that hehe                    
