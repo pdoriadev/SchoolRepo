@@ -124,6 +124,7 @@
 
 # for choosing options from list randomly
 import random
+import csv
 from re import A
 import kaiju
 import battle
@@ -249,9 +250,17 @@ menuOptions = [1, 2, 3, 4, 5, 6]
 
 
 def main():
+    # Load in all kaiju
+    with open("kaijus.txt") as kaijuCSV:
+        reader = csv.reader(kaijuCSV)
+        for line in reader:
+         
+             
+
+    
     # TITLE / Pre-Battle Menu
     print("!!!!!!!!!!! KAIJU GENERATOR !!!!!!!!!!")  
-#   - Lists all kaiju (color code them)
+    #   - Lists all kaiju (color code them)
 #       - Ge
 #       - Max kaiju of 26 (alphabetized)
 #           A - Godzilla
@@ -312,6 +321,21 @@ def main():
 
         kai = generateKaiju()
         printKaijuData(kai)
+        
+    with open("kaijus.txt") as kaijusCSV:
+        writer = csv.writer(kaijusCSV)
+        for kai in kaijus:
+            writer.writerow("======")
+            writer.writerow("Name: " + kai.name)
+            writer.writerow(kai.sizeType, kai.sizeTraits)
+
+    print("\n\nRAWR...")
+    
+    
+    
+
+if __name__ == "__main__":
+    main()
 #   - Options v2: Input the kaiju's letter and the number action you want to do    
 #       1 - KAIJU BATTLE (input two letters, one for each kaiju going into battle.
 #           First kaiju input is yours. Second is the AI's. (i.e. "1AZ", "1XI"))
@@ -383,11 +407,3 @@ def main():
 # TO-DO - save kaiju list into csv  
 
         
-
-    print("\n\nRAWR...")
-    
-    
-    
-
-if __name__ == "__main__":
-    main()
