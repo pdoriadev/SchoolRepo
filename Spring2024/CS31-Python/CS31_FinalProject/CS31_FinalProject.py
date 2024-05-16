@@ -326,8 +326,13 @@ def main():
         writer = csv.writer(kaijusCSV)
         for kai in kaijus:
             writer.writerow("======")
-            writer.writerow("Name: " + kai.name)
-            writer.writerow(kai.sizeType, kai.sizeTraits)
+            writer.writerow(kai.name)
+            writer.writerow(str(kai.sizeType))
+            for trait in kai.sizeTraits
+                writer.writerow(trait.)
+            # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
+            writer.writerow(traversalType)
+            
 
     print("\n\nRAWR...")
     

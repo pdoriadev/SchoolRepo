@@ -24,6 +24,9 @@ class KaijuBattleInstance:
     def shuffleAvailableMoves():
         print()
 
+    def applyStatuses():
+        pass
+
     def takeDamage(amount: int):
         pass
     
