@@ -283,7 +283,7 @@ def main():
         invalid = False
         invalidInfo = ""
         while True:
-            userInput = input("Input a menu option.")
+            userInput = input("Input a menu option.").upper()
             userInput.strip()
             userInput.replace(" ", "")
             if (invalid == True):

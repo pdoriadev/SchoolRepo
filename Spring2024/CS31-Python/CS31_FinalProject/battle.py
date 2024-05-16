@@ -2,40 +2,67 @@ import kaiju
 
 
 class KaijuBattleInstance:
-    _BASE_KAIJU = None
+    _BASE_KAIJU: kaiju.Kaiju
     _health = -1
+    _energy = -1
+    _attackDiceBonus = 0
+    _defenseDiceBonus = 0
 
-    _statuses = []
-    _statusTime = []
-
-    _availableMoves = []
-
-    def __init__(_kaiju):
-        baseKaiju = _kaiju
-        maxHealth = kaiju.SIZE_TYPE_IN_METERS(_kaiju.sizeType)
-        health = maxHealth
-        baseDiceNumber = baseKaiju.sizeType + 1
+    def __init__(kai: kaiju.Kaiju):
+        _BASE_KAIJU = kai
+        _health = kai.maxHealth
+        baseDiceNumber = kai.sizeType + 1
+        _energy = kai.baseEnergy
 
     def getBaseKaiju():         return _BASE_KAIJU
     def getHealth():            return _health
-    def getAvailableMoves():    return _availableMoves
+    def getEnergy():            return _energy
+    def getAttackDice():        return _BASE_KAIJU.BASE_ATTACK_DICE + _attackDiceBonus
+    
     def getStatuses():          return _statuses
+    def getAvailableMoves():    return _availableMoves
 
-    def shuffleAvailableMoves():
-        print()
+    def setHealth(h: int): _health = h
+    def setEnergy(e: int): _energy = e
+        
 
-    def applyStatuses():
+class Referee:
+    _kaijuInBattle = []
+    
+    _statuses = []
+    _availableMoves = []
+    
+    def shuffleAvailableMoves(kai: kaiju.Kaiju):
+        # TO-DO - rewrite to shuffle moves instead of giving all moves. 
+        
+        for i in range(0, len(_kaijuInBattle) - 1):
+            _availableMoves[i] = _kaijuInBattle[i].getBaseKaiju().KAIJU_MOVESETS
+            
+
+        # if a status has beginnning of turn and end of turn effects. It effectively activates twice.
+        # if those activations are at different times
+
+    def addStatus(kai: kaiju.Kaiju, status: kaiju.Status):
+        i = 0
+        while True:
+            if kai == _kaijuInBattle[i]:
+                _statuses[i].append(status)
+                break
+    
+    def activateStatuses (activationTime: kaiju.ActivationTime):
         pass
-
-    def takeDamage(amount: int):
+                 
+                
+        # activate all statuses with the given activation time
+            # should statuses be activated in a certain order?
         pass
     
-    def heal(amount: int):
+    def removeStatus():
         pass
-    
-
-
-
+     
+    def __init__ (startingKaiju):
+        _kaijuInBattle = startingKaiju
+        
     # All moves available to kaiju (unless a random event opens a new move)
         # exist in the base kaiju
 
@@ -66,23 +93,61 @@ class KaijuBattleInstance:
             # in X turns
             # Once they arrive, random roll to see if they do damage. 
         # Climate Change strikes, the city has flooded!
+    
+class DamageData():
+    moveOrStatus
+    damageTaken = 0
+    damagedKaiju: kaiju.Kaiju
+
+class BattleUIView():
+    # if move activates
+    # if damage taken
+    # if new status happens
+    # if status affect activates
+    pass
                 
 def AIBattle(kaijuA, kaijuB):
     print()
 
 
-
-def playerBattle(playerKaiju, AIKaiju):
-    print()
+def playerBattle(playerBaseKaiju, AIBaseKaiju):
     # Smaller kaiju goes first
-    playerTurn = playerKaiju.sizeType <= AIKaiju.sizeType
+    playerTurn = playerBaseKaiju.sizeType <= AIBaseKaiju.sizeType
+    
+    pKai = KaijuBattleInstance(playerBaseKaiju)
+    aiKai = KaijuBattleInstance(AIBaseKaiju)
 
-    while playerKaiju.getHealth() > 0 and AIKaiju.getHealth() > 0:
-        if (playerTurn):
-            playerKaiju.shuffleAvailableMoves()
-            print(playerKaiju.getAvailableMoves.split())
-        else :
+    while pKai.getHealth() > 0 and aiKai.getHealth() > 0:
+        while (playerTurn):
+            #TOD0 - shuffle move functionality
             print()
+            availMoves = pKai.getAvailableMoves()
+            i = 1
+            for move in availMoves:
+                print(str(i) + " " + move.name)
+                
+            # TODO - input validation loop
+            
+            # TODO - select move
+                # should include all information to execute that move
+                # move should include description
+                    # Type number next to move plus "D" (i.e. )
+            
+            # TODO - get move and kaiju data related data for dice rolls and DC
+            
+            # TODO - Dice rolls. Calculate result. 
+                # UI sequence    
+            
+            # TODO - If result is success, activate move.
+                # UI to show success - keep as simple as possible. Just text.
+                # Kaiju should activate any hit-related statuses    
+            
+            # TODO - If result is failure, miss. Activate any miss-related statuses.
+            
+            # TODO - If kaiju out of energy, playerTurn = false
+                
+        else :
+            pass
 
 
     # Maybe have battle on a timer?? Player has to decide move in X time. 

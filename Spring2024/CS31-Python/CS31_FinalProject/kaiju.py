@@ -5,6 +5,7 @@
 #########################################################################
 from enum import Enum
 from abc import ABC
+import battle
 
 # thinking about moves as like a restaurant order
     # first we choose what we want to eat
@@ -19,8 +20,10 @@ from abc import ABC
     
 # What are the ingredients? IS THIS ALL I NEED????
     # statuses (beginning of turn, end of turn, immediate)
-    # damage
+    # damage 
     # Healing
+
+    # base result of move. Applies statuses
 
 # How do you pay? 
     # With energy? Or health?       
@@ -28,30 +31,59 @@ from abc import ABC
 # Move
     # cost
     # description
-    # activate()
+    # behavior
         
 
 # MoveInstance (factors in the base attack and all other modifiers from statuses or traits)
     # has specific 
     # 
 
+class ActivationTime (Enum):
+    START_TURN = 0,
 
-class AbstractStatus(ABC):
-    def activate(kaiju: Kaiju):
+
+class Status():
+    _NAME = ""
+    _DESCRIPTION = ""
+    _ACTIVATION_TIMES = []
+    activationsRemaining = -1
+    # Possible affects
+        # Do damage
+        # Heal
+        # Increase Dice (defending and attacking) 
+        # Decrease Dice (defending and attacking) 
+        # Energy increase
+        # Energy decrease
+        # embody
+
+    def __init__(self, name, description, activationTimes, activations: int):
+        _NAME = name
+        _DESCRIPTION = description
+        _ACTIVATION_TIMES = activationTimes
+        activationsRemaining = activations
+        
+class StatusBehaviors(ABC):
+    def activate(kai: battle.KaijuBattleInstance):
         pass
 
-class BurningStatus(AbstractStatus):
-    burningDamage = -1
-    def activate (kaiju: Kaiju):
-        kaiju.takeDamage(burningDamage, "BURNING STATUS")
-
-    def __init__(_burningDamage):
-        burningDamage = _burningDamage
+class BurningBehavior(StatusBehaviors):
+    def activate(kai: battle.KaijuBattleInstance):
+        pass
         
+        
+
+STATUSES = [
+    Status("BURNING", "Take damage at beginning of each turn. Can stack.", [ActivationTime.START_TURN],1)
+    
+            
+            ]
+
+class Move():
+    
 
 
 # Burning Status
-    # Take damage each turn.    
+    # Take damage each turn. Can stack    
     # Damage decreases on subsequent turns.
     # Turns remaining is equal to damage this turn - 1 (like Slay the Spire)        
 # Stun Status        
@@ -60,10 +92,8 @@ class BurningStatus(AbstractStatus):
 # Grappled Status
     # Defensive dice = base defensive dice - 1
     #         
+    
 
-class AbstractMove(ABC):
-    def activate(kaiju: Kaiju):
-        pass
 
 
 # Size Traits
@@ -108,7 +138,7 @@ class AbstractMove(ABC):
 
 
 # Traits given based on size. Kaiju of their given size receive all these traits
-COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building", "CATACLYSMIC ROAR"]
+COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building"]
 
 # Cannot Dodge
     # Permanent Status
@@ -133,8 +163,9 @@ COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building", "CATACLYS
 MONSTROUS_TRAITS = ["Dexterous", "Intimidate"]
 # 
 
-AGILE_TRAITS = ["Double Dodge", "Takes Double Damage"]
-# Acrobatic - CAn
+AGILE_TRAITS = ["Crafty", "Takes Double Damage"]
+# Crafty
+    # If next enemy attack misses, add another dice to next attack.
 
 
 ALL_SIZE_TYPES_NAMES = ["COLOSSAL", "MONSTROUS", "AGILE"]
@@ -155,7 +186,7 @@ BRAWLER_MOVES = ["Headbutt", "Tail Whip", "Punch", "Claw", "Bite", "Grapple"]
     # Should account for number of heads on attacker
 # Tail Whip
     # Attack
-    # Could knock down opponent <-- TOO OP?
+    # Chance to interrupt next attack that targets me. 
 # Punch
     # Attack
     # Accounts for number of arms. Multipunch?
@@ -202,7 +233,7 @@ ATOMIC_MOVES = ["Atomic Breath", "Nuclear Fusion", "Atomic Immolation", "Fast He
 # Fast Healing
     # Heal X * 3 health
 # Quantum Entanglement
-    # Any damage you take, half will be applied to target for one turn. 
+    # Pick one of your statuses to switch with a random status the enemy has.
 ROBOT_MOVES = ["Finger-missiles", "Force-field", "Eye-beams", "Shocking Grasp", "Emergency Repair", "Burning Chainsaw"]   
 # Finger-missiles
     # Shoot finger-missiles out of of your hands. 
@@ -243,38 +274,41 @@ ALL_TRAITS_NAMES = [ALL_SIZE_TYPES_NAMES, ALL_TRAVERSAL_TYPES_NAMES, ALL_KAIJU_M
 
 
 class Kaiju:
-    name = ""
-    sizeType = -1
-    sizeTraits = []   
-    traversalType = -1
-    traversalTraits = []
-    moveTypes = []
-    moveSets = []
-    legs = -1
-    arms = -1
-    heads = -1
+    NAME = ""
+    SIZE_TYPE = -1
+    SIZE_TRAITS = []   
+    TRAVERSAL_TYPE = -1
+    TRAVERSAL_TRAITS = []
+    KAIJU_TYPES = []
+    KAIJU_MOVESETS = []
+    LEGS = -1
+    ARMS = -1
+    HEADS = -1
 
-    maxHealth = -1
-    baseDiceNumber = -1
+    MAX_HEALTH = -1
+    BASE_ATTACK_DICE = -1
+    BASE_DEFENSE_DICE = -1
+    BASE_ENERGY = 2
 
-    def __init__(self, _name, _sizeType, _sizeTraits, _traversalType, _traversalTraits, _moveTypes, _moveSets, _legs, _arms, _heads):
-        self.name = _name
+    def __init__(self, _name, _sizeType, _sizeTraits, _traversalType, _traversalTraits, _kaijuTypes, _moveSets, _legs, _arms, _heads):
+        self.NAME = _name
 
-        self.sizeType = _sizeType
-        self.sizeTraits = _sizeTraits
+        self.SIZE_TYPE = _sizeType
+        self.SIZE_TRAITS = _sizeTraits
     
-        self.traversalType = _traversalType
-        self.traversalTraits = _traversalTraits
+        self.TRAVERSAL_TYPE = _traversalType
+        self.TRAVERSAL_TRAITS = _traversalTraits
 
-        self.moveTypes = _moveTypes
-        self.moveSets = _moveSets
+        self.KAIJU_TYPES = _kaijuTypes
+        self.KAIJU_MOVESETS = _moveSets
 
-        self.legs = _legs
-        self.arms = _arms
-        self.heads = _heads
+        self.LEGS = _legs
+        self.ARMS = _arms
+        self.HEADS = _heads
 
-        self.maxHealth = SIZE_TYPE_IN_METERS[self.sizeType]
-        self.baseDiceNumber = self.sizeType + 1
+        self.MAX_HEALTH = SIZE_TYPE_IN_METERS[self.SIZE_TYPE]
+        self.BASE_ATTACK_DICE = len(ALL_SIZE_TYPES) - self.SIZE_TYPE
+        self.BASE_DEFENSE_DICE = self.SIZE_TYPE + 1
 
       
         
