@@ -18,7 +18,7 @@ from abc import ABC
     #   burgers for. 
     
 # What are the ingredients? IS THIS ALL I NEED????
-    # statuses
+    # statuses (beginning of turn, end of turn, immediate)
     # damage
     # Healing
 
