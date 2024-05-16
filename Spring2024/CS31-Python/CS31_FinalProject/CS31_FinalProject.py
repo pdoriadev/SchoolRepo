@@ -254,6 +254,7 @@ def main():
     with open("kaijus.txt") as kaijuCSV:
         reader = csv.reader(kaijuCSV)
         for line in reader:
+            pass
          
              
 
@@ -388,6 +389,7 @@ if __name__ == "__main__":
 #       -- Kaiju Stats (all influenced by Kaiju's traits)
 #           - Health
 #           - Size
+#           - etc.    
 #    
 #       -- One 'move' per turn
 #           - Moves pulled from different traits

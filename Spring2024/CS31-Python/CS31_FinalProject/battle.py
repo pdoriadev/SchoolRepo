@@ -8,22 +8,25 @@ class KaijuBattleInstance:
     _attackDiceBonus = 0
     _defenseDiceBonus = 0
 
-    def __init__(kai: kaiju.Kaiju):
-        _BASE_KAIJU = kai
-        _health = kai.maxHealth
-        baseDiceNumber = kai.sizeType + 1
-        _energy = kai.baseEnergy
+    def __init__(self, kai: kaiju.Kaiju):
+        self._BASE_KAIJU = kai
+        self._health = kai.maxHealth
+        self.baseDiceNumber = kai.sizeType + 1
+        self._energy = kai.baseEnergy
 
     def getBaseKaiju():         return _BASE_KAIJU
     def getHealth():            return _health
     def getEnergy():            return _energy
     def getAttackDice():        return _BASE_KAIJU.BASE_ATTACK_DICE + _attackDiceBonus
+    def getDefenseDice():       return _BASE_KAIJU.BASE_DEFENSE_DICE + _defenseDiceBonus
     
     def getStatuses():          return _statuses
     def getAvailableMoves():    return _availableMoves
 
     def setHealth(h: int): _health = h
     def setEnergy(e: int): _energy = e
+    
+   
         
 
 class Referee:
@@ -31,7 +34,8 @@ class Referee:
     
     _statuses = []
     _availableMoves = []
-    
+    _whoseTurn: KaijuBattleInstance
+
     def shuffleAvailableMoves(kai: kaiju.Kaiju):
         # TO-DO - rewrite to shuffle moves instead of giving all moves. 
         
@@ -49,19 +53,35 @@ class Referee:
                 _statuses[i].append(status)
                 break
     
-    def activateStatuses (activationTime: kaiju.ActivationTime):
-        pass
+    # activate all statuses with the given activation time
+        # should statuses be activated in a certain order?
+    def activateStatuses (activationTime: kaiju.ActivationTime, data: DamageData):
+        for status in _statuses:
+            match time:
+                case kaiju.ActivationTime.START_TURN:
+                    pass
+                case kaiju.ActivationTime.END_TURN:
+                    pass
+                case kaiju.ActivationTime.ON_DAMAGE_TAKEN:
+                    pass
+                case kaiju.ActivationTime.ON_HIT_OPPONENT:
+                    pass
+                case kaiju.ActivationTime.ON_OPPONENT_HIT:
+                    pass
+                case kaiju.ActivationTime.ON_MISS:
+                    pass
+                case kaiju.ActivationTime.ON_OPPONENT_MISS:
+                    pass
+                case kaiju.ActivationTime.ON_MOVE_ACTIVATION:
+                    pass
+                case _:
+                    assert("Case not accounted for")
                  
-                
-        # activate all statuses with the given activation time
-            # should statuses be activated in a certain order?
-        pass
-    
     def removeStatus():
         pass
      
-    def __init__ (startingKaiju):
-        _kaijuInBattle = startingKaiju
+    def __init__ (self, startingKaiju: []):
+        self._kaijuInBattle = startingKaiju
         
     # All moves available to kaiju (unless a random event opens a new move)
         # exist in the base kaiju
@@ -95,9 +115,14 @@ class Referee:
         # Climate Change strikes, the city has flooded!
     
 class DamageData():
-    moveOrStatus
-    damageTaken = 0
-    damagedKaiju: kaiju.Kaiju
+    MOVE_OR_STATUS
+    DAMAGE_TAKEN = 0
+    DAMAGED_KAIJU: kaiju.Kaiju
+    
+    def __init__(self, moveOrStatus, damageTaken: int, damagedKaiju: kaiju.Kaiju): 
+        self.MOVE_OR_STATUS = moveOrStatus
+        self.DAMAGE_TAKEN = damageTaken
+        self.DAMAGED_KAIJU = damagedKaiju
 
 class BattleUIView():
     # if move activates

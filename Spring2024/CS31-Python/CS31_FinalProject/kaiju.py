@@ -57,10 +57,10 @@ class Status():
         # embody
 
     def __init__(self, name, description, activationTimes, activations: int):
-        _NAME = name
-        _DESCRIPTION = description
-        _ACTIVATION_TIMES = activationTimes
-        activationsRemaining = activations
+        self._NAME = name
+        self._DESCRIPTION = description
+        self._ACTIVATION_TIMES = activationTimes
+        self.activationsRemaining = activations
         
 class StatusBehaviors(ABC):
     def activate(kai: battle.KaijuBattleInstance):
@@ -79,6 +79,7 @@ STATUSES = [
             ]
 
 class Move():
+    pass
     
 
 
