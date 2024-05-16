@@ -3,8 +3,38 @@
 # Kaiju Data
 
 #########################################################################
-
 from enum import Enum
+from abc import ABC
+class AbstractStatus(ABC):
+    def activate(kaiju: kaiju.Kaiju):
+        pass
+
+class BurningStatus(AbstractStatus):
+    burningDamage = -1
+    def activate (kaiju: kaiju.Kaiju):
+        kaiju.takeDamage(burningDamage, "BURNING STATUS")
+
+    def __init__(_burningDamage):
+        burningDamage = _burningDamage
+
+
+class AbstractMove(ABC):
+    def activate(kaiju: kaiju.Kaiju):
+        pass
+
+class AtomicBreath(AbstractMove):
+    cost = 3
+    additionalDice = -1
+    burningStatus = BurningStatus()
+    def activate(targetKaiju: kaiju.Kaiju):
+        targetKaiju.takeDamage()
+        targetKaiju.addStatus(burningStatus)
+
+    def __init__(_cost, _additionalDice):
+        cost = _cost
+        additionalDice = _additionalDice
+
+
 
 # Traits given based on size. Kaiju of their given size receive all these traits
 COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building", "CATACLYSMIC ROAR"]
