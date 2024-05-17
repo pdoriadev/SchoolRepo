@@ -29,7 +29,7 @@ class KaijuBattleInstance:
    
         
 
-class Referee:
+class Referree:
     _kaijuInBattle = []
     
     _statuses = []

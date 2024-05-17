@@ -166,7 +166,11 @@ MONSTROUS_TRAITS = ["Dexterous", "Intimidate"]
 
 AGILE_TRAITS = ["Crafty", "Takes Double Damage"]
 # Crafty
-    # If next enemy attack misses, add another dice to next attack.
+    # If next enemy attack misses, add another dice to your next attack.
+
+# Takes Double Damage
+    # Take double damage from attacks.
+    # OR take double damage from damaging status effects???
 
 
 ALL_SIZE_TYPES_NAMES = ["COLOSSAL", "MONSTROUS", "AGILE"]
@@ -193,7 +197,7 @@ BRAWLER_MOVES = ["Headbutt", "Tail Whip", "Punch", "Claw", "Bite", "Grapple"]
     # Accounts for number of arms. Multipunch?
 # Claw
     # Attack
-    # Bleed damage? 
+    # Apply bleed status effect.
 # Bite
     # Attack
     # Accounts for number of heads
@@ -203,6 +207,10 @@ BRAWLER_MOVES = ["Headbutt", "Tail Whip", "Punch", "Claw", "Bite", "Grapple"]
     # Accounts for size difference 
         #   if try to grapple a creature bigger than you, then it kicks you.
         #   if try to grapple a creature smaller than you, has high chance to get
+    # if grapple succeeds, gain extra dice rool for all brawler attacks
+    # RISK?
+        #   if grapple fails, lose one defensive dice on next attack
+        #   Or turn ends????
 SPIRIT_MOVES = ["Channel Past Lives", "Focus Spirit", "Biting Essence", "Meditation", "Prophesy", "Kaiju Avatar"]
 #Channel past lives
     # Gain random move for the rest of the battle. Can only be used once.
@@ -216,38 +224,39 @@ SPIRIT_MOVES = ["Channel Past Lives", "Focus Spirit", "Biting Essence", "Meditat
     # Save up to X energy for next turn.
 # Prophesy
     # Gain up to 2 dice for next defensive roll. 
-# Kaiju Avatar
-    # Pick between three kaiju to assume the form of. Avatar drops after losing X health. 
+# Kaiju Avatar - Polymorph? 
+    # Pick between three kaiju to assume the form of. Avatar drops after losing X health. Still your own
 ATOMIC_MOVES = ["Atomic Breath", "Nuclear Fusion", "Atomic Immolation", "Fast Healing", "Quantum Entanglement"]
 # Atomic Breath
     # Attack
     # Fire beam of atomic energy at target kaiju.
     # One roll for each head <-- attack dice / number of heads (rounded up)
+        # Can spend one more energy to get one more dice for each extra head you have
     # Applies Burning damage over time status
-    # Add X energy to increase dice
 # Nuclear Fusion
     # Double energy output of next X attack
 # Atomic Immolation
     # Turn your body into a nuclear meltdown. Take X damage. 
-    # X Attack move. 
+    # X Attack * constant. 
     # Apply X burning damage per turn to any other kaiju.
 # Fast Healing
-    # Heal X * 3 health
+    # Consume all remaining energy. Heal X * constant health
 # Quantum Entanglement
     # Pick one of your statuses to switch with a random status the enemy has.
 ROBOT_MOVES = ["Finger-missiles", "Force-field", "Eye-beams", "Shocking Grasp", "Emergency Repair", "Burning Chainsaw"]   
 # Finger-missiles
     # Shoot finger-missiles out of of your hands. 
+    # accounts for number of arms
 # Force-field
-    # Gain barrier. Next attack that succeeds must exceed defensive roll + X damage to apply damage and/or statuses.
+    # Gain barrier. Next attack that succeeds must exceed defensive roll + constant damage to succeed.
 # Eye-beams
     # Shoot eye-beams at target. Chance to apply stun status effect. 
 # Shocking Grasp
     # Grab opponent and apply stun status. 
 # Emergency Repair
-    # Consume all remaining energy to heal X * 3
-# Chainsaw Hand
-    # Chainsaw your opponent. Apply burning status.
+    # Consume all remaining energy to heal X * constant
+# Chainsaw Belly 
+    # Chainsaw your opponent. Apply bleed status
 ALL_KAIJU_MOVES = [BRAWLER_MOVES, SPIRIT_MOVES, ATOMIC_MOVES, ROBOT_MOVES]
 ALL_KAIJU_MOVES_NAMES = ["BRAWLER", "SPIRIT", "ATOMIC", "ROBOT"]
 
