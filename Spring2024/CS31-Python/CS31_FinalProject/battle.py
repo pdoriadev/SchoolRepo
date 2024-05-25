@@ -153,7 +153,7 @@ def AIBattle(kaijuA, kaijuB):
 
 def playerBattle(playerBaseKaiju, AIBaseKaiju):
     print("\n" * 5)
-    
+    # TODO
     pKai = KaijuBattleInstance(playerBaseKaiju)
     aiKai = KaijuBattleInstance(AIBaseKaiju)
     kaiInBattle = [pKai, aiKai]
@@ -257,6 +257,8 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
     
     return
             
+ # TO-DO - Smart AI
+         # Knows not to use certain moves with certain HP level (i.e. moves that sacrifice half health)
             
 # TODO - Lower sleep / faster roll-time for smaller kaiju
 
