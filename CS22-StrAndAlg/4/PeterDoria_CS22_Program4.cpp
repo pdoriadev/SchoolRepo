@@ -189,7 +189,7 @@ void selectionSort(CensusData CenDataArr[], int size)
 		{
 		    //Convert the string variables into usable integer types for comparison (similar to bubbleSort conversion)
 
-            num2 = std::stoi(CenDataArrp[index].adultPop);
+            num2 = std::stoi(CenDataArr[index].adultPop);
 			
 			if (num2 < num1) //if new number is less than current minimum
 			{
