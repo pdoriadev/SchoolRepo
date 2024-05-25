@@ -131,7 +131,7 @@
 #==============================================================================
 
 # Peter Doria
-# 4/25/2024
+# 5/25/2024
 # Programming Project 3: Random Character Generator
 # CS31 - 33880
 
@@ -139,11 +139,9 @@
 import random
 import csv
 from re import A
-from tkinter import W
-from token import NUMBER
 import kaiju
 import battle
-import copy
+from enum import Enum
 
 kaijuNames =  ["godzilla", "gojira", "gigan", "anguirus", "mechagodzilla", "kiryu", "king ceasar", \
                      "jet jaguar", "monster x", "king ghidorah", "king kong", "manda", "hedorah", \
@@ -284,8 +282,12 @@ def printKaijuData(kai):
     print("\n====================== END =====================\n")
     
 def printKaijuSelectionList(simple):
-    # print in rows and columns with corresponding letter
-        # A unicode is 41
+    # print in rows and columns with corresponding letter   
+  
+    # TODO
+        # need to get kaiju with longest name in given column so columns are evenly spaced when printing rows. 
+            # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
+        # color code them  
     i = ord("A")
     if (simple):
         numberOfColumns = 2
@@ -315,64 +317,49 @@ def alphabetizeKaijus(kaijus: []) :
                 kaijus[i] = kaijus[j]
                 kaijus[j] = k 
 
-def mainMenu():     
 
-    # loop to print out kaijus with their associated letter. 
-        # TODO's for kaiju list
-        # need to get kaiju with longest name in given column. 
-            # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
-        # color code them  
+class MenuOptions(Enum):
+    PLAYER_BATTLE = 1
+    FULLY_RANDOM_BATTLE = 2
+    SELECTED_AI_BATTLE = 3
+    GENERATE_NEW_KAIJU = 4
+    DELETE_KAIJU = 5
+    KAIJU_DATA = 6
+    QUIT = 10
 
-        
-
+def mainMenu():
     # Menu Options and Selection
-    menuTextNotEnoughKaiju = "~" * 23 + " MENU OPTIONS " + "~" * 23 + \
-        "\n\n" + str(4) + " - GENERATE NEW kaiju (i.e. 4) --> Kaiju Generation Seqence / Menu" + \
-        "\n" + str(7) +  " - QUIT" + \
+    menuTextNotEnoughKaiju = "~" * 23 + " MAIN MENU " + "~" * 23 + \
+        "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU) + " - GENERATE NEW kaiju (i.e. 4) --> Kaiju Generation Seqence / Menu" + \
+        "\n" + str(MenuOptions.QUIT) +  " - QUIT" + \
         "\n\n\tUH-OH!!! Not enough kaiju for battle. Generate new ones!" + \
         "\n" + "~" * 60
-    menuText = "~" * 23 + " MENU OPTIONS " + "~" * 23 + \
-        "\n\n" + str(1) + "- KAIJU BATTLE (input \"1\" plus two letters, one for each kaiju going into battle." + \
+    menuText = "~" * 23 + " MAIN MENU " + "~" * 23 + \
+        "\n\n" + str(MenuOptions.PLAYER_BATTLE) + "- KAIJU BATTLE (input \"1\" plus two letters, one for each kaiju going into battle." + \
         "\n\tFirst kaiju input is yours. Second is the AI's. (i.e. \"1AZ\", \"1XI\"))" + \
-        "\n" + str(2) + " - FULLY RANDOM AI KAIJU BATTLE (i.e. \"2\")" + \
-        "\n" + str(3) + " - SELECTED AI KAIJU BATTLE (i.e. \"3AD\")" + \
-        "\n" + str(4) + " - GENERATE NEW kaiju (i.e. 4) --> Kaiju Generation Seqence / Menu" + \
-        "\n" + str(5) + " - DELETE KAIJU (i.e. 5A deletes kaiju with 'A' next to them)" + \
-        "\n" + str(6) + " - KAIJU DATA (input 6 plus letter of associated kaiju, " + \
+        "\n" + str(MenuOptions.FULLY_RANDOM_BATTLE) + " - FULLY RANDOM AI KAIJU BATTLE (i.e. \"2\")" + \
+        "\n" + str(MenuOptions.SELECTED_AI_BATTLE) + " - SELECTED AI KAIJU BATTLE (i.e. \"3AD\")" + \
+        "\n" + str(MenuOptions.GENERATE_NEW_KAIJU)+ " - GENERATE NEW kaiju (i.e. 4) --> Kaiju Generation Seqence / Menu" + \
+        "\n" + str(MenuOptions.DELETE_KAIJU) + " - DELETE KAIJU (i.e. 5A deletes kaiju with 'A' next to them)" + \
+        "\n" + str(MenuOptions.KAIJU_DATA) + " - KAIJU DATA (input 6 plus letter of associated kaiju, " + \
                         "\n\t(i.e. '6A' gets data on kaiju that is adjacent to 'A'))" + \
-        "\n" + str(7) +  " - QUIT" + \
+        "\n" + str(MenuOptions.KAIJU_DATA) +  " - QUIT" + \
         "\n" + "~" * 60
     
     alphabetizeKaijus(kaijus)
+    
     shouldQuit = False
     while(shouldQuit == False):      
-        userInput = ""    
-        invalidInfo = ""
-
         printKaijuSelectionList(True)
 
         if (len(kaijus) < 3):
             print (menuTextNotEnoughKaiju)
         else:
             print(menuText)
-
-        while True:
-            # FULLY RANDOM AI BATTLE
-                # Randomly select kaiju for battle.
-                # Call battle function with AI on functionality
-            # SELECTED AI BATTLE
-                # CAll battle function with AI on functionality. 
-            # GENERATE NEW KAIJU
-                # Generate new kaiju. Ask for name. 
-                    # Confirm if they want this kaiju. 
-                    # If not, re-loop.
-                    # If yes, add kaiju to kaijus array.                    
-            # DELETE KAIJU
-                # Ask if they are sure they want to delete that kaiju. If confirmed, then delete kaiju.
-            # KAIJU DATA
-                # hook-up
-            # Quit
- 
+        
+        userInput = ""    
+        invalidInfo = ""
+        while True: 
             if (invalidInfo != ""):
                 print("Input is invalid. Please give valid input based on menu option descriptions." +
                       "\n\tInvalid Info: " + invalidInfo )
@@ -411,8 +398,25 @@ def mainMenu():
                     pass
                 case 7:
                     pass
+                # TODO - case for testmode
                 case _:
                     invalidInfo = "That is not a valid input."
+                    
+            # FULLY RANDOM AI BATTLE
+                # Randomly select kaiju for battle.
+                # Call battle function with AI on functionality
+            # SELECTED AI BATTLE
+                # CAll battle function with AI on functionality. 
+            # GENERATE NEW KAIJU
+                # Generate new kaiju. Ask for name. 
+                    # Confirm if they want this kaiju. 
+                    # If not, re-loop.
+                    # If yes, add kaiju to kaijus array.                    
+            # DELETE KAIJU
+                # Ask if they are sure they want to delete that kaiju. If confirmed, then delete kaiju.
+            # KAIJU DATA
+                # hook-up
+            # Quit
                         
             # if selection check passes, break out of loop
 
@@ -463,6 +467,7 @@ def main():
     #     writer = csv.writer(kaijusCSV)
     #     for kai in kaijus:
     #         writer.writerow("======")
+
     #         writer.writerow(kai.name)
     #         writer.writerow(str(kai.sizeType))
     #         for trait in kai.sizeTraits
@@ -497,56 +502,7 @@ if __name__ == "__main__":
   
 
 
-###################################    
-# Kaiju Generation
-#
-#   - Kaiju Generation View    
-#       - MUST mimic anticipation of dice roll for each set of traits.    
-#       - Ask for a number between 1 and 100 from player
-#       - Generate Kaiju Sequence (Do fun timer stuff)... let player skip to end if they want
-#           - give player mini-quiz that if they get stuff right will... have not affect. But they won't know that hehe                    
-#       - Kaiju Generated Menu
-#           - Display new kaiju stats
-#           - Display madlibs style generated background    
-#           - Save Kaiju Choice: Do you want to save this kaiju? If yes, save to CSV. If not, move back to pre-battle menu     
-#               - If kaiju list + 1 > maxKaiju, then have to delete a kaiju.     
-#    
-#   - Kaiju Generation Model
-#       - Looks at set of currently generated kaiju. Somehow biased to generate things that are not represented
-#           in current pool of kaiju. 
-#               - Requires list of things not represented. Probably create list(s) on loading in CSV. 
-#       - Generate Kaiju
-#       - If kaiju is saved, update list of things not represented in kaiju pool.     
-#           
-
-#################################
-# Kaiju Battle - turn-based
-#       -- Dice: D6
-#       -- Kaiju Stats (all influenced by Kaiju's traits)
-#           - Health
-#           - Size
-#           - etc.    
-#    
-#       -- One 'move' per turn
-#           - Moves pulled from different traits
-#    
-#       -- Attacking Result = Attack - Defend
-#           - Positive number = SUCCESS
-#           - 0 or less = FAIL   
-#           - Attack Roll: (Number of dice * (size+1) do a Dice Roll + special state from moves 
-#           - Defend Roll: (Number of dice * (number of sizes - size)) do a Dice Roll + special state from moves
-#
-#       -- Special Move = Roll against special move's DC
-#           - Meets it beats it    
-#           - Use HP to empower a special move    
-    
-    
-    
-    
 
 
-
-
-# TO-DO - save kaiju list into csv  
 
         
