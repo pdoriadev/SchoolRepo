@@ -235,9 +235,14 @@ ATOMIC_MOVES = ["Atomic Breath", "Nuclear Fusion", "Atomic Immolation", "Fast He
 # Nuclear Fusion
     # Double energy output of next X attack
 # Atomic Immolation
-    # Turn your body into a nuclear meltdown. Take X damage. 
-    # X Attack * constant. 
-    # Apply X burning damage per turn to any other kaiju.
+    # v1
+        # Turn your body into a nuclear meltdown. Take X damage. 
+        # X Attack * constant. 
+        # Apply X burning damage per turn to any other kaiju.
+    # v2 
+        # All attacks apply burning 2. Apply 5 burning status to yourself. 
+    # v3 
+        # Every you get hit damage, apply burning 3 to the attacker. 
 # Fast Healing
     # Consume all remaining energy. Heal X * constant health
 # Quantum Entanglement
