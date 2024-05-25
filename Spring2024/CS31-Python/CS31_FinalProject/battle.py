@@ -159,35 +159,31 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
     kaiInBattle = [pKai, aiKai]
 
     # Smaller kaiju goes first
-    playerTurn = playerBaseKaiju.SIZE_TYPE <= AIBaseKaiju.SIZE_TYPE
+    attackingKai :int
+    attackingKai = kaiInBattle[0].getBaseKaiju().SIZE_TYPE > kaiInBattle[1].getBaseKaiju().SIZE_TYPE
+
     roundNum = 0
-    
     while kaiInBattle[0].getHealth() > 0 and kaiInBattle[1].getHealth() > 0:
         roundNum +=1
         print("ROUND " + str(roundNum))
 
-
-        i = 1
-        while i > -1:
-            print("[" + " " * 6 + kaiInBattle[i].getBaseKaiju().NAME + " " * 6 + "]")
-            print("HEALTH: " + str(kaiInBattle[i].getHealth()) + " / " + str(kaiInBattle[i].getBaseKaiju().MAX_HEALTH))
-            print(kaiInBattle[i].getBaseKaiju().CONFIGURATION)
-            print("\n")
+        #TODO - format this to right/left justify as needed
+        print("~" + " " * 6 + "ATTACKING" + " " * 6 + "~"    + " " * 6 +     "~" + " " * 6 + "DEFENDING" + " " * 6 + "~")
+        print("[" + " " * 6 + kaiInBattle[attackingKai].getBaseKaiju().NAME + " " * 6 + "]"     + " " * 6 +     "[" + " " * 6 + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " " * 6 + "]")
+        print("HEALTH: " + str(kaiInBattle[attackingKai].getHealth()) + " / " + str(kaiInBattle[attackingKai].getBaseKaiju().MAX_HEALTH) +  " " * 6      \
+            + "HEALTH: " + str(kaiInBattle[attackingKai - 1].getHealth()) + " / " + str(kaiInBattle[attackingKai - 1].getBaseKaiju().MAX_HEALTH), end = "")
+        print(kaiInBattle[attackingKai].getBaseKaiju().CONFIGURATION    + " " * 6 +     kaiInBattle[attackingKai - 1].getBaseKaiju().CONFIGURATION)
+        print("\n")
             
-            i-=1
-        
-        if (playerTurn):
-            turnTitle = "~" * 6 + kaiInBattle[0].getBaseKaiju().NAME + "'s Turn" + "~" * 6
-            print(turnTitle + "\n" + "~" * len(turnTitle))
-            
+        choice = ""
+        if (attackingKai == 0):
             numberOfMoves = 0
             pMoves = pKai.getAvailableMoves()
             for movesets in pMoves:
                 for move in movesets:
-                     numberOfMoves+=1
-                     print (str(numberOfMoves) + " " + move)
+                        numberOfMoves+=1
+                        print (str(numberOfMoves) + " " + move)
              
-            choice = ""
             while choice == "":
                 choice = input("Select your move (input the corresponding number): ")
                 if (choice.isdigit() == False):
@@ -199,108 +195,56 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
                     choice = ""
                     print ("Invalid input. Input a number that corresponds to a move.")
                     continue
-                
-            print(kaiInBattle[0].getBaseKaiju().NAME + " uses " + choice)
-           
-            print("\n" + kaiInBattle[0].getBaseKaiju().NAME + " ROLLS FOR ATTACK\n")
-
-            attackResult = 0
-            for i in range(0, pKai.getAttackDice()):
-                sleepTime = (pKai.getAttackDice() - (pKai.getAttackDice() - i) + 0.5) * 0.5
-                for i in range (0,3):
-                    print(" .", end = "")
-                    time.sleep(sleepTime)
-                roll = random.choice(range(1,7,1))
-                attackResult += roll
-                print(" " + str(roll), end = "")
-                
-            time.sleep(0.5)
-            print("\nTOTAL ATTACK: " + str(attackResult))
-                
-            print("\n" + kaiInBattle[1].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n")
-            defenseResult = 0
-            for i in range(0, aiKai.getDefenseDice()):
-                # sleepTime = (pKai.getDefenseDice() - (pKai.getDefenseDice() - i) + 0.5) * 0.5
-                for i in range (0,3):
-                    print(" .", end = "")
-                    # time.sleep(sleepTime)
-                roll = random.choice(range(1,7,1))
-                defenseResult += roll
-                print(" " + str(roll), end = "")
-                
-            time.sleep(0.5)
-            print("\nTOTAL DEFENSE: " + str(defenseResult))
-                
-            result = attackResult - defenseResult
-
-            if (result > 0):
-                aiKai.takeDamage(result)
-                print("\n" + aiKai.getBaseKaiju().NAME + " takes " + str(result) + " damage!")
-            else:
-                print("\n" + pKai.getBaseKaiju().NAME + " misses.")
-                
-
-            print("\n" + aiKai.getBaseKaiju().NAME + " prepares themselves.")
-            
-
-            playerTurn = False
         else:
-            turnTitle = "~" * 6 + kaiInBattle[1].getBaseKaiju().NAME + "'s Turn" + "~" * 6
-            print(turnTitle + "\n" + "~" * len(turnTitle))
+            choice = random.choice(random.choice(aiKai.getAvailableMoves()))
+                
+        print(kaiInBattle[0].getBaseKaiju().NAME + " uses " + choice)
+        print("\n" + kaiInBattle[0].getBaseKaiju().NAME + " ROLLS FOR ATTACK\n")
+
+        attackResult = 0
+        for i in range(0, pKai.getAttackDice()):
+            sleepTime = (pKai.getAttackDice() - (pKai.getAttackDice() - i) + 0.5) * 0.5
+            for i in range (0,3):
+                print(" .", end = "")
+                time.sleep(sleepTime)
+            roll = random.choice(range(1,7,1))
+            attackResult += roll
+            print(" " + str(roll), end = "")
+                
+        time.sleep(0.5)
+        print("\nTOTAL ATTACK: " + str(attackResult))
+                
+
+        print("\n" + kaiInBattle[1].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n")
+        defenseResult = 0
+        for i in range(0, aiKai.getDefenseDice()):
+            # sleepTime = (pKai.getDefenseDice() - (pKai.getDefenseDice() - i) + 0.5) * 0.5
+            for i in range (0,3):
+                print(" .", end = "")
+                # time.sleep(sleepTime)
+            roll = random.choice(range(1,7,1))
+            defenseResult += roll
+            print(" " + str(roll), end = "")
+                
+        time.sleep(0.5)
+        print("\nTOTAL DEFENSE: " + str(defenseResult))
+                
+
+        result = attackResult - defenseResult
+        if (result > 0):
+            kaiInBattle[attackingKai - 1].takeDamage(result)
+            print("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " takes " + str(result) + " damage!")
+        else:
+            print("\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " misses.\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " scrapes the ground.")
+                
+        print("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " prepares themselves.")
             
-            print(kaiInBattle[1].getBaseKaiju().NAME + " scrapes the ground.")
-            time.sleep(1)
-            
-            choice = random.choice(kaiInBattle[1].getAvailableMoves())
-            choice = random.choice(choice)
-             
-            print(kaiInBattle[1].getBaseKaiju().NAME + " uses " + choice)
-           
-            print("\n" + kaiInBattle[1].getBaseKaiju().NAME + " ROLLS FOR ATTACK\n")
 
-            attackResult = 0
-            
-            []
-            
-            for i in range(0, pKai.getAttackDice()):
-                sleepTime = (pKai.getAttackDice() - (pKai.getAttackDice() - i) + 0.5) * 0.5
-                for i in range (0,3):
-                    print(" .", end = "")
-                    time.sleep(sleepTime)
-                roll = random.choice(range(1,7))
-                attackResult += roll
-                print(" " + str(roll), end = "")
-                
-            time.sleep(0.5)
-            print("\nTOTAL ATTACK: " + str(attackResult))
-                
-            print("\n" + kaiInBattle[0].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n")
-            defenseResult = 0
-            for i in range(0, aiKai.getDefenseDice()):
-                sleepTime = (pKai.getDefenseDice() - (pKai.getDefenseDice() - i) + 0.5) * 0.5
-                for i in range (0,3):
-                    print(" .", end = "")
-                    time.sleep(sleepTime)
-                    roll = random.choice(range(1,7))
-                    defenseResult += roll
-                print(" " + str(roll), end = "")
-                
-            time.sleep(0.5)
-            print("\nTOTAL DEFENSE: " + str(defenseResult))
-                
-            result = attackResult - defenseResult
-
-            if (result > 0):
-                kaiInBattle[0].takeDamage(result)
-                print("\n" + kaiInBattle[0].getBaseKaiju().NAME + " takes " + str(result) + " damage!")
-            else:
-                print("\n" + kaiInBattle[1].getBaseKaiju().NAME + " misses.")
-                
-
-            print("\n" + kaiInBattle[0].getBaseKaiju().NAME + " prepares themselves.")
-
-
-            playerTurn = True
+        match attackingKai:
+            case 0:
+                attackingKai = 1
+            case 1:
+                attackingKai = 0          
                 
             
     victor = -1
@@ -349,7 +293,7 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
             
             # TODO - If result is failure, miss. Activate any miss-related statuses.
             
-            # TODO - If kaiju out of energy, playerTurn = false
+            # TODO - If kaiju out of energy, attackingKai = false
             
 
 
@@ -380,7 +324,10 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
 
     # TO-DO: Design note -- need to keep scale of kaiju in player's heads. Either text or visual. 
         # Always insert the kaiju's size when they do something or when their name is displayed
+
     # Show both kaiju's health and energy?
+
+    # TODO - output battle logs to a file.
         
 
    
