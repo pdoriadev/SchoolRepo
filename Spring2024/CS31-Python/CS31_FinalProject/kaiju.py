@@ -5,7 +5,6 @@
 #########################################################################
 from enum import Enum
 from abc import ABC
-import battle
 
 # thinking about moves as like a restaurant order
     # first we choose what we want to eat
@@ -62,13 +61,13 @@ class Status():
         self._ACTIVATION_TIMES = activationTimes
         self.activationsRemaining = activations
         
-class StatusBehaviors(ABC):
-    def activate(kai: battle.KaijuBattleInstance):
-        pass
+# class StatusBehaviors(ABC):
+#     def activate(kai: battle.KaijuBattleInstance):
+#         pass
 
-class BurningBehavior(StatusBehaviors):
-    def activate(kai: battle.KaijuBattleInstance):
-        pass
+# class BurningBehavior(StatusBehaviors):
+#     def activate(kai: battle.KaijuBattleInstance):
+#         pass
         
         
 
@@ -294,13 +293,14 @@ class Kaiju:
     LEGS = -1
     ARMS = -1
     HEADS = -1
+    CONFIGURATION = ""
 
     MAX_HEALTH = -1
     BASE_ATTACK_DICE = -1
     BASE_DEFENSE_DICE = -1
     BASE_ENERGY = 2
 
-    def __init__(self, _name, _sizeType, _sizeTraits, _traversalType, _traversalTraits, _kaijuTypes, _moveSets, _legs, _arms, _heads):
+    def __init__(self, _name, _sizeType, _sizeTraits, _traversalType, _traversalTraits, _kaijuTypes, _moveSets, _legs, _arms, _heads, _configuration):
         self.NAME = _name
 
         self.SIZE_TYPE = _sizeType
@@ -315,10 +315,17 @@ class Kaiju:
         self.LEGS = _legs
         self.ARMS = _arms
         self.HEADS = _heads
+        
+        self.CONFIGURATION = _configuration
 
         self.MAX_HEALTH = SIZE_TYPE_IN_METERS[self.SIZE_TYPE]
         self.BASE_ATTACK_DICE = len(ALL_SIZE_TYPES) - self.SIZE_TYPE
-        self.BASE_DEFENSE_DICE = self.SIZE_TYPE + 1
+        
+        if (self.SIZE_TYPE == 0 ):
+            self.BASE_DEFENSE_DICE = 1
+        else:
+            self.BASE_DEFENSE_DICE = 2
+        
 
       
         

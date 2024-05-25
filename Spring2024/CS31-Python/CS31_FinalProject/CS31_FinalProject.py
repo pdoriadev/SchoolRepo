@@ -141,7 +141,7 @@ import copy
 # Note: Each kaiju has two kaijuTypes. This gives each kaiju a unique identity.
 #          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
 # Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
-def generateKaiju(generateRandom):
+def generateKaiju():
 
     name = input ("KAIJU NAME: ").upper()
 
@@ -190,7 +190,10 @@ def generateKaiju(generateRandom):
     arms = random.randrange(2,4,2)
     heads = random.randrange(1, 3, 2)
     
-    kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads)
+    configuration = kaiju.ALL_SIZE_TYPES_NAMES[sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[traversalType] + " " \
+        + kaiju.ALL_KAIJU_MOVES_NAMES[moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[moveTypes[1]]
+    
+    kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads, configuration)
     return kai
 
 # prints generated kaiju data to the console for the user to see. 
@@ -224,8 +227,8 @@ def printKaijuData(kai):
             j+=1
         i+=1
     
-    print("\nCONFIGURATION: " + kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType] + " " \
-        + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[1]])
+
+    print("\nCONFIGURATION: " + kai.configuration)
         
     print("\n====================== END =====================\n")
     
@@ -239,8 +242,7 @@ def printKaijuList(simple):
     else: 
         for kai in kaijus:
             print(chr(i) + " - " + kai.name)
-            print("\n\tCONFIGURATION: " + kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " " + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType] + " " \
-        + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[kai.moveTypes[1]])
+            print("\n\tCONFIGURATION: " + kai.configuration)
      
 
 kaijus = []
@@ -250,6 +252,14 @@ menuOptions = [1, 2, 3, 4, 5, 6]
 
 
 def main():
+    
+    #Battle Test
+    kai1 = generateKaiju()
+    kai2 = generateKaiju()
+    battle.playerBattle(kai1, kai2)
+    
+    
+    
     # Load in all kaiju
     with open("kaijus.txt") as kaijuCSV:
         reader = csv.reader(kaijuCSV)
@@ -302,11 +312,9 @@ def main():
                     if (len(userInput) != 3):
                         invalid = True
                         invalidInfo = "KAIJU BATTLE requires 2 monster inputs."
-                        
-                    
-                    
                     invalid = False
                 case 2:
+                    
                     invalid = False
                 case 3:
                     invalid = False
@@ -316,23 +324,25 @@ def main():
                     invalid = False
                 case 6:
                     invalid = False
+                case _:
+                    invalid = True
+                    invalidInfo = "That is not a valid input."
+                        
             # if selection check passes, break out of loop
             
 
-
-        kai = generateKaiju()
-        printKaijuData(kai)
         
-    with open("kaijus.txt") as kaijusCSV:
-        writer = csv.writer(kaijusCSV)
-        for kai in kaijus:
-            writer.writerow("======")
-            writer.writerow(kai.name)
-            writer.writerow(str(kai.sizeType))
-            for trait in kai.sizeTraits
-                writer.writerow(trait.)
-            # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
-            writer.writerow(traversalType)
+        
+    # with open("kaijus.txt") as kaijusCSV:
+    #     writer = csv.writer(kaijusCSV)
+    #     for kai in kaijus:
+    #         writer.writerow("======")
+    #         writer.writerow(kai.name)
+    #         writer.writerow(str(kai.sizeType))
+    #         for trait in kai.sizeTraits
+    #             writer.writerow(trait.)
+    #         # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
+    #         writer.writerow(traversalType)
             
 
     print("\n\nRAWR...")
