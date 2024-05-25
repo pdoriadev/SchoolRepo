@@ -24,3 +24,9 @@
 *.sln
 
 
+##################
+#Krita ignores
+*.kra
+*.kra~
+
+
