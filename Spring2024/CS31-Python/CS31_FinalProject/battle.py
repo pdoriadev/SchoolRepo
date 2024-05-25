@@ -140,20 +140,32 @@ class BattleUIView():
     # if status affect activates
     pass
 
-                
-def AIBattle(kaijuA, kaijuB):
-    print()
-    
-
-    # operations done in multiple places
-        # calculating rolls
-        # attack sequence.
-        # prints when something happens.
-    
-
+#################################
+#
+#
+# Kaiju Battle System - turn-based
+#       -- Dice: D6
+#       -- Kaiju Stats (all influenced by Kaiju's traits)
+#           - Health
+#           - Size
+#           - etc.    
+#    
+#       -- One 'move' per turn
+#           - Moves pulled from different traits
+#    
+#       -- Attacking Result = Attack - Defend
+#           - Positive number = SUCCESS
+#           - 0 or less = FAIL   
+#           - Attack Roll: (Number of dice * (size+1) do a Dice Roll + special state from moves 
+#           - Defend Roll: (Number of dice * (number of sizes - size)) do a Dice Roll + special state from moves
+#
+#       -- Special Move = Roll against special move's DC
+#           - Meets it beats it    
+#           - Use HP to empower a special move    
 def playerBattle(playerBaseKaiju, AIBaseKaiju):
     print("\n" * 5)
-    # TODO
+    
+    # Generating kaiju that can be used for battle
     pKai = KaijuBattleInstance(playerBaseKaiju)
     aiKai = KaijuBattleInstance(AIBaseKaiju)
     kaiInBattle = [pKai, aiKai]
