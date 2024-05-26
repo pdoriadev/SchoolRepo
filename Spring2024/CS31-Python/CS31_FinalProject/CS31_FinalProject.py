@@ -139,14 +139,17 @@
 import random
 import csv
 from re import A
+import re
 from traceback import print_list
+from urllib.robotparser import RequestRate
 import kaiju
 import battle
-from enum import IntEnum
+from enum import Enum
+import time
 
 kaijuNames =  ["godzilla", "gojira", "gigan", "anguirus", "mechagodzilla", "kiryu", "king ceasar", \
                      "jet jaguar", "monster x", "king ghidorah", "king kong", "manda", "hedorah", \
-                     "megaguirus", "biolante", "space-godzilla", "monster omega", "ebirah", \
+                     "megaguirus", "biolante", "space godzilla", "monster omega", "ebirah", \
                      "kamacurus", "kumonga", "rodan", "mothra", "minila", "gypsy danger", "megazord", "Gabara", \
                      "Baragon", "Fire Rodan", ]
 
@@ -310,7 +313,7 @@ def printKaijuSelectionList(simple):
             print(chr(i) + " - " + kai.name)
             print("\n\tCONFIGURATION: " + kai.configuration)
      
-# Creating Alphabetized list of kaijus
+# Alphabetizes list of kaijus
 def alphabetizeKaijus(kaijus: []) :
     for i in range(0, len(kaijus)):
         for j in range(0, len(kaijus)):
@@ -320,7 +323,7 @@ def alphabetizeKaijus(kaijus: []) :
                 kaijus[j] = k 
 
 
-class MenuOptions(IntEnum):
+class MenuOptions(Enum):
     PLAYER_VS_AI_BATTLE = 1
     FULLY_RANDOM_AI_BATTLE = 2
     SELECTED_AI_BATTLE = 3
@@ -335,32 +338,48 @@ kaijus = []
 MAX_KAIJU_SELECTION = 26
 
 def mainMenu():
+
     # Menu Options and Selection
-    menuTextNotEnoughKaiju = "\n" + "~" * 23 + " MAIN MENU " + "~" * 23 + \
+    menuTextNoKaiju = "\n" + "~" * 23 + " MAIN MENU " + "~" * 23 + \
         "\n Select the option you want by inputting the number that is to the left of it." + \
-        "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU) + " - GENERATE NEW KAIJU (i.e. " + str(MenuOptions.GENERATE_NEW_KAIJU) + ")" \
-        "\n" + str(MenuOptions.QUIT) +  " - QUIT" + \
+        "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + " - " + MenuOptions.GENERATE_NEW_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\")" + \
+        "\n" + str(MenuOptions.QUIT.value) +  " - " + MenuOptions.QUIT.name.replace("_", " ") + \
+        "\n\nUH-OH!!! Not enough kaiju for battle. Generate new ones!" + \
+        "\n" + "~" * 60
+    menuTextNotEnoughKaiju = "\n" + "~"  * 23 + " MAIN MENU " + "~" * 23 + \
+        "\n Select the option you want by inputting the number that is right next to it." + \
+        "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + " - " + MenuOptions.GENERATE_NEW_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\")" + \
+        "\n" + str(MenuOptions.DELETE_KAIJU.value) + " - " + MenuOptions.DELETE_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.DELETE_KAIJU.value) + "A\")" + \
+        "\n" + str(MenuOptions.KAIJU_DATA.value) + " - " + MenuOptions.KAIJU_DATA.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.KAIJU_DATA.value)+ "h\")" + \
+        "\n" + str(MenuOptions.QUIT.value) +  " - " + MenuOptions.QUIT.name.replace("_", " ") + \
         "\n\nUH-OH!!! Not enough kaiju for battle. Generate new ones!" + \
         "\n" + "~" * 60
     menuText = "\n" + "~"  * 23 + " MAIN MENU " + "~" * 23 + \
         "\n Select the option you want by inputting the number that is right next to it." + \
-        "\n\n" + str(MenuOptions.PLAYER_VS_AI_BATTLE) + " - PLAYER vs. AI BATTLE (First letter is player's kaiju - i.e. \"1AB\")" + \
-        "\n" + str(MenuOptions.FULLY_RANDOM_AI_BATTLE) + " - FULLY RANDOM AI BATTLE (i.e. \"" + str(MenuOptions.FULLY_RANDOM_AI_BATTLE) + "\")" + \
-        "\n" + str(MenuOptions.SELECTED_AI_BATTLE) + " - SELECTED AI BATTLE (i.e. \" " + str(MenuOptions.SELECTED_AI_BATTLE) + "AD\")" + \
-        "\n" + str(MenuOptions.GENERATE_NEW_KAIJU)+ " - GENERATE NEW kaiju (i.e. " + str(MenuOptions.GENERATE_NEW_KAIJU) + ")" + \
-        "\n" + str(MenuOptions.DELETE_KAIJU) + " - DELETE KAIJU (i.e. " + str(MenuOptions.DELETE_KAIJU) + "A)" + \
-        "\n" + str(MenuOptions.KAIJU_DATA) + " - KAIJU DATA (i.e. \"" + str(MenuOptions.KAIJU_DATA)+ ")" + \
-        "\n" + str(MenuOptions.QUIT) +  " - QUIT" + \
+        "\n\n" + str(MenuOptions.PLAYER_VS_AI_BATTLE.value) + " - " + MenuOptions.PLAYER_VS_AI_BATTLE.name.replace("_", " ") + "  (First letter is player's kaiju - i.e. \"1ab\")" + \
+        "\n" + str(MenuOptions.FULLY_RANDOM_AI_BATTLE.value) + " - " + MenuOptions.FULLY_RANDOM_AI_BATTLE.name.replace("_", " ") + "  (i.e. \"" + str(MenuOptions.FULLY_RANDOM_AI_BATTLE.value) + "\")" + \
+        "\n" + str(MenuOptions.SELECTED_AI_BATTLE.value) + " - " + MenuOptions.SELECTED_AI_BATTLE.name.replace("_", " ") +  "  (i.e. \"" + str(MenuOptions.SELECTED_AI_BATTLE.value) + "ad\")" + \
+        "\n" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + " - " + MenuOptions.GENERATE_NEW_KAIJU.name.replace("_", " ") + "  (i.e. \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\")" + \
+        "\n" + str(MenuOptions.DELETE_KAIJU.value) + " - " + MenuOptions.DELETE_KAIJU.name.replace("_", " ") + "  (i.e. \"" + str(MenuOptions.DELETE_KAIJU.value) + "a\")" + \
+        "\n" + str(MenuOptions.KAIJU_DATA.value) + " - " + MenuOptions.KAIJU_DATA.name.replace("_", " ") + "  (i.e. \"" + str(MenuOptions.KAIJU_DATA.value) + "f\")" + \
+        "\n" + str(MenuOptions.QUIT.value) +  " - " + MenuOptions.QUIT.name.replace("_", " ") + \
         "\n" + "~" * 60
     
     alphabetizeKaijus(kaijus)
-    shouldQuit = False
-    while(shouldQuit == False):              
-        userInput = ""    
-        invalidInfo = ""
-        printKaijuSelectionList(True)
 
-        if (len(kaijus) < 3):
+    shouldQuit = False
+    userInput = ""    
+    invalidInfo = ""
+    requestDeniedInfo = ""
+    while(shouldQuit == False):              
+
+        ################################
+        # Setup Menu
+        printKaijuSelectionList(True)
+        
+        if (len(kaijus) == 0):
+            print(menuTextNoKaiju)
+        elif (len(kaijus) < 3):
             print (menuTextNotEnoughKaiju)
         else:
             print(menuText)
@@ -368,107 +387,186 @@ def mainMenu():
         if (invalidInfo != ""):
             print("Input was invalid: " + invalidInfo)
             invalidInfo = ""
-    
+        elif (requestDeniedInfo != ""):
+            print(requestDeniedInfo)
+
+        #################################
+        # User Input    
         userInput = input("Input a menu option: ").upper()
         userInput.strip()
         userInput.replace(" ", "")
-
-        # checks
+        
         if (len(userInput) == 0):
             invalidInfo = "Input zero characters."
             continue
 
         if (userInput[0].isdigit == False):
             invalidInfo = "The first character must be a number."
-            continue
-
-        match int(userInput[0]):
+            continue    
+        
+        ###############################
+        # Determining user choice
+        optionChosen: MenuOptions
+        match (int(userInput[0])):
             case MenuOptions.PLAYER_VS_AI_BATTLE.value:
-                if (len(userInput) != 3):
-                    invalidInfo = "PLAYER vs. AI BATTLE requires two kaiju inputs." + \
-                                    "\n\t Example: " + str(MenuOptions.PLAYER_VS_AI_BATTLE) + "AB" 
-                    continue
-                if (userInput[1].isalpha() == False or userInput[2].isalpha() == False):
-                    invalidInfo = "Kaiju inputs must be letters."
-                    continue
-                    
-                lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
-                if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
-                    invalidInfo = userInput[1] + " does not have an associated kaiju."
-                    continue
-                    
-                if (ord(userInput[2]) < ord('A') or ord(userInput[2]) > lastLetterUsedOrd):
-                    invalidInfo = userInput[1] + " does not have an associated kaiju."
-                    continue
-
-                battle.playerBattle(kaijus[ord(userInput[1]) - ord('A')], kaijus[ord(userInput[2]) - ord('A')])
-                    
-            case MenuOptions.FULLY_RANDOM_AI_BATTLE.value:                    
-                if (len(userInput) != 1):
-                    invalidInfo = "FULLY RANDOM AI BATTLE requires one input." + \
-                                    "\n\t Example: " + str(MenuOptions.FULLY_RANDOM_AI_BATTLE)
-                    continue
-                    
+                optionChosen = MenuOptions.PLAYER_VS_AI_BATTLE
+            case MenuOptions.FULLY_RANDOM_AI_BATTLE.value:
+                optionChosen = MenuOptions.FULLY_RANDOM_AI_BATTLE
             case MenuOptions.SELECTED_AI_BATTLE.value:
-                if (len(userInput) != 3):
-                    invalidInfo = "SELECTED AI BATTLE requires two kaiju inputs." + \
-                                    "\n\t Example: " + str(MenuOptions.SELECTED_AI_BATTLE) + "AB"
-                    continue
-                
-                if (userInput[1].isalpha() == False or userInput[2].isalpha() == False):
-                    invalidInfo = "Kaiju inputs must be letters."
-                    continue
-                    
-                lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
-                if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
-                    invalidInfo = userInput[1] + " does not have an associated kaiju."
-                    continue
-                    
-                if (ord(userInput[2]) < ord('A') or ord(userInput[2]) > lastLetterUsedOrd):
-                    invalidInfo = userInput[1] + " does not have an associated kaiju."
-                    continue
-                    
+                optionChosen = MenuOptions.SELECTED_AI_BATTLE
             case MenuOptions.GENERATE_NEW_KAIJU.value:
-                if (len(userInput) != 1):
-                    invalidInfo = "GENERATE NEW KAIJU requires one input." + \
-                                    "\n\t Example: " + str(MenuOptions.GENERATE_NEW_KAIJU) 
-                    continue
-                    
+                optionChosen = MenuOptions.GENERATE_NEW_KAIJU
             case MenuOptions.DELETE_KAIJU.value:
-                if (len(userInput) != 2):
-                    invalidInfo = "DELETE KAIJU requires an input for the kaiju you want to delete." + \
-                                    "\n\t Example: " + str(MenuOptions.GENERATE_NEW_KAIJU) 
-                    continue
+                optionChosen = MenuOptions.DELETE_KAIJU
             case MenuOptions.KAIJU_DATA.value:
-                if (len(userInput) != 2):
-                    invalidInfo = "KAIJU DATA requires an input for the kaiju you want to get data on."
-                    
-                    continue
-                printKaijuData()
-            case MenuOptions.QUIT.value:
-                shouldQuit = True
-            # TODO - case for testmode
+                optionChosen = MenuOptions.KAIJU_DATA
+            case MenuOptions.QUIT.value: 
+                optionChosen = MenuOptions.QUIT
+            # TODO - case for testmode (i.e. test a bunch of battles and output to a log)
             case _:
                 invalidInfo = "That is not a valid input."
                 continue
+            
+        ##############################################################
+        # If-else chain for different menu options. 
+        if (optionChosen == MenuOptions.PLAYER_VS_AI_BATTLE or optionChosen == MenuOptions.SELECTED_AI_BATTLE):
+            #################################
+            # Input Validation
+            if (len(kaijus) < 2):
+                requestDeniedInfo = "Not enough kaiju for " + optionChosen + " . Input " + \
+                    str(MenuOptions.GENERATE_NEW_KAIJU.value) + " to generate more."
+                continue
+            
+            if (len(userInput) != 3):
+                invalidInfo = optionChosen.name + " require two kaiju inputs. Example: \"" + str(optionChosen.value) + "ab\"" 
+                continue
+            
+            if (userInput[1].isalpha() == False or userInput[2].isalpha() == False):
+                invalidInfo = "Kaiju inputs must be letters."
+                continue
+            
+            lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
+            if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
+                invalidInfo = "The letter" + userInput[1] + " does not have an associated kaiju."
+                continue
                     
-        # FULLY RANDOM AI BATTLE
-            # Randomly select kaiju for battle.
-            # Call battle function with AI on functionality
-        # SELECTED AI BATTLE
-            # CAll battle function with AI on functionality. 
-        # GENERATE NEW KAIJU
-            # Generate new kaiju. Ask for name. 
-                # Confirm if they want this kaiju. 
-                # If not, re-loop.
-                # If yes, add kaiju to kaijus array.                    
-        # DELETE KAIJU
-            # Ask if they are sure they want to delete that kaiju. If confirmed, then delete kaiju.
-        # KAIJU DATA
-            # hook-up
-        # Quit
-                        
-        # if selection check passes, break out of loop
+            if (ord(userInput[2]) < ord('A') or ord(userInput[2]) > lastLetterUsedOrd):
+                invalidInfo = "The letter" + userInput[1] + " does not have an associated kaiju."
+                continue
+            
+            #################################
+            # Battle Prep + Logic
+            print("\n" * 10 + "\t\tYou have chosen battle.")
+            for i in range(0,4):                
+                time.sleep(1)
+                print("\n\t\t\t" + str(3 - i))
+                
+            time.sleep(1)
+
+            k1 = kaijus[ord(userInput[1]) - ord('A')]
+            k2 = kaijus[ord(userInput[2]) - ord('A')]
+            battle.doBattle(k1, k2, optionChosen == MenuOptions.SELECTED_AI_BATTLE)
+            
+        elif(optionChosen == MenuOptions.FULLY_RANDOM_AI_BATTLE ):
+            k1 = random.choice(kaijus)
+            while True:
+                k2 = random.choice(kaijus)
+                if (k2.NAME != k1.NAME):
+                    break 
+
+            battle.doBattle(k1, k2, True)        
+            
+        elif (optionChosen == MenuOptions.DELETE_KAIJU or optionChosen == MenuOptions.KAIJU_DATA):
+            #####################################
+            # Input validation    
+            optionVerbStr = "" 
+            if (optionChosen == MenuOptions.DELETE_KAIJU):
+                optionVerbStr = "delete"
+            else:
+                optionVerbStr = "get kaiju data"
+
+            if (len(userInput) != 2):
+                    invalidInfo = optionChosen.name + " requires an input for the kaiju you want to " + optionVerbStr + "." + \
+                                    "\n\t Example: " + str(optionChosen.value) + "c"
+                    continue
+
+            if (userInput[1].isalpha() == False):
+                invalidInfo = "Input a letter for the kaiju you wish to " + optionVerbStr + "."
+                    
+            lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
+            if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
+                invalidInfo = userInput[1] + " does not have an associated kaiju."
+                continue
+
+            #####################################
+            # Business Logic
+            chosenKai = ord(userInput[1]) - ord('A')
+                
+            if (optionChosen == MenuOptions.DELETE_KAIJU):
+                choice = input("\nYou have chosen to delete " + kaijus[chosenKai].NAME + "." +
+                                "\nAre you sure? Input \"y\" to delete: ")
+                
+                if (choice.upper() == "Y"):
+                    name = kaijus[chosenKai].NAME
+                    kaijus.pop(chosenKai)
+                    
+                    print(name, end = "")
+                    time.sleep(0.8)
+                    print(" is no more ")
+                    for i in range (0, 3):
+                        time.sleep(0.8)
+                        print(". ", end = "")
+                    time.sleep(0.5)
+                else:
+                    print("\nYou have chosen to spare " + kaijus[chosenKai] + ".", end = " ")
+                    for i in range (0, 3):
+                        time.sleep(0.4)
+                        print(". ", end = "")
+                    print(" For now ")
+                    for i in range (0, 3):
+                        time.sleep(0.8)
+                        print(". ", end = "")
+                    time.sleep(0.5)
+            else:
+                
+                print("\nProcessing data on " + kaijus[chosenKai].NAME + " ")
+                for i in range (0, 3):
+                    time.sleep(0.8)
+                    print(". ", end = "")
+                print("Data is processed.")
+                time.sleep(0.8)
+                print("\n")
+                printKaijuData()
+   
+        elif(optionChosen == MenuOptions.GENERATE_NEW_KAIJU):
+            ###########################
+            # Input Validation
+            if (len(userInput) != 1):
+                invalidInfo = "GENERATE NEW KAIJU requires one input." + \
+                                "\n\t Example: " + str(MenuOptions.GENERATE_NEW_KAIJU) 
+                continue
+                    
+            if (len(kaijus) == MAX_KAIJU_SELECTION):
+                requestDeniedInfo = "Already at max number of kaiju ("+ MAX_KAIJU_SELECTION + "). Delete kaiju in order to generate more."
+                continue
+
+            #########################
+            # Business Logic
+            kaijus.append(kaijuGenerationOrder(False, False))
+            alphabetizeKaijus(kaijus)
+            print("!@#$" * 5 + "NEW KAIJU" + "!@#$" * 5)
+            printKaijuData(kaijus[len(kaijus) - 1])
+            
+        elif (optionChosen == MenuOptions.QUIT):
+            choice = input("\nAre you sure you want to quit? Input \"y\" to confirm: ")                 
+            if (choice.upper() == "Y"):
+                shouldQuit = True
+
+        if (optionChosen != MenuOptions.QUIT):
+            input("\n\nInput anything to continue back to main menu . . .")
+        
+            
+    return
 
 
 
@@ -525,7 +623,10 @@ def main():
     #         writer.writerow(traversalType)
             
 
-    print("\n\nRAWR...")
+    print("\n\nRAWR ")
+    for i in range(0, 4):
+        time.sleep(1)
+        print(". ")
     
     
     
