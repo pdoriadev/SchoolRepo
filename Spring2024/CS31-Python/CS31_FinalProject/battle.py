@@ -31,7 +31,11 @@ class KaijuBattleInstance:
     # def setHealth(h: int): _health = h
     # def setEnergy(e: int): _energy = e
     
-    def takeDamage(self, d: int): self._health -= d
+    def takeDamage(self, d: int): 
+        if (self._BASE_KAIJU == 2):
+            self._health -= d * 2
+        else:
+            self._health -= d
     
    
         
@@ -162,13 +166,12 @@ class BattleUIView():
 #       -- Special Move = Roll against special move's DC
 #           - Meets it beats it    
 #           - Use HP to empower a special move    
-def playerBattle(playerBaseKaiju, AIBaseKaiju):
+def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle: bool):
     print("\n" * 5)
     
     # Generating kaiju that can be used for battle
-    pKai = KaijuBattleInstance(playerBaseKaiju)
-    aiKai = KaijuBattleInstance(AIBaseKaiju)
-    kaiInBattle = [pKai, aiKai]
+    kaiInBattle = [KaijuBattleInstance(playerBaseKaiju), KaijuBattleInstance(AIBaseKaiju)
+]
 
     # Smaller kaiju goes first
     attackingKai :int
@@ -188,9 +191,10 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
         print("\n")
             
         choice = ""
-        if (attackingKai == 0):
+        
+        if (isAIBattle == False and attackingKai == 0):
             numberOfMoves = 0
-            pMoves = pKai.getAvailableMoves()
+            pMoves = kaiInBattle[0].getAvailableMoves()
             for movesets in pMoves:
                 for move in movesets:
                         numberOfMoves+=1
@@ -208,14 +212,14 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
                     print ("Invalid input. Input a number that corresponds to a move.")
                     continue
         else:
-            choice = random.choice(random.choice(aiKai.getAvailableMoves()))
+            choice = random.choice(random.choice(kaiInBattle[1].getAvailableMoves()))
                 
-        print(kaiInBattle[0].getBaseKaiju().NAME + " uses " + choice)
-        print("\n" + kaiInBattle[0].getBaseKaiju().NAME + " ROLLS FOR ATTACK\n")
+        print(kaiInBattle[attackingKai].getBaseKaiju().NAME + " chooses " + choice)
+        print("\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " ROLLS FOR ATTACK\n")
 
         attackResult = 0
-        for i in range(0, pKai.getAttackDice()):
-            sleepTime = (pKai.getAttackDice() - (pKai.getAttackDice() - i) + 0.5) * 0.5
+        for i in range(0, kaiInBattle[attackingKai].getAttackDice()):
+            sleepTime = (kaiInBattle[attackingKai].getAttackDice() - (kaiInBattle[attackingKai].getAttackDice() - i) + 0.25) * 0.25
             for i in range (0,3):
                 print(" .", end = "")
                 time.sleep(sleepTime)
@@ -227,10 +231,10 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
         print("\nTOTAL ATTACK: " + str(attackResult))
                 
 
-        print("\n" + kaiInBattle[1].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n")
+        print("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n")
         defenseResult = 0
-        for i in range(0, aiKai.getDefenseDice()):
-            # sleepTime = (pKai.getDefenseDice() - (pKai.getDefenseDice() - i) + 0.5) * 0.5
+        for i in range(0, kaiInBattle[attackingKai - 1].getDefenseDice()):
+            sleepTime = (kaiInBattle[attackingKai - 1].getDefenseDice() - (kaiInBattle[attackingKai - 1].getDefenseDice() - i) + 0.25) * 0.25
             for i in range (0,3):
                 print(" .", end = "")
                 # time.sleep(sleepTime)
@@ -243,13 +247,14 @@ def playerBattle(playerBaseKaiju, AIBaseKaiju):
                 
 
         result = attackResult - defenseResult
-        if (result > 0):
+        if (result > 0):            
             kaiInBattle[attackingKai - 1].takeDamage(result)
             print("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " takes " + str(result) + " damage!")
         else:
             print("\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " misses.\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " scrapes the ground.")
-                
-        print("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " prepares themselves.")
+        
+        if (kaiInBattle[attackingKai - 1].getHealth() > 0): 
+            print("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " prepares themselves.")
             
 
         match attackingKai:
