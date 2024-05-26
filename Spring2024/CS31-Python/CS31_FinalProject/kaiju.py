@@ -174,7 +174,7 @@ AGILE_TRAITS = ["Crafty", "Takes Double Damage"]
 
 ALL_SIZE_TYPES_NAMES = ["COLOSSAL", "MONSTROUS", "AGILE"]
 ALL_SIZE_TYPES = [COLOSSAL_TRAITS, MONSTROUS_TRAITS, AGILE_TRAITS]
-SIZE_TYPE_IN_METERS = [25, 18, 10]
+SIZE_TYPE_IN_METERS = [13, 9, 5]
 
 # Different moves depending on the traversal type
 AERIAL_MOVES = ["Supersonic", "Dive-bomb", "Air-dodge"]
