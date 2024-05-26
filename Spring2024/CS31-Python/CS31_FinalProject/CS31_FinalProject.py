@@ -255,27 +255,27 @@ def generateKaiju(order: kaijuGenerationOrder):
 #   Selects data from nested lists depending on the desired stat for output.
 def printKaijuData(kai):
     print(" " * 20 + kai.NAME + "'s " "DATA" + " " * 20 + "\n")
-    print("\nCONFIGURATION: " + kai.configuration)
+    print("\nCONFIGURATION: " + kai.CONFIGURATION)
 
 
-    print("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType])
+    print("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE])
     j = 0
-    while j < len(kai.sizeTraits) - 1:
-        print(kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " TRAIT " + str(j+1) + ":\t" + kai.sizeTraits[j])
+    while j < len(kai.SIZE_TRAITS) - 1:
+        print(kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " TRAIT " + str(j+1) + ":\t" + kai.SIZE_TRAITS[j])
         j+=1
     
     print("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType])
     j = 0
-    while j < len(kai.traversalTraits):
-        print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType] + " TRAIT " + str(j+1) + ":\t" + kai.traversalTraits[j])
+    while j < len(kai.TRAVERSAL_TRAITS):
+        print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.TRAVERSAL_TRAITS[j])
         j+=1
         
     i = 0
     for moveType in kai.moveTypes:
         print("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[moveType])
         j = 0
-        while j < len(kai.moveSets[i]):
-            print(kaiju.ALL_KAIJU_MOVES_NAMES[moveType] + " MOVE " + str(j+1) + ":\t\t" + kai.moveSets[i][j])
+        while j < len(kai.MOVESETS[i]):
+            print(kaiju.ALL_KAIJU_MOVES_NAMES[moveType] + " MOVE " + str(j+1) + ":\t\t" + kai.MOVESETS[i][j])
             j+=1
         i+=1
     
@@ -283,8 +283,9 @@ def printKaijuData(kai):
     print("ARMS:\t\t\t" + str(kai.arms))
     print("HEADS:\t\t\t" + str(kai.heads))
         
-    print("\n====================== END =====================\n")
+    print(" " * 25 +  "DATA END" + " " * 25 + "\n")    
     
+
 def printKaijuSelectionList(simple):
     # print in rows and columns with corresponding letter   
   
@@ -293,21 +294,22 @@ def printKaijuSelectionList(simple):
             # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
         # color code them  
     print("\n\n" + "~" * 23 + " KAIJU SELECTION " + "~" * 23 + "")
-    i = ord("A")
+    
     if (simple):
         numberOfColumns = 2
         numberOfRows = int(len(kaijus)/ numberOfColumns)
         letterOrd = ord('A')
         for i in range(0, int(len(kaijus) / numberOfColumns)):
-            namesInRow = []
             j = i
             while j < len(kaijus):
-                if (j + numberOfRows>= len(kaijus)):
-                    print(chr(letterOrd) + " - " + kaijus[j].NAME)
-                else:
+                if (j < int(len(kaijus) / 2)):
                     print(chr(letterOrd) + " - " + kaijus[j].NAME, end = " " * 6)    
-                letterOrd += 1
-                j += numberOfRows     
+                else:
+                    print(chr(letterOrd + numberOfRows) + " - " + kaijus[j].NAME)                    
+                
+                j += numberOfRows   
+                
+            letterOrd +=1
     else: 
         for kai in kaijus:
             print(chr(i) + " - " + kai.name)
@@ -500,6 +502,10 @@ def mainMenu():
 
             #####################################
             # Business Logic
+            charVal = userInput[1]
+            ordVal = ord(userInput[1])
+            aVal = ord('A')
+            
             chosenKai = ord(userInput[1]) - ord('A')
                 
             if (optionChosen == MenuOptions.DELETE_KAIJU):
@@ -536,7 +542,7 @@ def mainMenu():
                 print("Data is processed.")
                 time.sleep(0.8)
                 print("\n")
-                printKaijuData()
+                printKaijuData(kaijus[chosenKai])
    
         elif(optionChosen == MenuOptions.GENERATE_NEW_KAIJU):
             ###########################
@@ -552,7 +558,7 @@ def mainMenu():
 
             #########################
             # Business Logic
-            kaijus.append(kaijuGenerationOrder(False, False))
+            kaijus.append(generateKaiju(kaijuGenerationOrder(False, False)))
             alphabetizeKaijus(kaijus)
             print("!@#$" * 5 + "NEW KAIJU" + "!@#$" * 5)
             printKaijuData(kaijus[len(kaijus) - 1])
