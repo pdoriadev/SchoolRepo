@@ -260,61 +260,31 @@ def printKaijuData(kai):
 
     print("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE])
     j = 0
-    while j < len(kai.SIZE_TRAITS) - 1:
-        print(kaiju.ALL_SIZE_TYPES_NAMES[kai.sizeType] + " TRAIT " + str(j+1) + ":\t" + kai.SIZE_TRAITS[j])
+    while j < len(kai.SIZE_TRAITS):
+        print(kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.SIZE_TRAITS[j])
         j+=1
     
-    print("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.traversalType])
+    print("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE])
     j = 0
     while j < len(kai.TRAVERSAL_TRAITS):
         print(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.TRAVERSAL_TRAITS[j])
         j+=1
         
     i = 0
-    for moveType in kai.moveTypes:
-        print("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[moveType])
+    for moveType in kai.KAIJU_MOVESETS:
+        print("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[i])
         j = 0
-        while j < len(kai.MOVESETS[i]):
-            print(kaiju.ALL_KAIJU_MOVES_NAMES[moveType] + " MOVE " + str(j+1) + ":\t\t" + kai.MOVESETS[i][j])
+        while j < len(kai.KAIJU_MOVESETS[i]):
+            print(kaiju.ALL_KAIJU_MOVES_NAMES[j] + " MOVE " + str(j+1) + ":\t\t" + kai.KAIJU_MOVESETS[i][j])
             j+=1
         i+=1
     
-    print("LEGS:\t\t\t" + str(kai.legs))
-    print("ARMS:\t\t\t" + str(kai.arms))
-    print("HEADS:\t\t\t" + str(kai.heads))
+    print("LEGS:\t\t\t" + str(kai.LEGS))
+    print("ARMS:\t\t\t" + str(kai.ARMS))
+    print("HEADS:\t\t\t" + str(kai.HEADS))
         
-    print(" " * 25 +  "DATA END" + " " * 25 + "\n")    
-    
-
-def printKaijuSelectionList(simple):
-    # print in rows and columns with corresponding letter   
-  
-    # TODO
-        # need to get kaiju with longest name in given column so columns are evenly spaced when printing rows. 
-            # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
-        # color code them  
-    print("\n\n" + "~" * 23 + " KAIJU SELECTION " + "~" * 23 + "")
-    
-    if (simple):
-        numberOfColumns = 2
-        numberOfRows = int(len(kaijus)/ numberOfColumns)
-        letterOrd = ord('A')
-        for i in range(0, int(len(kaijus) / numberOfColumns)):
-            j = i
-            while j < len(kaijus):
-                if (j < int(len(kaijus) / 2)):
-                    print(chr(letterOrd) + " - " + kaijus[j].NAME, end = " " * 6)    
-                else:
-                    print(chr(letterOrd + numberOfRows) + " - " + kaijus[j].NAME)                    
-                
-                j += numberOfRows   
-                
-            letterOrd +=1
-    else: 
-        for kai in kaijus:
-            print(chr(i) + " - " + kai.name)
-            print("\n\tCONFIGURATION: " + kai.configuration)
-     
+    print(" " * 12 +  "DATA END" + " " * 12 + "\n")    
+        
 # Alphabetizes list of kaijus
 def alphabetizeKaijus(kaijus: []) :
     for i in range(0, len(kaijus)):
@@ -376,9 +346,38 @@ def mainMenu():
     while(shouldQuit == False):              
 
         ################################
-        # Setup Menu
-        printKaijuSelectionList(True)
+        # Setup Menu - kaiju list
+        # TODO
+            # need to get kaiju with longest name in given column so columns are evenly spaced when printing rows. 
+                # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
+            # color code them  
+        # print in rows and columns with corresponding letter   
+        print("\n\n" + "~" * 23 + " KAIJU SELECTION " + "~" * 23 + "")
+    
+        letterOrd = ord('A')   
+
+        columns = 2
+        rows = int(len(kaijus)/ columns)
         
+        isOdd:bool = False
+        if (len(kaijus) % 2 == 1):
+            isOdd = True
+            rows +=1
+        
+        i = -1
+        while (i + rows) < len(kaijus):
+            i += 1 
+            if (i + rows < len(kaijus)):
+                print(chr(letterOrd + i) + " - " + kaijus[i].NAME, end = " " * 6)    
+                print(chr(letterOrd + i + rows) + " - " + kaijus[i+rows].NAME)        
+            else: 
+                if(isOdd):
+                    print(chr(letterOrd + i) + " - " + kaijus[i].NAME)        
+                
+                break
+        
+        ################################
+        # Setup Menu - menu text    
         if (len(kaijus) == 0):
             print(menuTextNoKaiju)
         elif (len(kaijus) < 3):
@@ -386,14 +385,16 @@ def mainMenu():
         else:
             print(menuText)
             
+
+        #################################
+        # User Input    
+        
         if (invalidInfo != ""):
             print("Input was invalid: " + invalidInfo)
             invalidInfo = ""
         elif (requestDeniedInfo != ""):
             print(requestDeniedInfo)
-
-        #################################
-        # User Input    
+        
         userInput = input("Input a menu option: ").upper()
         userInput.strip()
         userInput.replace(" ", "")
@@ -402,7 +403,7 @@ def mainMenu():
             invalidInfo = "Input zero characters."
             continue
 
-        if (userInput[0].isdigit == False):
+        if (userInput[0].isdigit() == False):
             invalidInfo = "The first character must be a number."
             continue    
         
@@ -435,7 +436,7 @@ def mainMenu():
             #################################
             # Input Validation
             if (len(kaijus) < 2):
-                requestDeniedInfo = "Not enough kaiju for " + optionChosen + " . Input " + \
+                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name + " . Input " + \
                     str(MenuOptions.GENERATE_NEW_KAIJU.value) + " to generate more."
                 continue
             
@@ -470,6 +471,11 @@ def mainMenu():
             battle.doBattle(k1, k2, optionChosen == MenuOptions.SELECTED_AI_BATTLE)
             
         elif(optionChosen == MenuOptions.FULLY_RANDOM_AI_BATTLE ):
+            if (len(kaijus) < 2):
+                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name + " . Input " + \
+                    str(MenuOptions.GENERATE_NEW_KAIJU.value) + " to generate more."
+                continue
+            
             k1 = random.choice(kaijus)
             while True:
                 k2 = random.choice(kaijus)
@@ -497,17 +503,13 @@ def mainMenu():
                     
             lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
             if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
-                invalidInfo = userInput[1] + " does not have an associated kaiju."
+                invalidInfo = "\""+ userInput[1] + "\" does not have an associated kaiju."
                 continue
 
             #####################################
-            # Business Logic
-            charVal = userInput[1]
-            ordVal = ord(userInput[1])
-            aVal = ord('A')
-            
+            # Business Logic           
             chosenKai = ord(userInput[1]) - ord('A')
-                
+
             if (optionChosen == MenuOptions.DELETE_KAIJU):
                 choice = input("\nYou have chosen to delete " + kaijus[chosenKai].NAME + "." +
                                 "\nAre you sure? Input \"y\" to delete: ")
@@ -595,7 +597,7 @@ def main():
     # TODO - add kaijus from csv into array
 
     ######################################### - Delete this for loop once csv stuff is working.
-    for i in range(1, 11):
+    for i in range(1,1):
         if (i > MAX_KAIJU_SELECTION):
             break
         
