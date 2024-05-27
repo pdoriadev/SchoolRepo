@@ -36,113 +36,7 @@ class KaijuBattleInstance:
             self._health -= d * 2
         else:
             self._health -= d
-    
-   
-        
 
-
-
-class Referree:
-    _kaijuInBattle = []
-    
-    _statuses = []
-    _availableMoves = []
-    _whoseTurn: KaijuBattleInstance
-
-    def shuffleAvailableMoves(kai):
-        # TO-DO - rewrite to shuffle moves instead of giving all moves. 
-        
-        for i in range(0, len(_kaijuInBattle) - 1):
-            _availableMoves[i] = _kaijuInBattle[i].getBaseKaiju().KAIJU_MOVESETS
-            
-
-        # if a status has beginnning of turn and end of turn effects. It effectively activates twice.
-        # if those activations are at different times
-
-    def addStatus(kai, status):
-        i = 0
-        while True:
-            if kai == _kaijuInBattle[i]:
-                _statuses[i].append(status)
-                break
-    
-    # activate all statuses with the given activation time
-        # should statuses be activated in a certain order?
-    # def activateStatuses (activationTime: kaiju.ActivationTime, data: DamageData):
-    #     for status in _statuses:
-    #         match time:
-    #             case kaiju.ActivationTime.START_TURN:
-    #                 pass
-    #             case kaiju.ActivationTime.END_TURN:
-    #                 pass
-    #             case kaiju.ActivationTime.ON_DAMAGE_TAKEN:
-    #                 pass
-    #             case kaiju.ActivationTime.ON_HIT_OPPONENT:
-    #                 pass
-    #             case kaiju.ActivationTime.ON_OPPONENT_HIT:
-    #                 pass
-    #             case kaiju.ActivationTime.ON_MISS:
-    #                 pass
-    #             case kaiju.ActivationTime.ON_OPPONENT_MISS:
-    #                 pass
-    #             case kaiju.ActivationTime.ON_MOVE_ACTIVATION:
-    #                 pass
-    #             case _:
-    #                 assert("Case not accounted for")
-                 
-    def removeStatus():
-        pass
-     
-    def __init__ (self, startingKaiju: []):
-        self._kaijuInBattle = startingKaiju
-        
-    # All moves available to kaiju (unless a random event opens a new move)
-        # exist in the base kaiju
-
-
-
-# Give the kaiju to the status. The status then applies everything to the kaiju. 
-    # Each status could have an "Activate" function that gets called every round    
-        # Each status has limited number of activations. 
-        # Upon activating, tells kaiju what to do / effects kaiju state. 
-        # Kaiju has reference to the status within itself.
-
-   #
-
-   #TO-DO: Moves or traits based on number of legs, arms, or heads. 
-    #Or maybe it's just a multiplier? i.e. legs faster, arms more damage, heads more vision, 
-        # heads multi-attack if using a bite or something like that
-        # Maybe cut legs, arms, heads from battle system? 
-
-   #FUN TO-DO: random events
-        # a random, already generated kaiju attacks 
-        # a random, already generated kaiju helps one of you
-        # helicopter glides by high above you
-        # The people running below scream your name in terror: "_Your name_!"
-        # The people recognize X as the good guy. Y is the bad guy.
-        # The military has launched an attack. They will arrive in X turns.
-            # Once they arrive, random roll to see if they do damage
-        # The military has taken control of _Insert kaiju_, they will arrive
-            # in X turns
-            # Once they arrive, random roll to see if they do damage. 
-        # Climate Change strikes, the city has flooded!
-    
-class DamageData():
-    MOVE_OR_STATUS = 0
-    DAMAGE_TAKEN = 0
-    DAMAGED_KAIJU = 0
-    
-    def __init__(self, moveOrStatus, damageTaken: int, damagedKaiju): 
-        self.MOVE_OR_STATUS = moveOrStatus
-        self.DAMAGE_TAKEN = damageTaken
-        self.DAMAGED_KAIJU = damagedKaiju
-
-class BattleUIView():
-    # if move activates
-    # if damage taken
-    # if new status happens
-    # if status affect activates
-    pass
 
 #################################
 #
@@ -270,10 +164,60 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
             victor = i
 
     # VICTORY SCREEN            
-    print("\n" * 5 + kaiInBattle[i].getBaseKaiju().NAME + " IS VICTORIOUS!")
+    print("\n" * 5 + kaiInBattle[victor].getBaseKaiju().NAME + " IS VICTORIOUS!")
     
     return
             
+###############################################################################
+# Unused Ideas / Code
+###############################################################################
+
+# All moves available to kaiju (unless a random event opens a new move)
+    # exist in the base kaiju
+
+# Give the kaiju to the status. The status then applies everything to the kaiju. 
+    # Each status could have an "Activate" function that gets called every round    
+        # Each status has limited number of activations. 
+        # Upon activating, tells kaiju what to do / effects kaiju state. 
+        # Kaiju has reference to the status within itself.
+
+   #
+
+   #TO-DO: Moves or traits based on number of legs, arms, or heads. 
+    #Or maybe it's just a multiplier? i.e. legs faster, arms more damage, heads more vision, 
+        # heads multi-attack if using a bite or something like that
+        # Maybe cut legs, arms, heads from battle system? 
+
+   #FUN TO-DO: random events
+        # a random, already generated kaiju attacks 
+        # a random, already generated kaiju helps one of you
+        # helicopter glides by high above you
+        # The people running below scream your name in terror: "_Your name_!"
+        # The people recognize X as the good guy. Y is the bad guy.
+        # The military has launched an attack. They will arrive in X turns.
+            # Once they arrive, random roll to see if they do damage
+        # The military has taken control of _Insert kaiju_, they will arrive
+            # in X turns
+            # Once they arrive, random roll to see if they do damage. 
+        # Climate Change strikes, the city has flooded!
+    
+class DamageData():
+    MOVE_OR_STATUS = 0
+    DAMAGE_TAKEN = 0
+    DAMAGED_KAIJU = 0
+    
+    def __init__(self, moveOrStatus, damageTaken: int, damagedKaiju): 
+        self.MOVE_OR_STATUS = moveOrStatus
+        self.DAMAGE_TAKEN = damageTaken
+        self.DAMAGED_KAIJU = damagedKaiju
+
+class BattleUIView():
+    # if move activates
+    # if damage taken
+    # if new status happens
+    # if status affect activates
+    pass
+
  # TO-DO - Smart AI
          # Knows not to use certain moves with certain HP level (i.e. moves that sacrifice half health)
             
@@ -287,32 +231,32 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
 
 # TOOD - Sweet spot roll inputs like in Super Mario RPG. Gives +1 to roll. 
 
-            #TOD0 - shuffle move functionality
-            # print()
-            # availMoves = pKai.getAvailableMoves()
-            # i = 1
-            # for move in availMoves:
-            #     print(str(i) + " " + move.name)
+#TOD0 - shuffle move functionality
+# print()
+# availMoves = pKai.getAvailableMoves()
+# i = 1
+# for move in availMoves:
+#     print(str(i) + " " + move.name)
                 
-            # TODO - input validation loop
+# TODO - input validation loop
             
-            # TODO - select move
-                # should include all information to execute that move
-                # move should include description
-                    # Type number next to move plus "D" (i.e. )
+# TODO - select move
+    # should include all information to execute that move
+    # move should include description
+        # Type number next to move plus "D" (i.e. )
             
-            # TODO - get move and kaiju data related data for dice rolls and DC
+# TODO - get move and kaiju data related data for dice rolls and DC
             
-            # TODO - Dice rolls. Calculate result. 
-                # UI sequence    
+# TODO - Dice rolls. Calculate result. 
+    # UI sequence    
             
-            # TODO - If result is success, activate move.
-                # UI to show success - keep as simple as possible. Just text.
-                # Kaiju should activate any hit-related statuses    
+# TODO - If result is success, activate move.
+    # UI to show success - keep as simple as possible. Just text.
+    # Kaiju should activate any hit-related statuses    
             
-            # TODO - If result is failure, miss. Activate any miss-related statuses.
+# TODO - If result is failure, miss. Activate any miss-related statuses.
             
-            # TODO - If kaiju out of energy, attackingKai = false
+# TODO - If kaiju out of energy, attackingKai = false
             
 
 
