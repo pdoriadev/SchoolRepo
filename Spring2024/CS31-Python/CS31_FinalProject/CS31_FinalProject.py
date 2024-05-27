@@ -385,16 +385,14 @@ def mainMenu():
         else:
             print(menuText)
             
-
-        #################################
-        # User Input    
-        
         if (invalidInfo != ""):
             print("Input was invalid: " + invalidInfo)
             invalidInfo = ""
         elif (requestDeniedInfo != ""):
             print(requestDeniedInfo)
         
+        ############################################
+        # User Input - input and initial validation
         userInput = input("Input a menu option: ").upper()
         userInput.strip()
         userInput.replace(" ", "")
@@ -407,10 +405,22 @@ def mainMenu():
             invalidInfo = "The first character must be a number."
             continue    
         
+
         ###############################
         # Determining user choice
+        optionValue = -1
+        optionValueStr = ""
+        i = 0
+        while i < len(userInput):
+            if (userInput[i].isdigit()):
+                optionValueStr += userInput[i]
+                i+=1
+                continue
+            
+        optionValue = int(optionValueStr)
+        
         optionChosen: MenuOptions
-        match (int(userInput[0])):
+        match (optionValue):
             case MenuOptions.PLAYER_VS_AI_BATTLE.value:
                 optionChosen = MenuOptions.PLAYER_VS_AI_BATTLE
             case MenuOptions.FULLY_RANDOM_AI_BATTLE.value:
@@ -586,9 +596,9 @@ def main():
             # Did certain moves do more damage when preceded by 
         # Different test types
             # Test x configurations vs y configurations
-            #
-
-    # Load in all kaiju
+    
+    ########################################
+    # Load kaiju from CSV. All Kaiju must be valid. 
     with open("kaijus.txt") as kaijuCSV:
         reader = csv.reader(kaijuCSV)
         for line in reader:
@@ -596,8 +606,9 @@ def main():
 
     # TODO - add kaijus from csv into array
 
-    ######################################### - Delete this for loop once csv stuff is working.
-    for i in range(1,1):
+    ############################################
+    # Generates n kaiju. Makes for easy testing.    
+    for i in range(1,2):
         if (i > MAX_KAIJU_SELECTION):
             break
         
@@ -618,17 +629,27 @@ def main():
             
     mainMenu()
         
-    # with open("kaijus.txt") as kaijusCSV:
-    #     writer = csv.writer(kaijusCSV)
-    #     for kai in kaijus:
-    #         writer.writerow("======")
 
-    #         writer.writerow(kai.name)
-    #         writer.writerow(str(kai.sizeType))
-    #         for trait in kai.sizeTraits
-    #             writer.writerow(trait.)
-    #         # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
-    #         writer.writerow(traversalType)
+    with open("kaijus.txt", "w") as kaijusCSV:
+        writer = csv.writer(kaijusCSV)
+        for kai in kaijus:
+
+            writer.writerow(kai.NAME)
+            
+            writer.writerow(str(kai.SIZE_TYPE))
+            writer.writerow(",".join(kai.TRAVERSAL_TRAITS))
+            
+            writer.writerow(str(kai.TRAVERSAL_TYPE))
+            writer.writerow(",".join(kai.TRAVERSAL_TRAITS))
+                    
+            for i in range[0, len(kai.KAIJU_TYPES)]:
+                writer.writerow(str(kai.KAIJU_TYPES))
+                writer.writerow(",".join(kai.KAIJU_MOVESETS[i]))
+
+            writer.writerow(str(kai.LEGS))
+            writer.writerow(str(kai.ARMS))
+            writer.writerow(str(kai.HEADS))
+            # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
             
 
     print("\n\nRAWR ")
@@ -641,22 +662,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-    # - Options v2: Input the kaiju's letter and the number action you want to do    
-#       1 - KAIJU BATTLE (input two letters, one for each kaiju going into battle.
-#           First kaiju input is yours. Second is the AI's. (i.e. "1AZ", "1XI"))
-#           ---> BATTLE GENERATION
-#       2 - RANDOM AI KAIJU BATTLE (i.e. 2) --> BATTLE GENERATION
-#       3 - GENERATE NEW kaiju (i.e. 3) --> Kaiju Generation Seqence / Menu    
-#       4 - DELETE KAIJU (i.e. 4A deletes kaiju with 'A' next to them)
-#       5 - KAIJU DATA (input letter of associated kaiju, (i.e. '5A' gets data on kaiju with 'A' next to it))
-#           ---> KAIJU DATA OUTPUT
-#       6 Quit --> Are you sure you want to Quit Menu
-
     
-# LOAD KAIJU LIST from CSV. All Kaiju must be valid. 
   
 
 
