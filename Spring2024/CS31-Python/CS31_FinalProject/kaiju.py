@@ -6,137 +6,6 @@
 from enum import Enum
 from abc import ABC
 
-# thinking about moves as like a restaurant order
-    # first we choose what we want to eat
-    # we pay the cost
-    # The order gets sent to the kitchen. 
-    # The order gets botched or made.
-    # If made, customer gets burger.    
-
-# If we are making burgers, and there are a bunch of different kinds of burgers and we could order burgers
-    #   meant for different people, need to track: What are the different kinds of burgers, and who are the 
-    #   burgers for. 
-    
-# What are the ingredients? IS THIS ALL I NEED????
-    # statuses (beginning of turn, end of turn, immediate)
-    # damage 
-    # Healing
-
-    # base result of move. Applies statuses
-
-# How do you pay? 
-    # With energy? Or health?       
-
-# Move
-    # cost
-    # description
-    # behavior
-        
-
-# MoveInstance (factors in the base attack and all other modifiers from statuses or traits)
-    # has specific 
-    # 
-
-class ActivationTime (Enum):
-    START_TURN = 0,
-
-
-class Status():
-    _NAME = ""
-    _DESCRIPTION = ""
-    _ACTIVATION_TIMES = []
-    activationsRemaining = -1
-    # Possible affects
-        # Do damage
-        # Heal
-        # Increase Dice (defending and attacking) 
-        # Decrease Dice (defending and attacking) 
-        # Energy increase
-        # Energy decrease
-        # embody
-
-    def __init__(self, name, description, activationTimes, activations: int):
-        self._NAME = name
-        self._DESCRIPTION = description
-        self._ACTIVATION_TIMES = activationTimes
-        self.activationsRemaining = activations
-        
-# class StatusBehaviors(ABC):
-#     def activate(kai: battle.KaijuBattleInstance):
-#         pass
-
-# class BurningBehavior(StatusBehaviors):
-#     def activate(kai: battle.KaijuBattleInstance):
-#         pass
-        
-        
-
-STATUSES = [
-    Status("BURNING", "Take damage at beginning of each turn. Can stack.", [ActivationTime.START_TURN],1)
-    
-            
-            ]
-
-class Move():
-    pass
-    
-
-
-# Burning Status
-    # Take damage each turn. Can stack    
-    # Damage decreases on subsequent turns.
-    # Turns remaining is equal to damage this turn - 1 (like Slay the Spire)        
-# Stun Status        
-    # Defensive dice = base defensive dice - 1
-    # Defensive dice minimum is 0.    
-# Grappled Status
-    # Defensive dice = base defensive dice - 1
-    #         
-    
-
-
-
-# Size Traits
-# class SizeTrait(TraitType):
-#     pass
-
-# class CollossalTrait(SizeTrait):
-#     pass
-
-# #Traversal Traits
-# class TraversalTrait(TraitType):
-#     pass
-
-# class AerialTrait(TraversalTrait):
-#     pass
-
-# class DiggingTrait(TraversalTrait):
-#     pass
-
-# class 
-
-# #
-# class KaijuTypeTrait(TraitType):
-#     pass
-
-# class AtomicTrait(KaijuTypeTrait):
-#     pass
-
-# class AtomicBreath(AbstractMove):
-#     cost
-#     additionalDice
-#     abstractStatus = BurningStatus()
-#     def activate(targetKaiju: Kaiju):
-#         targetKaiju.takeDamage()
-#         targetKaiju.addStatus(burningStatus)
-
-#     def __init__(_cost, _additionalDice):
-#         cost = _cost
-#         additionalDice = _additionalDice
-
-
-
-
 # Traits given based on size. Kaiju of their given size receive all these traits
 COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building"]
 
@@ -288,6 +157,8 @@ ALL_TRAITS_NAMES = [ALL_SIZE_TYPES_NAMES, ALL_TRAVERSAL_TYPES_NAMES, ALL_KAIJU_M
 
 
 class Kaiju:
+    #######################
+    # Values saved to file
     NAME = ""
     SIZE_TYPE = -1
     SIZE_TRAITS = []   
@@ -300,12 +171,15 @@ class Kaiju:
     HEADS = -1
     CONFIGURATION = ""
 
+    ####################################
+    # Values calculated from other data or 
     MAX_HEALTH = -1
     BASE_ATTACK_DICE = -1
     BASE_DEFENSE_DICE = -1
-    BASE_ENERGY = 2
+    # BASE_ENERGY = 2
 
-    def __init__(self, _name, _sizeType, _sizeTraits, _traversalType, _traversalTraits, _kaijuTypes, _moveSets, _legs, _arms, _heads, _configuration):
+    def __init__(self, _name: str, _sizeType:int, _sizeTraits:[], _traversalType:int, _traversalTraits:[], _kaijuTypes :[], 
+                 _moveSets:[], _legs:int, _arms:int, _heads:int, _configuration:str):
         self.NAME = _name
 
         self.SIZE_TYPE = _sizeType
@@ -332,5 +206,135 @@ class Kaiju:
             self.BASE_DEFENSE_DICE = 2
         
 
+################################################################
+# Unused code / ideas            
       
         
+# thinking about moves as like a restaurant order
+    # first we choose what we want to eat
+    # we pay the cost
+    # The order gets sent to the kitchen. 
+    # The order gets botched or made.
+    # If made, customer gets burger.    
+
+# If we are making burgers, and there are a bunch of different kinds of burgers and we could order burgers
+    #   meant for different people, need to track: What are the different kinds of burgers, and who are the 
+    #   burgers for. 
+    
+# What are the ingredients? IS THIS ALL I NEED????
+    # statuses (beginning of turn, end of turn, immediate)
+    # damage 
+    # Healing
+
+    # base result of move. Applies statuses
+
+# How do you pay? 
+    # With energy? Or health?       
+
+# Move
+    # cost
+    # description
+    # behavior
+        
+
+# MoveInstance (factors in the base attack and all other modifiers from statuses or traits)
+    # has specific 
+    # 
+
+class ActivationTime (Enum):
+    START_TURN = 0,
+
+
+class Status():
+    _NAME = ""
+    _DESCRIPTION = ""
+    _ACTIVATION_TIMES = []
+    activationsRemaining = -1
+    # Possible affects
+        # Do damage
+        # Heal
+        # Increase Dice (defending and attacking) 
+        # Decrease Dice (defending and attacking) 
+        # Energy increase
+        # Energy decrease
+        # embody
+
+    def __init__(self, name, description, activationTimes, activations: int):
+        self._NAME = name
+        self._DESCRIPTION = description
+        self._ACTIVATION_TIMES = activationTimes
+        self.activationsRemaining = activations
+        
+# class StatusBehaviors(ABC):
+#     def activate(kai: battle.KaijuBattleInstance):
+#         pass
+
+# class BurningBehavior(StatusBehaviors):
+#     def activate(kai: battle.KaijuBattleInstance):
+#         pass
+        
+        
+
+STATUSES = [
+    Status("BURNING", "Take damage at beginning of each turn. Can stack.", [ActivationTime.START_TURN],1)
+    
+            
+            ]
+
+class Move():
+    pass
+    
+
+
+# Burning Status
+    # Take damage each turn. Can stack    
+    # Damage decreases on subsequent turns.
+    # Turns remaining is equal to damage this turn - 1 (like Slay the Spire)        
+# Stun Status        
+    # Defensive dice = base defensive dice - 1
+    # Defensive dice minimum is 0.    
+# Grappled Status
+    # Defensive dice = base defensive dice - 1
+    #         
+    
+
+
+
+# Size Traits
+# class SizeTrait(TraitType):
+#     pass
+
+# class CollossalTrait(SizeTrait):
+#     pass
+
+# #Traversal Traits
+# class TraversalTrait(TraitType):
+#     pass
+
+# class AerialTrait(TraversalTrait):
+#     pass
+
+# class DiggingTrait(TraversalTrait):
+#     pass
+
+# class 
+
+# #
+# class KaijuTypeTrait(TraitType):
+#     pass
+
+# class AtomicTrait(KaijuTypeTrait):
+#     pass
+
+# class AtomicBreath(AbstractMove):
+#     cost
+#     additionalDice
+#     abstractStatus = BurningStatus()
+#     def activate(targetKaiju: Kaiju):
+#         targetKaiju.takeDamage()
+#         targetKaiju.addStatus(burningStatus)
+
+#     def __init__(_cost, _additionalDice):
+#         cost = _cost
+#         additionalDice = _additionalDice
+
