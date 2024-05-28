@@ -138,10 +138,6 @@
 # for choosing options from list randomly
 import random
 import csv
-from re import A
-import re
-from traceback import print_list
-from urllib.robotparser import RequestRate
 import kaiju
 import battle
 from enum import Enum
@@ -597,12 +593,65 @@ def main():
         # Different test types
             # Test x configurations vs y configurations
     
-    ########################################
-    # Load kaiju from CSV. All Kaiju must be valid. 
-    with open("kaijus.txt") as kaijuCSV:
-        reader = csv.reader(kaijuCSV)
-        for line in reader:
-            pass
+    ##############################################################
+    # Load kaiju from CSV 
+    with open("kaijus.txt", newline = "") as kaijuCSV:
+        lines = csv.reader(kaijuCSV)
+        
+        i = 0
+        
+        name = ""
+        sizeType = -1
+        sizeTraits = []
+        traversalType = -1
+        traversalTraits = []
+        kaijuTypes = []
+        kaijuMovesets = []
+        legs = -1
+        arms = -1
+        heads = -1
+        configuration = ""
+
+        for line in lines:
+            match i:
+                case 0:
+                    name = line[0]
+                case 1:
+                    sizeType = int(line[0])
+                case 2:
+                    sizeTraits = line
+                case 3:
+                    traversalType = int(line[0])
+                case 4:
+                    traversalTraits = line
+                case 5:
+                    kaijuTypes.append(int(line[0]))
+                case 6:
+                    kaijuMovesets.append(line)
+                case 7:
+                    kaijuTypes.append(int(line[0]))
+                case 8:
+                    kaijuMovesets.append(line)
+                case 9:
+                    legs = int(line[0])
+                case 10:
+                    arms = int(line[0])
+                case 11:
+                    heads = int(line[0])
+                case 12:
+                    configuration = line[0]
+            
+            i+=1
+            if (i == 13):
+                i = 0
+                kaijus.append(kaiju.Kaiju(name, sizeType, sizeTraits.copy(), traversalType, traversalTraits.copy(), 
+                                          kaijuTypes.copy(), kaijuMovesets.copy(), legs, arms, heads, configuration))   
+                
+                sizeTraits.clear()
+                traversalTraits.clear()
+                kaijuTypes.clear()
+                kaijuMovesets.clear()
+                       
 
     # TODO - add kaijus from csv into array
 
@@ -630,32 +679,33 @@ def main():
     mainMenu()
         
 
-    with open("kaijus.txt", "w") as kaijusCSV:
+    with open("kaijus.txt", "w", newline = "") as kaijusCSV:
         writer = csv.writer(kaijusCSV)
         for kai in kaijus:
 
-            writer.writerow(kai.NAME)
+            writer.writerow([kai.NAME])
             
             writer.writerow(str(kai.SIZE_TYPE))
-            writer.writerow(",".join(kai.TRAVERSAL_TRAITS))
+            writer.writerow(kai.SIZE_TRAITS)
             
             writer.writerow(str(kai.TRAVERSAL_TYPE))
-            writer.writerow(",".join(kai.TRAVERSAL_TRAITS))
+            writer.writerow(kai.TRAVERSAL_TRAITS)
                     
-            for i in range[0, len(kai.KAIJU_TYPES)]:
-                writer.writerow(str(kai.KAIJU_TYPES))
-                writer.writerow(",".join(kai.KAIJU_MOVESETS[i]))
+            for i in range(0, len(kai.KAIJU_TYPES)):
+                writer.writerow(str(kai.KAIJU_TYPES[i]))
+                writer.writerow(kai.KAIJU_MOVESETS[i])
 
             writer.writerow(str(kai.LEGS))
             writer.writerow(str(kai.ARMS))
             writer.writerow(str(kai.HEADS))
+            writer.writerow([kai.CONFIGURATION])
             # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
             
 
-    print("\n\nRAWR ")
+    print("\n\nRAWR ", end = "")
     for i in range(0, 4):
         time.sleep(1)
-        print(". ")
+        print(". ", end = "")
     
     
     
@@ -664,7 +714,6 @@ if __name__ == "__main__":
     main()
     
   
-
 
 
 
