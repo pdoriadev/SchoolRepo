@@ -1,0 +1,39 @@
+BARAGON
+2
+Crafty,Takes Double Damage
+2
+Ground Shake,Burrow,Internal Gyroscope
+1
+Meditation,Prophesy
+2
+Atomic Breath,Quantum Entanglement
+6
+2
+1
+AGILE DIGGING SPIRIT ATOMIC
+FIRE RODAN
+0
+Cannot dodge,Carry Building,Throw Building
+0
+Supersonic,Dive-bomb,Air-dodge
+1
+Prophesy,Meditation
+3
+Emergency Repair,Burning Chainsaw
+0
+2
+1
+COLOSSAL AERIAL  SPIRIT ROBOT
+HEDORAH
+2
+Crafty,Takes Double Damage
+0
+Supersonic,Dive-bomb,Air-dodge
+3
+Force-field,Emergency Repair
+1
+Meditation,Channel Past Lives
+0
+2
+1
+AGILE AERIAL  ROBOT SPIRIT
