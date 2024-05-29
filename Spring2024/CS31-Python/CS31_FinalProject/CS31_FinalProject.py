@@ -129,7 +129,7 @@
 
 # Peter Doria
 # 5/29/2024
-# Programming Project 3: Random Character Generator
+# Final Project: Random Character Generator - Kaiju Generator (https://en.wikipedia.org/wiki/Kaiju)
 # CS31 - 33880
 
 # for choosing options from list randomly
@@ -168,18 +168,14 @@ sillyNames = ["jay jay the jet plane", "miss piggy", "kermit", "dostoevsky", "ti
                     "jim (from \"the office\")", "michael scott", "bill hayder", "frederick nietzsche", \
                     "baby godzilla", "weird barbie"]
 
-# Every kaiju has 4 randomly selected primary traits which can randomly select 
-#   additional identifiers depending on the given trait (i.e. size vs Kaiju Type):
-# 1.  Size (inherits all traits of specified size)
-# 2.  Traversal Type (inherits all tratis of specified size)
-# 3.  Kaiju Type 1 (gives monster identity beyond size or traversal. Defines moves for combat or otherwise)
-# 4.  Kaiju Type 2 (gives monster identity beyond size or traversal. Defines moves for combat or otherwise)
-# Note: Each kaiju has two kaijuTypes. This gives each kaiju a unique identity.
-#          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
-# Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
 
-#################################
+##############################################################################
 # Passed to generation function.
+# Like ordering a coffee, you might want it made a certain way. Give an instance
+#   of this order class to the generateKaiju function to tell it how you want your
+#   kaiju made. 
+# Doesn't affect the final outcome of a kaiju beyond name. Other params affect
+#   how fast or quietly a kaiju is generated. 
 class kaijuGenerationOrder():
     AUTO :bool = False
     SILLY :bool = False
@@ -192,8 +188,18 @@ class kaijuGenerationOrder():
         self.FAST_GEN = fastGen
         self.SILENT_GEN = silentGen
 
-#TODO: # Kaiju creator. random chance that the player is going to get a bonus thing?
-#TODO: Suspense between creations vs. quick-generate
+###########################################################
+# Kaiju generation function. All kaiju start here.       
+#
+# Every kaiju has 4 randomly selected primary traits which can randomly select 
+#   additional identifiers depending on the given trait (i.e. size vs Kaiju Type):
+# 1.  Size (inherits all traits of specified size)
+# 2.  Traversal Type (inherits all traits of specified traversal type)
+# 3.  Kaiju Type 1 (gives kaiju an identity beyond size or traversal. Defines moves for combat or otherwise)
+# 4.  Kaiju Type 2 (gives kaiju an identity beyond size or traversal. Defines moves for combat or otherwise)
+# Note: Each kaiju has two kaijuTypes. This gives each kaiju a unique identity.
+#          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
+# Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
 def generateKaiju(order: kaijuGenerationOrder):   
 
     name = ""
@@ -273,8 +279,8 @@ def generateKaiju(order: kaijuGenerationOrder):
 
     return kai
 
-# prints generated kaiju data to the console for the user to see. 
-#   Selects data from nested lists depending on the desired stat for output.
+#######################################################################################
+# prints kaiju data to the console for the user to see. 
 def printKaijuData(kai):
     time.sleep(0.4)
     utils.simulatedTypePrinting("\n" + " " * 12 + kai.NAME + "'s " "DATA" + "\n", 8)
@@ -312,7 +318,8 @@ def printKaijuData(kai):
     utils.simulatedTypePrinting("LOSSES: \t\t" + str(kai.LOSSES) + "\n", 8)
         
     utils.simulatedTypePrinting("\n" + " " * 12 +  "DATA END" + " " * 12 + "\n", 8)    
-        
+
+##################################        
 # Alphabetizes list of kaijus
 def alphabetizeKaijus(kaijus: []) :
     for i in range(0, len(kaijus)):
@@ -322,7 +329,11 @@ def alphabetizeKaijus(kaijus: []) :
                 kaijus[i] = kaijus[j]
                 kaijus[j] = k 
 
-
+###############################
+# MenuOptions class
+# Inherits from enum. Makes it easier to consolidate
+#   menu logic into something readable and consistent.
+# Each enum value matches the input for a menu option.                
 class MenuOptions(Enum):
     PLAYER_VS_AI_BATTLE = 1
     FULLY_RANDOM_AI_BATTLE = 2
@@ -717,27 +728,27 @@ def main():
 
     ############################################
     # Generates n kaiju. Makes for easy testing.    
-    for i in range(1,20):
-        if (i > MAX_KAIJU_SELECTION):
-            break
+    # for i in range(1,20):
+    #     if (i > MAX_KAIJU_SELECTION):
+    #         break
         
-        newK :kaiju.Kaiju
-        while True:
-            if (i % 2 == 1):
-                newK = generateKaiju(kaijuGenerationOrder(True, False, True, True))
-            else:
-                newK = generateKaiju(kaijuGenerationOrder(True, True, True, True))
+    #     newK :kaiju.Kaiju
+    #     while True:
+    #         if (i % 2 == 1):
+    #             newK = generateKaiju(kaijuGenerationOrder(True, False, True, True))
+    #         else:
+    #             newK = generateKaiju(kaijuGenerationOrder(True, True, True, True))
             
-            alreadyHave = False
-            for k in kaijus:
-                if(k.NAME == newK.NAME):
-                    alreadyHave = True
-                    break
+    #         alreadyHave = False
+    #         for k in kaijus:
+    #             if(k.NAME == newK.NAME):
+    #                 alreadyHave = True
+    #                 break
             
-            if (alreadyHave == False):
-                break            
+    #         if (alreadyHave == False):
+    #             break            
             
-        kaijus.append(newK)
+    #     kaijus.append(newK)
     
     ########################################################    
     mainMenu()
