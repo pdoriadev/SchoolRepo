@@ -406,12 +406,12 @@ def mainMenu():
         # Determining user choice
         optionValue = -1
         optionValueStr = ""
-        i = 0
-        while i < len(userInput):
-            if (userInput[i].isdigit()):
-                optionValueStr += userInput[i]
-                i+=1
-                continue
+        for i in range(0, len(userInput)):
+            if (userInput[i].isdigit() == False):
+                break
+            
+            optionValueStr += userInput[i]
+
             
         optionValue = int(optionValueStr)
         
@@ -653,11 +653,9 @@ def main():
                 kaijuMovesets.clear()
                        
 
-    # TODO - add kaijus from csv into array
-
     ############################################
     # Generates n kaiju. Makes for easy testing.    
-    for i in range(1,2):
+    for i in range(1,1):
         if (i > MAX_KAIJU_SELECTION):
             break
         
