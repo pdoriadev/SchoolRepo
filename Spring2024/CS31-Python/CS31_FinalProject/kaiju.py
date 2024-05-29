@@ -4,7 +4,63 @@
 
 #########################################################################
 from enum import Enum
-from abc import ABC
+
+#########################################################
+# Stores all base kaiju data that exists between battles
+class Kaiju:
+    #######################
+    # Values saved to file
+    NAME = ""
+    SIZE_TYPE = -1
+    SIZE_TRAITS = []   
+    TRAVERSAL_TYPE = -1
+    TRAVERSAL_TRAITS = []
+    KAIJU_TYPES = []
+    KAIJU_MOVESETS = []
+    LEGS = -1
+    ARMS = -1
+    HEADS = -1
+    CONFIGURATION = ""
+    WINS = 0
+    LOSSES = 0
+
+    ##############################################
+    # Values calculated from other permanent data
+    MAX_HEALTH = -1
+    BASE_ATTACK_DICE = -1
+    BASE_DEFENSE_DICE = -1
+
+    # Called after object construction. 
+    def __init__(self, _name: str, _sizeType:int, _sizeTraits:[], _traversalType:int, _traversalTraits:[], _kaijuTypes :[], 
+                 _moveSets:[], _legs:int, _arms:int, _heads:int, _configuration:str, _wins:int = 0, _losses:int = 0):
+        self.NAME = _name
+
+        self.SIZE_TYPE = _sizeType
+        self.SIZE_TRAITS = _sizeTraits
+    
+        self.TRAVERSAL_TYPE = _traversalType
+        self.TRAVERSAL_TRAITS = _traversalTraits
+
+        self.KAIJU_TYPES = _kaijuTypes
+        self.KAIJU_MOVESETS = _moveSets
+
+        self.LEGS = _legs
+        self.ARMS = _arms
+        self.HEADS = _heads
+        
+        self.CONFIGURATION = _configuration
+        
+        self.WINS = _wins
+        self.LOSSES = _losses
+
+        self.MAX_HEALTH = SIZE_TYPE_IN_METERS[self.SIZE_TYPE]
+        self.BASE_ATTACK_DICE = len(ALL_SIZE_TYPES) - self.SIZE_TYPE
+        
+        if (self.SIZE_TYPE == 0 ):
+            self.BASE_DEFENSE_DICE = 1
+        else:
+            self.BASE_DEFENSE_DICE = 2
+        
 
 # Traits given based on size. Kaiju of their given size receive all these traits
 COLOSSAL_TRAITS = ["Cannot dodge", "Carry Building", "Throw Building"]
@@ -155,64 +211,9 @@ ALL_KAIJU_MOVES_NAMES = ["BRAWLER", "SPIRIT", "ATOMIC", "ROBOT"]
 ALL_TRAITS = [ALL_SIZE_TYPES, ALL_TRAVERSAL_TYPES, ALL_KAIJU_MOVES]
 ALL_TRAITS_NAMES = [ALL_SIZE_TYPES_NAMES, ALL_TRAVERSAL_TYPES_NAMES, ALL_KAIJU_MOVES_NAMES]
 
-#########################################################
-# Stores all base kaiju data that exists between battles
-class Kaiju:
-    #######################
-    # Values saved to file
-    NAME = ""
-    SIZE_TYPE = -1
-    SIZE_TRAITS = []   
-    TRAVERSAL_TYPE = -1
-    TRAVERSAL_TRAITS = []
-    KAIJU_TYPES = []
-    KAIJU_MOVESETS = []
-    LEGS = -1
-    ARMS = -1
-    HEADS = -1
-    CONFIGURATION = ""
-    WINS = 0
-    LOSSES = 0
 
-    ##############################################
-    # Values calculated from other permanent data
-    MAX_HEALTH = -1
-    BASE_ATTACK_DICE = -1
-    BASE_DEFENSE_DICE = -1
 
-    # Called after object construction. 
-    def __init__(self, _name: str, _sizeType:int, _sizeTraits:[], _traversalType:int, _traversalTraits:[], _kaijuTypes :[], 
-                 _moveSets:[], _legs:int, _arms:int, _heads:int, _configuration:str, _wins:int = 0, _losses:int = 0):
-        self.NAME = _name
-
-        self.SIZE_TYPE = _sizeType
-        self.SIZE_TRAITS = _sizeTraits
-    
-        self.TRAVERSAL_TYPE = _traversalType
-        self.TRAVERSAL_TRAITS = _traversalTraits
-
-        self.KAIJU_TYPES = _kaijuTypes
-        self.KAIJU_MOVESETS = _moveSets
-
-        self.LEGS = _legs
-        self.ARMS = _arms
-        self.HEADS = _heads
-        
-        self.CONFIGURATION = _configuration
-        
-        self.WINS = _wins
-        self.LOSSES = _losses
-
-        self.MAX_HEALTH = SIZE_TYPE_IN_METERS[self.SIZE_TYPE]
-        self.BASE_ATTACK_DICE = len(ALL_SIZE_TYPES) - self.SIZE_TYPE
-        
-        if (self.SIZE_TYPE == 0 ):
-            self.BASE_DEFENSE_DICE = 1
-        else:
-            self.BASE_DEFENSE_DICE = 2
-        
-
-################################################################
+#################################################################################################################################
 # Unused code / ideas            
       
         
