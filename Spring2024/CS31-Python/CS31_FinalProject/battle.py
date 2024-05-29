@@ -5,11 +5,13 @@ import time
 
 from utils import simulatedTypePrinting
 
-
+####################################################################
+# Instance class for given kaiju. Takes base kaiju data. From there,
+#   generates, stores, and transforms whatever data a kaiju needs 
+#   for battle
 class KaijuBattleInstance:
     _BASE_KAIJU :kaiju.Kaiju
     _health = -1
-    # _energy = -1
     _attackDiceBonus = 0
     _defenseDiceBonus = 0
 
@@ -17,22 +19,16 @@ class KaijuBattleInstance:
         self._BASE_KAIJU = kai
         self._health = kai.MAX_HEALTH
         self.baseDiceNumber = kai.SIZE_TYPE + 1
-        # self._energy = kai.BASE_ENERGY
 
     def getBaseKaiju(self):         
         return self._BASE_KAIJU
     def getHealth(self):            
         return self._health
-    # def getEnergy():            return _energy
     def getAttackDice(self):        return self._BASE_KAIJU.BASE_ATTACK_DICE + self._attackDiceBonus
     def getDefenseDice(self):       return self._BASE_KAIJU.BASE_DEFENSE_DICE + self._defenseDiceBonus
     
-    # def getStatuses():          return _statuses
     def getAvailableMoves(self):    return self._BASE_KAIJU.KAIJU_MOVESETS
 
-    # def setHealth(h: int): _health = h
-    # def setEnergy(e: int): _energy = e
-    
     def takeDamage(self, d: int): 
         if (self._BASE_KAIJU == 2):
             self._health -= d * 2
@@ -40,8 +36,10 @@ class KaijuBattleInstance:
             self._health -= d
 
 
-#################################
+#################################################################################################################
 # Kaiju Battle System - turn-based
+#       -- Each round has one attacker and one defender.
+#           
 #       -- Dice: D6
 #       -- Kaiju Stats (all influenced by Kaiju's traits)
 #           - Health
@@ -64,37 +62,42 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
     print("\n" * 5)
     
     # Generating kaiju that can be used for battle
-    kaiInBattle = [KaijuBattleInstance(playerBaseKaiju), KaijuBattleInstance(AIBaseKaiju)
-]
-
+    kaiInBattle = [KaijuBattleInstance(playerBaseKaiju), KaijuBattleInstance(AIBaseKaiju)]
     # Smaller kaiju goes first
     attackingKai: int = 0 if (kaiInBattle[0].getBaseKaiju().SIZE_TYPE > kaiInBattle[1].getBaseKaiju().SIZE_TYPE) else 1
 
     roundNum = 0
+    
+    ############################################
+    # Battle Loop
     while kaiInBattle[0].getHealth() > 0 and kaiInBattle[1].getHealth() > 0:
+        
+        ############################################
+        # Battle UI generation
         roundNum +=1
         simulatedTypePrinting("\n=========================================================\n")
         simulatedTypePrinting("ROUND " + str(roundNum) + "\n", 20)
 
-        #TODO - format this to right/left justify as needed
         simulatedTypePrinting("~" + " " * 6 + "ATTACKING" + " " * 6 + "~"    + " " * 6 +     "~" + " " * 6 + "DEFENDING" + " " * 6 + "~" + "\n", 10)
         simulatedTypePrinting("[" + " " * 6 + kaiInBattle[attackingKai].getBaseKaiju().NAME + " " * 10 + "]"     + " " * 6 +     "[" + " " * 6 + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " " * 6 + "]\n", 10)
+        time.sleep(0.3)
         simulatedTypePrinting("HEALTH: " + str(kaiInBattle[attackingKai].getHealth()) + " / " + str(kaiInBattle[attackingKai].getBaseKaiju().MAX_HEALTH) +  " " * 10 + " " * len(kaiInBattle[attackingKai].getBaseKaiju().NAME)      \
                             + "HEALTH: " + str(kaiInBattle[attackingKai - 1].getHealth()) + " / " + str(kaiInBattle[attackingKai - 1].getBaseKaiju().MAX_HEALTH) + "\n", 5)
-        simulatedTypePrinting(kaiInBattle[attackingKai].getBaseKaiju().CONFIGURATION    + " " * len(kaiInBattle[attackingKai].getBaseKaiju().NAME) +   kaiInBattle[attackingKai - 1].getBaseKaiju().CONFIGURATION + "\n", 5)
-            
+        simulatedTypePrinting(kaiInBattle[attackingKai].getBaseKaiju().CONFIGURATION    + " " * len(kaiInBattle[attackingKai].getBaseKaiju().NAME) +   kaiInBattle[attackingKai - 1].getBaseKaiju().CONFIGURATION + "\n\n", 5)
+
+        time.sleep(0.3)
+        ############################################
+        # Move selection
         choice = ""
-        
         if (isAIBattle == False and attackingKai == 0):
             numberOfMoves = 0
-            pMoves = kaiInBattle[0].getAvailableMoves()
-            for movesets in pMoves:
+            for movesets in kaiInBattle[0].getAvailableMoves():
                 for move in movesets:
-                        numberOfMoves+=1
-                        print (str(numberOfMoves) + " " + move)
+                    numberOfMoves+=1
+                    simulatedTypePrinting(str(numberOfMoves) + " " + move + "\n", 5)
              
             while choice == "":
-                simulatedTypePrinting("Select your move (input the corresponding number): ")
+                simulatedTypePrinting("Select your move (input the corresponding number): ", 10)
                 choice = input()
                 if (choice.isdigit() == False):
                     choice = ""
@@ -107,7 +110,9 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
                     continue
         else:
             choice = random.choice(random.choice(kaiInBattle[1].getAvailableMoves()))
-                
+        
+        ###############################################
+        # Attacker's dice roll sequence    
         simulatedTypePrinting(kaiInBattle[attackingKai].getBaseKaiju().NAME + " chooses " + choice + "\n", 5)
         time.sleep(0.3)
         simulatedTypePrinting("\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " ROLLS FOR ATTACK\n", 10)
@@ -128,7 +133,8 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
         time.sleep(0.3)
         simulatedTypePrinting(str(attackResult) + "\n", 20)
                 
-
+        ###############################################
+        # Defender's dice roll sequence
         simulatedTypePrinting("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n", 10)
         defenseResult = 0
         sleepTime = 1 / kaiInBattle[attackingKai - 1].getDefenseDice()
@@ -139,13 +145,14 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
             roll = random.choice(range(1,7,1))
             defenseResult += roll
             print(" " + str(roll), end = "")
-                
+
         time.sleep(0.3)
         simulatedTypePrinting("\nTOTAL DEFENSE: ", 5)
         time.sleep(0.3)
         simulatedTypePrinting(str(defenseResult) + "\n", 20)
-                
-
+        
+        #############################################
+        # Attack result
         result = attackResult - defenseResult
         if (result > 0):            
             kaiInBattle[attackingKai - 1].takeDamage(result)
@@ -153,22 +160,24 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
         else:
             simulatedTypePrinting("\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " misses.\n" + kaiInBattle[attackingKai].getBaseKaiju().NAME + " scrapes the ground.\n", 5)            
 
+        #############################################
+        # Switch turns    
         match attackingKai:
             case 0:
                 attackingKai = 1
             case 1:
                 attackingKai = 0          
                 
-            
+    ###################################################
+    # Victory UI        
     victor = -1
     for i in range(0, 2):
         if (kaiInBattle[i].getHealth() > 0) :
             victor = i
-
-    # VICTORY SCREEN          
-    simulatedTypePrinting("====================================================================")  
-    simulatedTypePrinting("\n" + kaiInBattle[victor].getBaseKaiju().NAME + " IS VICTORIOUS!\n")
-    simulatedTypePrinting("====================================================================")
+     
+    simulatedTypePrinting("\n====================================================================\n")  
+    simulatedTypePrinting(kaiInBattle[victor].getBaseKaiju().NAME + " IS VICTORIOUS!\n")
+    simulatedTypePrinting("====================================================================\n")
     time.sleep(0.4)
     
     return
