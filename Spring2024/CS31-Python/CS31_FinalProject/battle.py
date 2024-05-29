@@ -41,23 +41,21 @@ class KaijuBattleInstance:
 #       -- Each round has one attacker and one defender.
 #           
 #       -- Dice: D6
-#       -- Kaiju Stats (all influenced by Kaiju's traits)
+#       -- Kaiju Stats 
 #           - Health
 #           - Size
-#           - etc.    
+#               > starting kaiju
+#               > number of attack and defense dice 
 #    
 #       -- One 'move' per turn
-#           - Moves pulled from different traits
+#           - Moves pulled from different traits (All moves are the same right now. Ran out of time.)
 #    
 #       -- Attacking Result = Attack - Defend
 #           - Positive number = SUCCESS
 #           - 0 or less = FAIL   
 #           - Attack Roll: (Number of dice * (size+1) do a Dice Roll + special state from moves 
 #           - Defend Roll: (Number of dice * (number of sizes - size)) do a Dice Roll + special state from moves
-#
-#       -- Special Move = Roll against special move's DC
-#           - Meets it beats it    
-#           - Use HP to empower a special move    
+#   
 def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle: bool):
     print("\n" * 5)
     
