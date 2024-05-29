@@ -143,6 +143,7 @@ import kaiju
 import battle
 from enum import Enum
 import time
+import utils
 
 kaijuNames =  ["godzilla", "gojira", "gigan", "anguirus", "mechagodzilla", "kiryu", "king ceasar", \
                      "jet jaguar", "monster x", "king ghidorah", "king kong", "manda", "hedorah", \
@@ -193,9 +194,9 @@ def generateKaiju(order: kaijuGenerationOrder):
         else:
             name = random.choice(kaijuNames).upper()
     else:
-        simulatedTypePrinting("\n" + "~" * 8 + " KAIJU GENERATOR " + "~" * 8 + "\n", 6)  
+        utils.simulatedTypePrinting("\n" + "~" * 8 + " KAIJU GENERATOR " + "~" * 8 + "\n", 6)  
         time.sleep(0.3)
-        simulatedTypePrinting("KAIJU NAME: ", 6)
+        utils.simulatedTypePrinting("KAIJU NAME: ", 6)
         name = input().upper()
 
     # Randomly select size traits for kaiju
@@ -247,13 +248,13 @@ def generateKaiju(order: kaijuGenerationOrder):
     
     kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads, configuration)
     
-    simulatedTypePrinting("Generating", 10)
+    utils.simulatedTypePrinting("Generating", 10)
     for i in range (0, 3):
         time.sleep(0.5)
         print(" .", end = "")
     print()
     
-    simulatedTypePrinting("Generated " + kai.NAME + "!" + " The " + kai.CONFIGURATION + " kaiju!\n")
+    utils.simulatedTypePrinting("Generated " + kai.NAME + "!" + " The " + kai.CONFIGURATION + " kaiju!\n")
 
     return kai
 
@@ -261,37 +262,37 @@ def generateKaiju(order: kaijuGenerationOrder):
 #   Selects data from nested lists depending on the desired stat for output.
 def printKaijuData(kai):
     time.sleep(0.4)
-    simulatedTypePrinting("\n" + " " * 12 + kai.NAME + "'s " "DATA" + "\n", 8)
-    simulatedTypePrinting("\nCONFIGURATION: \t\t" + kai.CONFIGURATION + "\n", 8)
+    utils.simulatedTypePrinting("\n" + " " * 12 + kai.NAME + "'s " "DATA" + "\n", 8)
+    utils.simulatedTypePrinting("\nCONFIGURATION: \t\t" + kai.CONFIGURATION + "\n", 8)
 
 
-    simulatedTypePrinting("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + "\n", 8)
+    utils.simulatedTypePrinting("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + "\n", 8)
     j = 0
     while j < len(kai.SIZE_TRAITS):
-        simulatedTypePrinting(kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + " TRAIT " + str(j+1) + ":\t\t" + kai.SIZE_TRAITS[j] + "\n", 2)
+        utils.simulatedTypePrinting(kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + " TRAIT " + str(j+1) + ":\t\t" + kai.SIZE_TRAITS[j] + "\n", 2)
         j+=1
     
-    simulatedTypePrinting("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + "\n", 8)
+    utils.simulatedTypePrinting("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + "\n", 8)
     j = 0
     while j < len(kai.TRAVERSAL_TRAITS):
-        simulatedTypePrinting(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.TRAVERSAL_TRAITS[j] + "\n", 2)
+        utils.simulatedTypePrinting(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.TRAVERSAL_TRAITS[j] + "\n", 2)
         j+=1
         
     i = 0
     for moveType in kai.KAIJU_MOVESETS:
-        simulatedTypePrinting("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[i] + "\n", 8)
+        utils.simulatedTypePrinting("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[i] + "\n", 8)
         j = 0
         while j < len(kai.KAIJU_MOVESETS[i]):
-            simulatedTypePrinting(kaiju.ALL_KAIJU_MOVES_NAMES[i] + " MOVE " + str(j+1) + ":\t\t" + kai.KAIJU_MOVESETS[i][j] + "\n", 2)
+            utils.simulatedTypePrinting(kaiju.ALL_KAIJU_MOVES_NAMES[i] + " MOVE " + str(j+1) + ":\t\t" + kai.KAIJU_MOVESETS[i][j] + "\n", 2)
             j+=1
         i+=1
     
     print()
-    simulatedTypePrinting("LEGS:\t\t\t" + str(kai.LEGS) + "\n", 4)
-    simulatedTypePrinting("ARMS:\t\t\t" + str(kai.ARMS) + "\n", 4)
-    simulatedTypePrinting("HEADS:\t\t\t" + str(kai.HEADS) + "\n", 4)
+    utils.simulatedTypePrinting("LEGS:\t\t\t" + str(kai.LEGS) + "\n", 4)
+    utils.simulatedTypePrinting("ARMS:\t\t\t" + str(kai.ARMS) + "\n", 4)
+    utils.simulatedTypePrinting("HEADS:\t\t\t" + str(kai.HEADS) + "\n", 4)
         
-    simulatedTypePrinting("\n" + " " * 12 +  "DATA END" + " " * 12 + "\n", 8)    
+    utils.simulatedTypePrinting("\n" + " " * 12 +  "DATA END" + " " * 12 + "\n", 8)    
         
 # Alphabetizes list of kaijus
 def alphabetizeKaijus(kaijus: []) :
@@ -318,13 +319,7 @@ kaijus = []
 MAX_KAIJU_SELECTION = 26
 
 
-def simulatedTypePrinting(output :str, timeScale :float = 1):
-    if (len(output) == 0):
-        return 
-    
-    for i in range(0, len(output)):       
-        print(output[i], end = "")
-        time.sleep(0.05 * timeScale * float(len(output)) / float(len(output) * len(output)))
+
 
 
 def mainMenu():
@@ -370,7 +365,7 @@ def mainMenu():
                 # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
             # color code them  
         # print in rows and columns with corresponding letter   
-        simulatedTypePrinting("\n\n" + "~" * 23 + " KAIJU SELECTION " + "~" * 23 + "", 10)
+        utils.simulatedTypePrinting("\n\n" + "~" * 23 + " KAIJU SELECTION " + "~" * 23 + "", 10)
         print()
     
         letterOrd = ord('A')   
@@ -387,13 +382,13 @@ def mainMenu():
         while (i + rows) < len(kaijus):
             i += 1 
             if (i + rows < len(kaijus)):
-                simulatedTypePrinting(chr(letterOrd + i) + " - " + kaijus[i].NAME, 1)    
+                utils.simulatedTypePrinting(chr(letterOrd + i) + " - " + kaijus[i].NAME, 1)    
                 print(" " * 6, end = "")
-                simulatedTypePrinting(chr(letterOrd + i + rows) + " - " + kaijus[i+rows].NAME, 1)
+                utils.simulatedTypePrinting(chr(letterOrd + i + rows) + " - " + kaijus[i+rows].NAME, 1)
                 print()
             else: 
                 if(isOdd):
-                    simulatedTypePrinting(chr(letterOrd + i) + " - " + kaijus[i].NAME, 1)        
+                    utils.simulatedTypePrinting(chr(letterOrd + i) + " - " + kaijus[i].NAME, 1)        
                     print()
                 
                 break
@@ -402,24 +397,26 @@ def mainMenu():
         ################################
         # Setup Menu - menu text    
         if (len(kaijus) == 0):
-            simulatedTypePrinting(menuTextNoKaiju)
+            utils.simulatedTypePrinting(menuTextNoKaiju)
         elif (len(kaijus) < 3):
-            simulatedTypePrinting (menuTextNotEnoughKaiju)
+            utils.simulatedTypePrinting (menuTextNotEnoughKaiju)
         else:
-            simulatedTypePrinting(menuText, 1)
+            utils.simulatedTypePrinting(menuText, 1)
             
         print()
             
         if (invalidInfo != ""):
-            simulatedTypePrinting("Input was invalid: " + invalidInfo, 1)
+            time.sleep(0.3)
+            utils.simulatedTypePrinting("Input was invalid: " + invalidInfo, 8)
             print()
             invalidInfo = ""
         elif (requestDeniedInfo != ""):
-            simulatedTypePrinting(requestDeniedInfo, 1)
+            time.sleep(0.3)
+            utils.simulatedTypePrinting(requestDeniedInfo, 8)
         
         ############################################
         # User Input - input and initial validation
-        simulatedTypePrinting("Input a menu option: ")    
+        utils.simulatedTypePrinting("Input a menu option: ")    
         userInput = input().upper()
         userInput.strip()
         userInput.replace(" ", "")
@@ -473,8 +470,8 @@ def mainMenu():
             #################################
             # Input Validation
             if (len(kaijus) < 2):
-                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name + " . Input " + \
-                    str(MenuOptions.GENERATE_NEW_KAIJU.value) + " to generate more."
+                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name + " . Input \"" + \
+                    str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\" to generate more."
                 continue
             
             if (len(userInput) != 3):
@@ -494,7 +491,7 @@ def mainMenu():
             
             #################################
             # Battle Prep + Logic
-            simulatedTypePrinting("\n" * 10 + "\t\tYou have chosen battle.")
+            utils.simulatedTypePrinting("\n" * 10 + "\t\tYou have chosen battle.")
             for i in range(0,4):                
                 time.sleep(1)
                 print("\n\t\t\t" + str(3 - i))
@@ -507,8 +504,8 @@ def mainMenu():
             
         elif(optionChosen == MenuOptions.FULLY_RANDOM_AI_BATTLE ):
             if (len(kaijus) < 2):
-                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name + " . Input " + \
-                    str(MenuOptions.GENERATE_NEW_KAIJU.value) + " to generate more."
+                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name + " . Input \"" + \
+                    str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\" to generate more."
                 continue
             
             k1 = random.choice(kaijus)
@@ -526,11 +523,11 @@ def mainMenu():
             if (optionChosen == MenuOptions.DELETE_KAIJU):
                 optionVerbStr = "delete"
             else:
-                optionVerbStr = "get kaiju data"
+                optionVerbStr = "get kaiju data on"
 
             if (len(userInput) != 2):
-                    invalidInfo = optionChosen.name + " requires an input for the kaiju you want to " + optionVerbStr + "." + \
-                                    "\n\t Example: " + str(optionChosen.value) + "c"
+                    invalidInfo = optionChosen.name.replace('_', ' ') + " requires an input for the kaiju you want to " + optionVerbStr + "." + \
+                                    "\n\t Example: \"" + str(optionChosen.value) + "c\""
                     continue
 
             if (userInput[1].isalpha() == False):
@@ -546,7 +543,7 @@ def mainMenu():
             chosenKai = ord(userInput[1]) - ord('A')
 
             if (optionChosen == MenuOptions.DELETE_KAIJU):
-                simulatedTypePrinting("\nYou have chosen to delete " + kaijus[chosenKai].NAME + ".\n" +
+                utils.simulatedTypePrinting("\nYou have chosen to delete " + kaijus[chosenKai].NAME + ".\n" +
                                        "Are you sure? Input \"y\" to delete: ", 5)
                 choice = input()
                 
@@ -554,15 +551,15 @@ def mainMenu():
                     name = kaijus[chosenKai].NAME
                     kaijus.pop(chosenKai)
                     
-                    simulatedTypePrinting(name)
+                    utils.simulatedTypePrinting(name)
                     time.sleep(0.8)
-                    simulatedTypePrinting(" is no more ")
+                    utils.simulatedTypePrinting(" is no more ")
                     for i in range (0, 3):
                         time.sleep(0.8)
                         print(". ", end = "")
                     time.sleep(0.5)
                 else:
-                    simulatedTypePrinting("\nYou have chosen to spare " + kaijus[chosenKai] + ".")
+                    utils.simulatedTypePrinting("\nYou have chosen to spare " + kaijus[chosenKai] + ".")
                     for i in range (0, 3):
                         time.sleep(0.4)
                         print(". ", end = "")
@@ -573,11 +570,11 @@ def mainMenu():
                     time.sleep(0.5)
             else:
                 
-                simulatedTypePrinting("\nProcessing data on " + kaijus[chosenKai].NAME + " ")
+                utils.simulatedTypePrinting("\nProcessing data on " + kaijus[chosenKai].NAME + " ")
                 for i in range (0, 3):
-                    time.sleep(0.8)
+                    time.sleep(0.4)
                     print(". ", end = "")
-                simulatedTypePrinting("Data is processed.")
+                utils.simulatedTypePrinting("Data is processed.")
                 time.sleep(0.8)
                 print("\n")
                 printKaijuData(kaijus[chosenKai])
@@ -587,7 +584,7 @@ def mainMenu():
             # Input Validation
             if (len(userInput) != 1):
                 invalidInfo = "GENERATE NEW KAIJU requires one input." + \
-                                "\n\t Example: " + str(MenuOptions.GENERATE_NEW_KAIJU) 
+                                "\n\t Example: \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value + "\"") 
                 continue
                     
             if (len(kaijus) == MAX_KAIJU_SELECTION):
@@ -598,17 +595,18 @@ def mainMenu():
             # Business Logic
             kaijus.append(generateKaiju(kaijuGenerationOrder(False, False)))
             alphabetizeKaijus(kaijus)
-            simulatedTypePrinting("~" * 14 + "NEW KAIJU" + "~" * 14)
+            utils.simulatedTypePrinting("~" * 14 + "NEW KAIJU" + "~" * 14)
             printKaijuData(kaijus[len(kaijus) - 1])
             
         elif (optionChosen == MenuOptions.QUIT):
-            simulatedTypePrinting("\nAre you sure you want to quit? Input \"y\" to confirm: ")
+            utils.simulatedTypePrinting("\nAre you sure you want to quit? Input \"y\" to confirm: ")
             choice = input()          
             if (choice.upper() == "Y"):
                 shouldQuit = True
 
         if (optionChosen != MenuOptions.QUIT):
-            simulatedTypePrinting("\n\nInput anything to continue back to main menu . . .")
+            time.sleep(0.3)
+            utils.simulatedTypePrinting("\n\nInput anything to continue back to main menu . . .", 3)
             input()
         
             
@@ -732,7 +730,7 @@ def main():
             # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
             
 
-    simulatedTypePrinting("\n\nRAWR ", end = "")
+    utils.simulatedTypePrinting("\n\nRAWR ", end = "")
     for i in range(0, 4):
         time.sleep(1)
         print(". ", end = "")
