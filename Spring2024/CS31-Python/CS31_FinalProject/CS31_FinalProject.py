@@ -388,37 +388,42 @@ def mainMenu():
     invalidInfo = ""
     requestDeniedInfo = ""
     while(shouldQuit == False):              
-
         ################################
-        # Setup Menu - kaiju list
-        # TODO
-            # need to get kaiju with longest name in given column so columns are evenly spaced when printing rows. 
-                # spacing after every kaiju should match total spaces needed for longest-named kaiju in that column.        
-            # color code them  
+        # Setup Menu - kaiju selection list
         # print in rows and columns with corresponding letter   
-        utils.simulatedTypePrinting("\n\n" + "~" * 23 + " KAIJU SELECTION " + "~" * 23 + "", 10)
+
+        rows = int(len(kaijus)/ 2)
+        
+        isOdd:int = 0
+        if (len(kaijus) % 2 == 1):
+            isOdd = 1
+            rows +=1
+        
+        longestCol1:int = 0
+        for i in range(0, int((len(kaijus) / 2) + (1 * isOdd))):
+            if (len(kaijus[i].NAME) > longestCol1):
+                longestCol1 = len(kaijus[i].NAME)
+        
+        longestCol2:int = 0
+        for i in range((int(len(kaijus)/2) - 1 + (1 * isOdd)), len(kaijus)):
+            if (len(kaijus[i].NAME) > longestCol2):
+                longestCol2 = len(kaijus[i].NAME)
+                
+        totalWidth = longestCol2 + longestCol1
+        utils.simulatedTypePrinting("\n\n" + "~" * int(totalWidth / 2) + " KAIJU SELECTION " + "~" * int(totalWidth / 2) + "", 10)
         print()
     
         letterOrd = ord('A')   
-
-        COLUMNS = 2
-        rows = int(len(kaijus)/ COLUMNS)
-        
-        isOdd:bool = False
-        if (len(kaijus) % 2 == 1):
-            isOdd = True
-            rows +=1
-        
         i = -1
         while (i + rows) < len(kaijus):
             i += 1 
             if (i + rows < len(kaijus)):
                 utils.simulatedTypePrinting(chr(letterOrd + i) + " - " + kaijus[i].NAME, 1)    
-                print(" " * 6, end = "")
+                print((8 + longestCol1 - len(kaijus[i].NAME)) * " ", end = "")
                 utils.simulatedTypePrinting(chr(letterOrd + i + rows) + " - " + kaijus[i+rows].NAME, 1)
                 print()
             else: 
-                if(isOdd):
+                if(isOdd == 1):
                     utils.simulatedTypePrinting(chr(letterOrd + i) + " - " + kaijus[i].NAME, 1)        
                     print()
                 
@@ -437,8 +442,10 @@ def mainMenu():
         print()
             
         if (invalidInfo != ""):
+            time.sleep(0.4)
+            utils.simulatedTypePrinting("Input was invalid: " , 8)
             time.sleep(0.3)
-            utils.simulatedTypePrinting("Input was invalid: " + invalidInfo, 8)
+            utils.simulatedTypePrinting(invalidInfo, 8)
             print()
             invalidInfo = ""
         elif (requestDeniedInfo != ""):
@@ -447,7 +454,7 @@ def mainMenu():
         
         ############################################
         # User Input - input and initial validation
-        utils.simulatedTypePrinting("Input a menu option: ")    
+        utils.simulatedTypePrinting("\nInput a menu option: ")    
         userInput = input().upper()
         userInput.strip()
         userInput.replace(" ", "")
@@ -492,7 +499,7 @@ def mainMenu():
                 optionChosen = MenuOptions.QUIT
             # TODO - case for testmode (i.e. test a bunch of battles and output to a log)
             case _:
-                invalidInfo = "That is not a valid input."
+                invalidInfo = "That number does not match any menu options. Pick a new number."
                 continue
             
         ##############################################################
@@ -506,7 +513,7 @@ def mainMenu():
                 continue
             
             if (len(userInput) != 3):
-                invalidInfo = optionChosen.name + " require two kaiju inputs. Example: \"" + str(optionChosen.value) + "ab\"" 
+                invalidInfo = optionChosen.name.replace('_',' ') + " requires two kaiju inputs. Example: \"" + str(optionChosen.value) + "ab\"" 
                 continue
             
             if (userInput[1].isalpha() == False or userInput[2].isalpha() == False):
