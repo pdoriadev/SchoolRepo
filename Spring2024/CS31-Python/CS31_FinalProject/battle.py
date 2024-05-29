@@ -68,13 +68,12 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
 ]
 
     # Smaller kaiju goes first
-    attackingKai :int
-    attackingKai = kaiInBattle[0].getBaseKaiju().SIZE_TYPE > kaiInBattle[1].getBaseKaiju().SIZE_TYPE
+    attackingKai: int = 0 if (kaiInBattle[0].getBaseKaiju().SIZE_TYPE > kaiInBattle[1].getBaseKaiju().SIZE_TYPE) else 1
 
     roundNum = 0
     while kaiInBattle[0].getHealth() > 0 and kaiInBattle[1].getHealth() > 0:
         roundNum +=1
-        simulatedTypePrinting("=========================================================\n")
+        simulatedTypePrinting("\n=========================================================\n")
         simulatedTypePrinting("ROUND " + str(roundNum) + "\n", 20)
 
         #TODO - format this to right/left justify as needed
@@ -115,8 +114,8 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
         time.sleep(0.3)
 
         attackResult = 0
+        sleepTime = 1 / kaiInBattle[attackingKai].getAttackDice() 
         for i in range(0, kaiInBattle[attackingKai].getAttackDice()):
-            sleepTime = (kaiInBattle[attackingKai].getAttackDice() - i + 0.1) * 0.5
             for i in range (0,3):
                 print(" .", end = "")
                 time.sleep(sleepTime)
@@ -132,10 +131,11 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
 
         simulatedTypePrinting("\n" + kaiInBattle[attackingKai - 1].getBaseKaiju().NAME + " ROLLS FOR DEFENSE\n", 10)
         defenseResult = 0
+        sleepTime = 1 / kaiInBattle[attackingKai - 1].getDefenseDice()
         for i in range(0, kaiInBattle[attackingKai - 1].getDefenseDice()):
-            sleepTime = (kaiInBattle[attackingKai - 1].getDefenseDice() - i + 0.1) * 0.5
             for i in range (0,3):
                 print(" .", end = "")
+                time.sleep(sleepTime)
             roll = random.choice(range(1,7,1))
             defenseResult += roll
             print(" " + str(roll), end = "")
