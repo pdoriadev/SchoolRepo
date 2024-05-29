@@ -307,4 +307,10 @@ class BattleUIView():
     # TODO - output battle logs to a file.
         
 
-   
+       # TO-DO - Run in auto-test mode - auto-battles a given number of kaiju. Battle outcome and stats are
+        # saved to a file.
+        # Battle stats
+            # Which moves did most damage
+            # Did certain moves do more damage when preceded by 
+        # Different test types
+            # Test x configurations vs y configurations
