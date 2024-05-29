@@ -405,15 +405,15 @@ def mainMenu():
         ###############################
         # Determining user choice
         optionValue = -1
-        optionValueStr = ""
+        digitsFromInput = ""
         for i in range(0, len(userInput)):
             if (userInput[i].isdigit() == False):
                 break
             
-            optionValueStr += userInput[i]
+            digitsFromInput += userInput[i]
 
             
-        optionValue = int(optionValueStr)
+        optionValue = int(digitsFromInput)
         
         optionChosen: MenuOptions
         match (optionValue):
@@ -454,13 +454,11 @@ def mainMenu():
                 invalidInfo = "Kaiju inputs must be letters."
                 continue
             
-            lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
-            if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
-                invalidInfo = "The letter" + userInput[1] + " does not have an associated kaiju."
-                continue
-                    
-            if (ord(userInput[2]) < ord('A') or ord(userInput[2]) > lastLetterUsedOrd):
-                invalidInfo = "The letter" + userInput[1] + " does not have an associated kaiju."
+            lastLetterUsedOrd = ord('A') + (len(kaijus) - 1 )
+            for i in range(len(userInput) - len(str(optionChosen.value)) - 1, len(userInput)):
+                if (ord(userInput[i]) < ord('A') or ord(userInput[i]) > lastLetterUsedOrd):
+                    invalidInfo = "The letter \"" + userInput[i] + "\" does not have an associated kaiju."
+            if invalidInfo != "":
                 continue
             
             #################################
@@ -507,7 +505,7 @@ def mainMenu():
             if (userInput[1].isalpha() == False):
                 invalidInfo = "Input a letter for the kaiju you wish to " + optionVerbStr + "."
                     
-            lastLetterUsedOrd = ord('A') + (len(kaijus) -1 )
+            lastLetterUsedOrd = ord('A') + (len(kaijus) - 1)
             if (ord(userInput[1]) < ord('A') or ord(userInput[1]) > lastLetterUsedOrd):
                 invalidInfo = "\""+ userInput[1] + "\" does not have an associated kaiju."
                 continue
