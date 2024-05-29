@@ -152,7 +152,7 @@ kaijuNames =  ["godzilla", "gojira", "gigan", "anguirus", "mechagodzilla", "kiry
                      "Baragon", "Fire Rodan", ]
 
 sillyNames = ["jay jay the jet plane", "miss piggy", "kermit", "dostoevsky", "timzilla", "christoughman", \
-                    "tony stark", "danny de vito", \
+                    "tony stark", "danny de vito", "Terry Crews", "Andy Samberg", \
                     "captain kirk", "hercules", "captain america", "mister", "batman", "robin", \
                     "remy (from pixar's \"ratatouille\")", "an innocent man", "a lecherous gecko", \
                     "odysseus", "tony stark", "the blues brothers", "lisan al gaib", \
@@ -175,13 +175,19 @@ sillyNames = ["jay jay the jet plane", "miss piggy", "kermit", "dostoevsky", "ti
 #          (i.e. Atomic Robot, Spirit Brawler, Atomic Spirit, etc.)
 # Note: A kaiju does not inherit all moves of an inherited type. It only inherits a few moves per type.          
 
+#################################
+# Passed to generation function.
 class kaijuGenerationOrder():
     AUTO :bool = False
     SILLY :bool = False
+    FAST_GEN :bool = False
+    SILENT_GEN :bool = False
     
-    def __init__(self, isAuto, isSilly):
+    def __init__(self, isAuto = False, isSilly = False, fastGen = False, silentGen = False):
         self.AUTO = isAuto
         self.SILLY = isSilly
+        self.FAST_GEN = fastGen
+        self.SILENT_GEN = silentGen
 
 #TODO: # Kaiju creator. random chance that the player is going to get a bonus thing?
 #TODO: Suspense between creations vs. quick-generate
@@ -195,7 +201,8 @@ def generateKaiju(order: kaijuGenerationOrder):
             name = random.choice(kaijuNames).upper()
     else:
         utils.simulatedTypePrinting("\n" + "~" * 8 + " KAIJU GENERATOR " + "~" * 8 + "\n", 6)  
-        time.sleep(0.3)
+        if (order.FAST_GEN == False):
+            time.sleep(0.3)
         utils.simulatedTypePrinting("KAIJU NAME: ", 6)
         name = input().upper()
 
@@ -248,13 +255,18 @@ def generateKaiju(order: kaijuGenerationOrder):
     
     kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads, configuration)
     
-    utils.simulatedTypePrinting("Generating", 10)
-    for i in range (0, 3):
-        time.sleep(0.5)
-        print(" .", end = "")
-    print()
-    
-    utils.simulatedTypePrinting("Generated " + kai.NAME + "!" + " The " + kai.CONFIGURATION + " kaiju!\n")
+    if (order.SILENT_GEN == False):        
+        if (order.FAST_GEN == False):
+            utils.simulatedTypePrinting("Generating", 10)
+            for i in range (0, 3):
+                time.sleep(0.5)
+                print(" .", end = "")
+            print()
+        else:
+            utils.simulatedTypePrinting("Fast Generation . . . \n")
+
+    if (order.SILENT_GEN == False):
+        utils.simulatedTypePrinting("Generated " + kai.NAME + "!" + " The " + kai.CONFIGURATION + " kaiju!\n")
 
     return kai
 
@@ -319,12 +331,10 @@ kaijus = []
 MAX_KAIJU_SELECTION = 26
 
 
-
-
-
 def mainMenu():
 
-    # Menu Options and Selection
+    ################################################################
+    # Different menu text depending on kaiju state
     menuTextNoKaiju = "\n" + "~" * 23 + " MAIN MENU " + "~" * 23 + \
         "\n Select the option you want by inputting the number that is to the left of it." + \
         "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + " - " + MenuOptions.GENERATE_NEW_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\")" + \
@@ -352,6 +362,9 @@ def mainMenu():
     
     alphabetizeKaijus(kaijus)
 
+
+    ############################################################
+    # Main menu loop
     shouldQuit = False
     userInput = ""    
     invalidInfo = ""
@@ -614,15 +627,7 @@ def mainMenu():
 
 
 
-def main():
-    # TO-DO - Run in auto-test mode - auto-battles a given number of kaiju. Battle outcome and stats are
-        # saved to a file.
-        # Battle stats
-            # Which moves did most damage
-            # Did certain moves do more damage when preceded by 
-        # Different test types
-            # Test x configurations vs y configurations
-    
+def main():    
     ##############################################################
     # Load kaiju from CSV 
     with open("kaijus.txt", newline = "") as kaijuCSV:
@@ -685,13 +690,16 @@ def main():
 
     ############################################
     # Generates n kaiju. Makes for easy testing.    
-    for i in range(1,1):
+    for i in range(1,20):
         if (i > MAX_KAIJU_SELECTION):
             break
         
         newK :kaiju.Kaiju
         while True:
-            newK = generateKaiju(kaijuGenerationOrder(True, False))
+            if (i % 2 == 1):
+                newK = generateKaiju(kaijuGenerationOrder(True, False, True, True))
+            else:
+                newK = generateKaiju(kaijuGenerationOrder(True, True, True, True))
             
             alreadyHave = False
             for k in kaijus:
@@ -703,10 +711,12 @@ def main():
                 break            
             
         kaijus.append(newK)
-            
+    
+    ########################################################    
     mainMenu()
         
-
+    ########################################################
+    # Saving all kaiju to csv
     with open("kaijus.txt", "w", newline = "") as kaijusCSV:
         writer = csv.writer(kaijusCSV)
         for kai in kaijus:
@@ -726,9 +736,7 @@ def main():
             writer.writerow(str(kai.LEGS))
             writer.writerow(str(kai.ARMS))
             writer.writerow(str(kai.HEADS))
-            writer.writerow([kai.CONFIGURATION])
-            # Check for different types: https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
-            
+            writer.writerow([kai.CONFIGURATION])            
 
     utils.simulatedTypePrinting("\n\nRAWR ", end = "")
     for i in range(0, 4):
