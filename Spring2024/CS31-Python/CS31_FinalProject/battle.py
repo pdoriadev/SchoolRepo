@@ -180,7 +180,7 @@ def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle:
     simulatedTypePrinting("====================================================================\n")
     time.sleep(0.4)
     
-    return
+    return victor
             
 ###############################################################################
 # Unused Ideas / Code

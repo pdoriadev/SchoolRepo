@@ -53,9 +53,6 @@
 #    - Create a new Character. Randomly assign values for the character. (10 points)
 #    - List all Characters - display a nicely formatted list of characters and 
 #      their stats. (10 points)
-#           -> Randomly generate set of kaiju
-#           -> Need test case csv to test against different characters.
-#                   What exactly am I testing?
 #    - Search for a Character by name and display their stats and wins/losses for their 
 #      battle history. (10 points)
 #    - Delete a Character and all of its stats (5 points)
@@ -128,22 +125,28 @@
 
 # Comment code and functions!
 
-#==============================================================================
+#====================================================================================================================================
 
 # Peter Doria
-# 5/25/2024
+# 5/29/2024
 # Programming Project 3: Random Character Generator
 # CS31 - 33880
 
 # for choosing options from list randomly
 import random
+# csv saving and loading kaiju characters
 import csv
-from turtle import delay
-import kaiju
-import battle
+# easier to reason menu options with enum. 
 from enum import Enum
+# mainly for sleep function
 import time
+# currently for 'real-time' printing
 import utils
+# data on kaiju
+import kaiju
+# battle functionality
+import battle
+
 
 kaijuNames =  ["godzilla", "gojira", "gigan", "anguirus", "mechagodzilla", "kiryu", "king ceasar", \
                      "jet jaguar", "monster x", "king ghidorah", "king kong", "manda", "hedorah", \
@@ -303,6 +306,10 @@ def printKaijuData(kai):
     utils.simulatedTypePrinting("LEGS:\t\t\t" + str(kai.LEGS) + "\n", 4)
     utils.simulatedTypePrinting("ARMS:\t\t\t" + str(kai.ARMS) + "\n", 4)
     utils.simulatedTypePrinting("HEADS:\t\t\t" + str(kai.HEADS) + "\n", 4)
+    
+    print()
+    utils.simulatedTypePrinting("WINS: \t\t\t" + str(kai.WINS) + "\n", 8)
+    utils.simulatedTypePrinting("LOSSES: \t\t" + str(kai.LOSSES) + "\n", 8)
         
     utils.simulatedTypePrinting("\n" + " " * 12 +  "DATA END" + " " * 12 + "\n", 8)    
         
@@ -336,13 +343,13 @@ def mainMenu():
     ################################################################
     # Different menu text depending on kaiju state
     menuTextNoKaiju = "\n" + "~" * 23 + " MAIN MENU " + "~" * 23 + \
-        "\n Select the option you want by inputting the number that is to the left of it." + \
+        "\nStart by inputting the number to the left of your preferred menu option." + \
         "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + " - " + MenuOptions.GENERATE_NEW_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\")" + \
         "\n" + str(MenuOptions.QUIT.value) +  " - " + MenuOptions.QUIT.name.replace("_", " ") + \
         "\n\nUH-OH!!! Not enough kaiju for battle. Generate new ones!" + \
         "\n" + "~" * 60
     menuTextNotEnoughKaiju = "\n" + "~"  * 23 + " MAIN MENU " + "~" * 23 + \
-        "\n Select the option you want by inputting the number that is right next to it." + \
+        "\nStart by inputting the number to the left of your preferred menu option." + \
         "\n\n" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + " - " + MenuOptions.GENERATE_NEW_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\")" + \
         "\n" + str(MenuOptions.DELETE_KAIJU.value) + " - " + MenuOptions.DELETE_KAIJU.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.DELETE_KAIJU.value) + "A\")" + \
         "\n" + str(MenuOptions.KAIJU_DATA.value) + " - " + MenuOptions.KAIJU_DATA.name.replace("_", " ") + "(i.e. \"" + str(MenuOptions.KAIJU_DATA.value)+ "h\")" + \
@@ -350,7 +357,7 @@ def mainMenu():
         "\n\nUH-OH!!! Not enough kaiju for battle. Generate new ones!" + \
         "\n" + "~" * 60
     menuText = "\n" + "~"  * 23 + " MAIN MENU " + "~" * 23 + \
-        "\n Select the option you want by inputting the number that is right next to it." + \
+        "\nStart by inputting the number to the left of your preferred menu option. " + \
         "\n\n" + str(MenuOptions.PLAYER_VS_AI_BATTLE.value) + " - " + MenuOptions.PLAYER_VS_AI_BATTLE.name.replace("_", " ") + "  (First letter is player's kaiju - i.e. \"1ab\")" + \
         "\n" + str(MenuOptions.FULLY_RANDOM_AI_BATTLE.value) + " - " + MenuOptions.FULLY_RANDOM_AI_BATTLE.name.replace("_", " ") + "  (i.e. \"" + str(MenuOptions.FULLY_RANDOM_AI_BATTLE.value) + "\")" + \
         "\n" + str(MenuOptions.SELECTED_AI_BATTLE.value) + " - " + MenuOptions.SELECTED_AI_BATTLE.name.replace("_", " ") +  "  (i.e. \"" + str(MenuOptions.SELECTED_AI_BATTLE.value) + "ad\")" + \
@@ -513,7 +520,13 @@ def mainMenu():
 
             k1 = kaijus[ord(userInput[1]) - ord('A')]
             k2 = kaijus[ord(userInput[2]) - ord('A')]
-            battle.doBattle(k1, k2, optionChosen == MenuOptions.SELECTED_AI_BATTLE)
+            victor = battle.doBattle(k1, k2, optionChosen == MenuOptions.SELECTED_AI_BATTLE)
+            if (victor == 0):
+                k1.WINS += 1
+                k2.LOSSES +=1
+            else:
+                k1.LOSSES += 1
+                k2.WINS +=1
             
         elif(optionChosen == MenuOptions.FULLY_RANDOM_AI_BATTLE ):
             if (len(kaijus) < 2):
@@ -527,8 +540,14 @@ def mainMenu():
                 if (k2.NAME != k1.NAME):
                     break 
 
-            battle.doBattle(k1, k2, True)        
-            
+            victor = battle.doBattle(k1, k2, True)
+            if (victor == 0):
+                k1.WINS += 1
+                k2.LOSSES +=1
+            else:
+                k1.LOSSES += 1
+                k2.WINS +=1
+                
         elif (optionChosen == MenuOptions.DELETE_KAIJU or optionChosen == MenuOptions.KAIJU_DATA):
             #####################################
             # Input validation    
@@ -628,9 +647,10 @@ def mainMenu():
 
 
 def main():    
+   
     ##############################################################
     # Load kaiju from CSV 
-    with open("kaijus.txt", newline = "") as kaijuCSV:
+    with open("kaiju.csv", newline = "") as kaijuCSV:
         lines = csv.reader(kaijuCSV)
         
         i = 0
@@ -646,6 +666,8 @@ def main():
         arms = -1
         heads = -1
         configuration = ""
+        wins = -1
+        losses = -1
 
         for line in lines:
             match i:
@@ -675,12 +697,17 @@ def main():
                     heads = int(line[0])
                 case 12:
                     configuration = line[0]
+                case 13:
+                    wins = int(line[0])
+                case 14:
+                    losses = int(line[0])                    
             
             i+=1
-            if (i == 13):
+            if (i == 15):
                 i = 0
                 kaijus.append(kaiju.Kaiju(name, sizeType, sizeTraits.copy(), traversalType, traversalTraits.copy(), 
-                                          kaijuTypes.copy(), kaijuMovesets.copy(), legs, arms, heads, configuration))   
+                                          kaijuTypes.copy(), kaijuMovesets.copy(), legs, arms, heads, configuration,
+                                          wins, losses))   
                 
                 sizeTraits.clear()
                 traversalTraits.clear()
@@ -717,7 +744,7 @@ def main():
         
     ########################################################
     # Saving all kaiju to csv
-    with open("kaijus.txt", "w", newline = "") as kaijusCSV:
+    with open("kaiju.csv", "w", newline = "") as kaijusCSV:
         writer = csv.writer(kaijusCSV)
         for kai in kaijus:
 
@@ -736,9 +763,11 @@ def main():
             writer.writerow(str(kai.LEGS))
             writer.writerow(str(kai.ARMS))
             writer.writerow(str(kai.HEADS))
-            writer.writerow([kai.CONFIGURATION])            
+            writer.writerow([kai.CONFIGURATION])      
+            writer.writerow(str(kai.WINS))
+            writer.writerow(str(kai.LOSSES))
 
-    utils.simulatedTypePrinting("\n\nRAWR ", end = "")
+    utils.simulatedTypePrinting("\n\nRAWR ")
     for i in range(0, 4):
         time.sleep(1)
         print(". ", end = "")
