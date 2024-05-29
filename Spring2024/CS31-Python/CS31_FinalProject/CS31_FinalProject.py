@@ -151,18 +151,18 @@ kaijuNames =  ["godzilla", "gojira", "gigan", "anguirus", "mechagodzilla", "kiry
                      "Baragon", "Fire Rodan", ]
 
 sillyNames = ["jay jay the jet plane", "miss piggy", "kermit", "dostoevsky", "timzilla", "christoughman", \
-                    "kaiju-man", "kaiju-woman", "non-binary kaiju", "male-presenting kaiju", "danny de vito", \
+                    "tony stark", "danny de vito", \
                     "captain kirk", "hercules", "captain america", "mister", "batman", "robin", \
                     "remy (from pixar's \"ratatouille\")", "an innocent man", "a lecherous gecko", \
-                    "odysseus", "tony stark", "the blues brothers", "lisan al gaib", "orientalist music", \
+                    "odysseus", "tony stark", "the blues brothers", "lisan al gaib", \
                     "tchaikovsky", "debussy", "john williams", "vivaldi", "mozart", "beethoven", \
-                    "jean-luc picard", "obi-wan kenobi", "mr. peanut", "the yello telletubbie", \
+                    "jean-luc picard", "obi-wan kenobi", "mr. peanut", "the yellow telleytubbie", \
                     "barney (from \"barney\")", "spongebob", "danikus manikus", "james bond", "teddy roosevelt", \
                     "abraham lincoln", "abraham lincoln: vampire slayer", "captain nemo", "scarlet o'hara", \
-                    "optimus prime", "every member of the band \"rush\"", "an endangered species", \
+                    "optimus prime", "every member of the band \"rush\"", "the last of an endangered species", \
                     "the beast from 20,000 fathoms", "the road warrior", "ryan reynolds", "tommy wiseau", \
                     "jim (from \"the office\")", "michael scott", "bill hayder", "frederick nietzsche", \
-                    "baby godzilla"]
+                    "baby godzilla", "weird barbie"]
 
 # Every kaiju has 4 randomly selected primary traits which can randomly select 
 #   additional identifiers depending on the given trait (i.e. size vs Kaiju Type):
@@ -182,8 +182,8 @@ class kaijuGenerationOrder():
         self.AUTO = isAuto
         self.SILLY = isSilly
 
-#TO-DO: # Kaiju creator. random chance that the player is going to get a bonus thing?
-#TO-DO: Suspense between creations vs. quick-generate
+#TODO: # Kaiju creator. random chance that the player is going to get a bonus thing?
+#TODO: Suspense between creations vs. quick-generate
 def generateKaiju(order: kaijuGenerationOrder):   
 
     name = ""
@@ -193,8 +193,9 @@ def generateKaiju(order: kaijuGenerationOrder):
         else:
             name = random.choice(kaijuNames).upper()
     else:
-        simulatedTypePrinting("&" * 8 + " KAIJU GENERATOR " + "&" * 8 + "\n")  
-        simulatedTypePrinting("KAIJU NAME: ")
+        simulatedTypePrinting("\n" + "~" * 8 + " KAIJU GENERATOR " + "~" * 8 + "\n", 6)  
+        time.sleep(0.3)
+        simulatedTypePrinting("KAIJU NAME: ", 6)
         name = input().upper()
 
     # Randomly select size traits for kaiju
@@ -245,6 +246,13 @@ def generateKaiju(order: kaijuGenerationOrder):
         + kaiju.ALL_KAIJU_MOVES_NAMES[moveTypes[0]] + " " + kaiju.ALL_KAIJU_MOVES_NAMES[moveTypes[1]]
     
     kai =  kaiju.Kaiju(name, sizeType, sizeTraits, traversalType, traversalTraits, moveTypes, moveSets, legs, arms, heads, configuration)
+    
+    simulatedTypePrinting("Generating", 10)
+    for i in range (0, 3):
+        time.sleep(0.5)
+        print(" .", end = "")
+    print()
+    
     simulatedTypePrinting("Generated " + kai.NAME + "!" + " The " + kai.CONFIGURATION + " kaiju!\n")
 
     return kai
@@ -252,36 +260,38 @@ def generateKaiju(order: kaijuGenerationOrder):
 # prints generated kaiju data to the console for the user to see. 
 #   Selects data from nested lists depending on the desired stat for output.
 def printKaijuData(kai):
-    simulatedTypePrinting(" " * 12 + kai.NAME + "'s " "DATA" + "\n")
-    simulatedTypePrinting("\nCONFIGURATION: " + kai.CONFIGURATION + "\n")
+    time.sleep(0.4)
+    simulatedTypePrinting("\n" + " " * 12 + kai.NAME + "'s " "DATA" + "\n", 8)
+    simulatedTypePrinting("\nCONFIGURATION: \t\t" + kai.CONFIGURATION + "\n", 8)
 
 
-    simulatedTypePrinting("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + "\n")
+    simulatedTypePrinting("\nSIZE:\t\t\t" + kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + "\n", 8)
     j = 0
     while j < len(kai.SIZE_TRAITS):
-        simulatedTypePrinting(kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + " TRAIT " + str(j+1) + ":\t\t" + kai.SIZE_TRAITS[j] + "\n")
+        simulatedTypePrinting(kaiju.ALL_SIZE_TYPES_NAMES[kai.SIZE_TYPE] + " TRAIT " + str(j+1) + ":\t\t" + kai.SIZE_TRAITS[j] + "\n", 2)
         j+=1
     
-    simulatedTypePrinting("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + "\n")
+    simulatedTypePrinting("\nTRAVERSAL TYPE:\t\t" + kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + "\n", 8)
     j = 0
     while j < len(kai.TRAVERSAL_TRAITS):
-        simulatedTypePrinting(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.TRAVERSAL_TRAITS[j] + "\n")
+        simulatedTypePrinting(kaiju.ALL_TRAVERSAL_TYPES_NAMES[kai.TRAVERSAL_TYPE] + " TRAIT " + str(j+1) + ":\t" + kai.TRAVERSAL_TRAITS[j] + "\n", 2)
         j+=1
         
     i = 0
     for moveType in kai.KAIJU_MOVESETS:
-        simulatedTypePrinting("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[i] + "\n")
+        simulatedTypePrinting("\nMOVE TYPE " + str(i+1) + ":\t\t" + kaiju.ALL_KAIJU_MOVES_NAMES[i] + "\n", 8)
         j = 0
         while j < len(kai.KAIJU_MOVESETS[i]):
-            simulatedTypePrinting(kaiju.ALL_KAIJU_MOVES_NAMES[j] + " MOVE " + str(j+1) + ":\t\t" + kai.KAIJU_MOVESETS[i][j] + "\n")
+            simulatedTypePrinting(kaiju.ALL_KAIJU_MOVES_NAMES[i] + " MOVE " + str(j+1) + ":\t\t" + kai.KAIJU_MOVESETS[i][j] + "\n", 2)
             j+=1
         i+=1
     
-    simulatedTypePrinting("LEGS:\t\t\t" + str(kai.LEGS) + "\n")
-    simulatedTypePrinting("ARMS:\t\t\t" + str(kai.ARMS) + "\n")
-    simulatedTypePrinting("HEADS:\t\t\t" + str(kai.HEADS) + "\n")
+    print()
+    simulatedTypePrinting("LEGS:\t\t\t" + str(kai.LEGS) + "\n", 4)
+    simulatedTypePrinting("ARMS:\t\t\t" + str(kai.ARMS) + "\n", 4)
+    simulatedTypePrinting("HEADS:\t\t\t" + str(kai.HEADS) + "\n", 4)
         
-    simulatedTypePrinting(" " * 12 +  "DATA END" + " " * 12 + "\n")    
+    simulatedTypePrinting("\n" + " " * 12 +  "DATA END" + " " * 12 + "\n", 8)    
         
 # Alphabetizes list of kaijus
 def alphabetizeKaijus(kaijus: []) :
@@ -588,7 +598,7 @@ def mainMenu():
             # Business Logic
             kaijus.append(generateKaiju(kaijuGenerationOrder(False, False)))
             alphabetizeKaijus(kaijus)
-            simulatedTypePrinting("!@#$" * 5 + "NEW KAIJU" + "!@#$" * 5)
+            simulatedTypePrinting("~" * 14 + "NEW KAIJU" + "~" * 14)
             printKaijuData(kaijus[len(kaijus) - 1])
             
         elif (optionChosen == MenuOptions.QUIT):
