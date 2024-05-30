@@ -56,11 +56,15 @@ class KaijuBattleInstance:
 #           - Attack Roll: (Number of dice * (size+1) do a Dice Roll + special state from moves 
 #           - Defend Roll: (Number of dice * (number of sizes - size)) do a Dice Roll + special state from moves
 #   
-def doBattle(playerBaseKaiju: kaiju.Kaiju, AIBaseKaiju: kaiju.Kaiju, isAIBattle: bool):
-    print("\n" * 5)
+def doBattle(k1: kaiju.Kaiju, k2: kaiju.Kaiju, isAIBattle: bool):
+    simulatedTypePrinting("\n" * 3, 40)
+    simulatedTypePrinting("=" * 60 + '\n', 40)
+    simulatedTypePrinting(" " * (29 - 0.5 * (len(k1.NAME) + len(k2.NAME))) + k1.NAME + " VS. " + k2.NAME + "\n")
+    simulatedTypePrinting("=" * 60 + '\n', 40)
+    
     
     # Generating kaiju that can be used for battle
-    kaiInBattle = [KaijuBattleInstance(playerBaseKaiju), KaijuBattleInstance(AIBaseKaiju)]
+    kaiInBattle = [KaijuBattleInstance(k1), KaijuBattleInstance(k2)]
     # Smaller kaiju goes first
     attackingKai: int = 0 if (kaiInBattle[0].getBaseKaiju().SIZE_TYPE > kaiInBattle[1].getBaseKaiju().SIZE_TYPE) else 1
 

@@ -25,7 +25,7 @@ class Kaiju:
     LOSSES = 0
 
     ##############################################
-    # Values calculated from other permanent data
+    # Values calculated from file data
     MAX_HEALTH = -1
     BASE_ATTACK_DICE = -1
     BASE_DEFENSE_DICE = -1
