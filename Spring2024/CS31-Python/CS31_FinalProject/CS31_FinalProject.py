@@ -475,7 +475,7 @@ def mainMenu(firstTime:bool):
                 utils.simulatedTypePrinting("Inputting \"" + str(MenuOptions.SELECTED_AI_BATTLE.value) + "ab\" selects " + kaijus[0].NAME + " and \n\t" + kaijus[1].NAME + " for a " + MenuOptions.SELECTED_AI_BATTLE.name.replace('_', ' ') + "."
                                         , 100)
             elif (len(kaijus) == 1):
-                utils.simulatedTypePrinting("Inputting \"" + str(MenuOptions.KAIJU_DATA.value) + "a\" selects" + kaijus[0].NAME + " for " + MenuOptions.SELECTED_AI_BATTLE.name.replace('_', ' ')) + "."
+                utils.simulatedTypePrinting("Inputting \"" + str(MenuOptions.KAIJU_DATA.value) + "a\" selects " + kaijus[0].NAME + " for " + MenuOptions.SELECTED_AI_BATTLE.name.replace('_', ' ') + ".")
             
             time.sleep(4)
             utils.simulatedTypePrinting('\n' + "*" * 60, 10)
