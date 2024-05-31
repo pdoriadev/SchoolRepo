@@ -400,17 +400,17 @@ def mainMenu(firstTime:bool):
         print()
 
         if (doMenuTutorial == True):
-            utils.simulatedTypePrinting("\n" + "*" * 60 + "\n")
+            utils.simulatedTypePrinting("\n" + "*" * 60 + "\n", 6)
             time.sleep(3)
-            utils.simulatedTypePrinting("Look at the list of menu options.",50)
+            utils.simulatedTypePrinting("Look at the list of menu options.",40)
             time.sleep(3)
-            utils.simulatedTypePrinting(" Each option has a number to the left of it.\n", 50)
+            utils.simulatedTypePrinting(" Each option has a number to the left of it.\n", 40)
             time.sleep(3)
-            utils.simulatedTypePrinting("\tAlways start your main menu inputs with one of those numbers.", 80)
+            utils.simulatedTypePrinting("\tAlways start your main menu inputs with one of those numbers.", 60)
             time.sleep(3)
             print()
             utils.simulatedTypePrinting("*" * 60)
-            utils.simulatedTypePrinting("\nInput anything to continue . . .", 10)
+            utils.simulatedTypePrinting("\nInput anything to continue . . .", 6)
             input()
             
             doMenuTutorial = False
@@ -459,48 +459,48 @@ def mainMenu(firstTime:bool):
                     break
         
         if (doKaijuListTutorial == True and len(kaijus) > 0):
-            utils.simulatedTypePrinting("\n" + "*" * 60, 30)
+            utils.simulatedTypePrinting("\n" + "*" * 60, 6)
             print()
             time.sleep(5)
-            utils.simulatedTypePrinting("Look at the list of kaiju.", 50) 
+            utils.simulatedTypePrinting("Look at the list of kaiju.", 40) 
             time.sleep(3)
-            utils.simulatedTypePrinting(" Each kaiju has a letter next to it.", 50)
+            utils.simulatedTypePrinting(" Each kaiju has a letter next to it.", 40)
             time.sleep(3)
-            utils.simulatedTypePrinting("\nUse those letters to pick kaiju for battle, to delete, or any other appropriate menu option.", 50)
+            utils.simulatedTypePrinting("\nUse those letters to pick kaiju for battle, to delete, or any other appropriate menu option.", 60)
             time.sleep(2)
             
-            utils.simulatedTypePrinting("\n\tExample: ", 50)
+            utils.simulatedTypePrinting("\n\tExample: ", 10)
             time.sleep(1)
             if (len(kaijus) > 1):
-                utils.simulatedTypePrinting("Inputting \"" + str(MenuOptions.SELECTED_AI_BATTLE.value) + "ab\" selects " + kaijus[0].NAME + " and " + kaijus[1].NAME + " for a " + MenuOptions.SELECTED_AI_BATTLE.name.replace('_', ' ') + "."
+                utils.simulatedTypePrinting("Inputting \"" + str(MenuOptions.SELECTED_AI_BATTLE.value) + "ab\" selects " + kaijus[0].NAME + " and \n\t" + kaijus[1].NAME + " for a " + MenuOptions.SELECTED_AI_BATTLE.name.replace('_', ' ') + "."
                                         , 100)
             elif (len(kaijus) == 1):
                 utils.simulatedTypePrinting("Inputting \"" + str(MenuOptions.KAIJU_DATA.value) + "a\" selects" + kaijus[0].NAME + " for " + MenuOptions.SELECTED_AI_BATTLE.name.replace('_', ' ')) + "."
             
             time.sleep(4)
-            utils.simulatedTypePrinting('\n' + "*" * 60, 40)
+            utils.simulatedTypePrinting('\n' + "*" * 60, 10)
             
             doKaijuListTutorial = False
             
         if (firstTime and (doMenuTutorial == False and doKaijuListTutorial == False)):
-            utils.simulatedTypePrinting('\n' + "*" * 60, 40)
+            utils.simulatedTypePrinting('\n' + "*" * 60, 10)
             time.sleep(1)
-            utils.simulatedTypePrinting("\n\nLet's Review", 50)
-            utils.simulatedTypePrinting("\n\nFirst, find the menu option you want,", 60)
+            utils.simulatedTypePrinting("\n\nLet's Review", 40)
+            utils.simulatedTypePrinting("\n\nFirst, find the menu option you want,", 40)
             time.sleep(0.5)
-            utils.simulatedTypePrinting("\n\tthen enter the number next to that option.", 80)
+            utils.simulatedTypePrinting("\n\tthen enter the number next to that option.", 40)
+            time.sleep(1)
+            utils.simulatedTypePrinting("\n\nIf that option requires selecting kaiju,", 40)
+            time.sleep(1)
+            utils.simulatedTypePrinting("\n\tfind the letter next to each kaiju you want to select.", 40)
             time.sleep(2)
-            utils.simulatedTypePrinting("\n\nIf that option requires selecting kaiju,", 60)
-            time.sleep(2)
-            utils.simulatedTypePrinting("\n\tfind the letter next to each kaiju you want to select.", 60)
+            utils.simulatedTypePrinting("\n\nFinally, add the letter(s) to your input.", 40)
             time.sleep(1)
-            utils.simulatedTypePrinting("\n\nFinally, add the letter(s) to your input.", 60)
-            time.sleep(3)
-            utils.simulatedTypePrinting("\n\nAfter that, press \"ENTER\".", 60)
+            utils.simulatedTypePrinting("\n\nAfter that, press \"ENTER\".", 40)
             time.sleep(1)
-            utils.simulatedTypePrinting('\n' + "*" * 60, 30)
+            utils.simulatedTypePrinting('\n' + "*" * 60, 10)
             time.sleep(1)
-            utils.simulatedTypePrinting("\nInput anything to continue . . . ", 10)
+            utils.simulatedTypePrinting("\nInput anything to continue . . . ", 6)
             input()
             
             firstTime = False
@@ -514,18 +514,18 @@ def mainMenu(firstTime:bool):
         # Invalid input info output to console    
         if (invalidInfo != ""):
             time.sleep(0.4)
-            utils.simulatedTypePrinting("Input was invalid: " , 8)
+            utils.simulatedTypePrinting("Input was invalid: " , 5)
             time.sleep(0.3)
-            utils.simulatedTypePrinting(invalidInfo, 8)
+            utils.simulatedTypePrinting(invalidInfo, 5)
             print()
             invalidInfo = ""
         elif (requestDeniedInfo != ""):
             time.sleep(0.3)
-            utils.simulatedTypePrinting(requestDeniedInfo, 8)
+            utils.simulatedTypePrinting(requestDeniedInfo, 5)
         
         #################################################################################
         # User Input - input and initial validation
-        utils.simulatedTypePrinting('\n' + "~" * 60 + '\n')
+        utils.simulatedTypePrinting('\n' + "~" * 60 + '\n', 2)
         utils.simulatedTypePrinting("\nInput a menu option: ")    
         
         userInput = input().upper()
@@ -581,13 +581,14 @@ def mainMenu(firstTime:bool):
             ################################################################################
             # Input Validation
             if (len(kaijus) < 2):
-                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name.replace('_',' ') + " . Input \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\" to generate more.\n" + \
-                    "\tExample: " + str(MenuOptions.GENERATE_NEW_KAIJU.value)
+                requestDeniedInfo = "Not enough kaiju for " + optionChosen.name.replace('_',' ') + " . Input \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value) + "\" to generate more." + \
+                    "\n\tExample: " + str(MenuOptions.GENERATE_NEW_KAIJU.value)
                 continue
             
             if (len(userInput) != 3):
-                invalidInfo = optionChosen.name.replace('_',' ') + " requires two kaiju inputs. Look at the list of kaiju. Each kaiju has a letter next to it. Use those letters to pick kaiju for battle." + \
-                                "\tExample: Inputting \"" + str(optionChosen.value) + "ab\" selects " + kaijus[0].NAME + " and " + kaijus[1].NAME + " for a " + optionChosen.name.replace('_', ' ') + "."
+                invalidInfo = optionChosen.name.replace('_',' ') + " requires two kaiju inputs. Look at the list of kaiju." + \
+                                "\n\tEach kaiju has a letter next to it. Use those letters to pick kaiju for battle." + \
+                                "\n\tExample: Inputting \"" + str(optionChosen.value) + "ab\" selects " + kaijus[0].NAME + " and " + kaijus[1].NAME + " for a " + optionChosen.name.replace('_', ' ') + "."
                 continue
             
 
@@ -714,7 +715,7 @@ def mainMenu(firstTime:bool):
             # Input Validation
             if (len(userInput) != 1):
                 invalidInfo = "GENERATE NEW KAIJU requires one input." + \
-                                "\n\t Example: \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value + "\"") 
+                                "\n\tExample: \"" + str(MenuOptions.GENERATE_NEW_KAIJU.value + "\"") 
                 continue
                     
             if (len(kaijus) == MAX_KAIJU_SELECTION):
@@ -841,19 +842,19 @@ def main():
     
     ################################################################################  
     # Title
-    utils.simulatedTypePrinting("~" * 60 + "\n\n", 10 )       
+    utils.simulatedTypePrinting("~" * 60 + "\n\n", 7 )       
     print(" " * 23, end = "")
-    utils.simulatedTypePrinting("KAIJU BATTLE\n\n", 60)
-    utils.simulatedTypePrinting("~" * 60 + "\n", 10 )       
+    utils.simulatedTypePrinting("KAIJU BATTLE\n\n", 40)
+    utils.simulatedTypePrinting("~" * 60 + "\n", 7 )       
 
     ################################################################################  
     # Tutorial Prompt
     time.sleep(0.5)
-    utils.simulatedTypePrinting("\nHave you played Kaiju Battle before?\n\n", 20)
+    utils.simulatedTypePrinting("\nHave you played Kaiju Battle before?\n\n", 10)
     time.sleep(1)
-    utils.simulatedTypePrinting("Input 'y' for yes.", 25) 
+    utils.simulatedTypePrinting("Input 'y' for yes.", 10) 
     time.sleep(0.5)
-    utils.simulatedTypePrinting(" Input anything else for no: ", 30)  
+    utils.simulatedTypePrinting(" Input anything else for no: ", 10)  
     uInput = input()
     firstTime = True
     if (uInput.upper() == "Y"):

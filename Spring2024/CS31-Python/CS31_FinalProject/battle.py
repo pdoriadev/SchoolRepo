@@ -59,7 +59,7 @@ class KaijuBattleInstance:
 def doBattle(k1: kaiju.Kaiju, k2: kaiju.Kaiju, isAIBattle: bool):
     simulatedTypePrinting("\n" * 3, 40)
     simulatedTypePrinting("=" * 60 + '\n', 40)
-    simulatedTypePrinting(" " * (29 - 0.5 * (len(k1.NAME) + len(k2.NAME))) + k1.NAME + " VS. " + k2.NAME + "\n")
+    simulatedTypePrinting(" " * (29 - int(0.5 * (len(k1.NAME) + len(k2.NAME)))) + k1.NAME + " VS. " + k2.NAME + "\n")
     simulatedTypePrinting("=" * 60 + '\n', 40)
     
     
