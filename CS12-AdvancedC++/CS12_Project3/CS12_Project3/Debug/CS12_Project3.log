@@ -1,0 +1,16 @@
+﻿  main.cpp
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\checking.h(268,34): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\checking.h(288,34): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\checking.h(419,34): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\checking.h(440,34): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\CD.h(35,34): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\CD.h(51,34): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(42,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(64,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(84,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(115,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(169,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(198,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(227,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(256,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\peter\peterDev\schoolDev\SchoolRepo\CS12-AdvancedC++\CS12_Project3\main.cpp(277,27): warning C4018: '<': signed/unsigned mismatch
