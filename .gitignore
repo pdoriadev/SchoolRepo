@@ -30,4 +30,7 @@
 *.kra
 *.kra~
 
+##################
+# Python ignores
+*/env]/Lib/
 
