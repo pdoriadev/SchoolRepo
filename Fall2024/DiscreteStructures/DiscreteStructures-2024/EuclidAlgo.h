@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 namespace Algos
 {
 	static int EuclidGCD(long lowerOrEqual, long long higherNumber)

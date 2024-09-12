@@ -113,6 +113,7 @@ public:
     }
 
     virtual std::string getMonthlyStatement() = 0;
+    virtual std::string getAccountInfo()
 };
 
 

@@ -1,4 +1,9 @@
 #pragma once
+#include <vector>
+#include <math.h>
+#include <stdio.h>
+#include <iomanip>
+#include <iostream>
 
 namespace Algos
 {/*1. f(x) must be a continuous and computable function.
@@ -11,10 +16,41 @@ namespace Algos
 								double target,
 								double deltaErrorTolerance )
 	{
-		double x = (greaterThanTarget - lessThanTarget) / 2;
+        const char separator = ' ';
+        const int columnWidth = 8;
+        std::cout << std:: left << std::setw(columnWidth) << 'A' << std::setfill(separator)
+                    << std:: left << std::setw(columnWidth) << "x input" << std::setfill(separator)
+                    << std:: left << std::setw(columnWidth) << 'B' << std::setfill(separator)
+                    << std:: left << std::setw(columnWidth) << "|x - A|" << std::setfill(separator)
+                    << std:: left << std::setw(columnWidth) << "f(x)" << std::setfill(separator) ;
 
-		while ()
+        std::vector<std::pair<double, double>> domainCodomainTable;
 
-		return x;
+        double input = (greaterThanTarget - lessThanTarget) / 2;
+        double output = pow(input, 5.3) + pow(3.5, input);
+        domainCodomainTable.push_back(std::make_pair(input ,output));
+
+        return 0;
+
+        while (output - target < deltaErrorTolerance)
+        {
+            if (output - target < 0)
+            {
+
+            }
+            if (output > target)
+            {
+                greaterThanTarget = (greaterThanTarget - target) / 2;
+            }
+            else
+            {
+                lessThanTarget = (target - lessThanTarget) / 2;
+            }
+
+            output = pow(input, 5.3) + pow(3.5, input);
+
+        }
+
+        return output;
 	}
 }

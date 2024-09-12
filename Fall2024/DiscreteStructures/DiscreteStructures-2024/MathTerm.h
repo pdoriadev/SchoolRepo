@@ -6,7 +6,7 @@ class MathTerm
 public :
 	std::vector<char> termsChar;
 	std::vector<int> value;
-	std::vector<>
+
 
 };
 
