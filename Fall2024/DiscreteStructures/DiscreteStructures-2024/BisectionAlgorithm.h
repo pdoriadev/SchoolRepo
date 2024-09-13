@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iomanip>
 #include <iostream>
+#include <fstream>
 
 namespace Algos
 {/*1. f(x) must be a continuous and computable function.
@@ -15,9 +16,16 @@ namespace Algos
 		double startingInputCeiling,
         int target)
 	{
+        std::ofstream outputFile("BisectionAlgorithm_Output");
+        if (outputFile.is_open() == false)
+        {
+            return;
+        }
+
+
 		const char separator = ' ';
         const int columnWidth = 16;
-        std::cout
+        outputFile
             << std::left << std::setw(columnWidth) << "ITERATION" << std::setfill(separator)
             << std::left << std::setw(columnWidth) << "FLOOR" << std::setfill(separator)
             << std::left << std::setw(columnWidth) << "CEILING" << std::setfill(separator)
@@ -46,9 +54,9 @@ namespace Algos
 
             // output results of computation
             iteration++;
-            std::cout <<  std::setfill('_') << std::setw(columnWidth * 7) <<'\n' << std::setfill(' ') << std::endl;
+            outputFile <<  std::setfill('_') << std::setw(columnWidth * 7) <<'\n' << std::setfill(' ') << std::endl;
 
-            std::cout
+            outputFile
                 << std::left << std::setw(columnWidth) << std::setprecision(10) << iteration
                 << std::left << std::setw(columnWidth) << std::setprecision(10) << inputFloor
                 << std::left << std::setw(columnWidth) << std::setprecision(10) << inputCeiling << std::setfill(separator)
@@ -61,8 +69,8 @@ namespace Algos
             // Test to see if equal up to decimal places.
             if (static_cast<int>(output) == static_cast<int>(target))
             {
-                std::cout << std::setw(columnWidth * 7) << std::setfill('=') << '\n' << std::endl;
-                std::cout << "\n==== FOUND 'z' EQUAL TO TARGET (up to decimal places): " << input << '\n';
+                outputFile << std::setw(columnWidth * 7) << std::setfill('=') << '\n' << std::endl;
+                outputFile << "\n==== FOUND 'z' EQUAL TO TARGET (up to decimal places): " << input << '\n';
                 break;
             }
 
@@ -71,18 +79,18 @@ namespace Algos
                 // should be improved.
             if (inputCeiling - inputFloor < deltaErrorTolerance)
             {
-                std::cout << "--> GUESSES INVALID " << '\n';
+                outputFile << "--> GUESSES INVALID " << '\n';
                 if (output - target < 0)
                 {
                     startingInputCeiling *= 2;
                     inputCeiling = startingInputCeiling;
-                    std::cout << "------> Decreasing starting ceiling." << '\n';
+                    outputFile << "------> Decreasing starting ceiling." << '\n';
                 }
                 else
                 {
                     startingInputFloor *= .5;
                     inputFloor = startingInputFloor;
-                    std::cout << "------> Decreasing starting floor." << '\n';
+                    outputFile << "------> Decreasing starting floor." << '\n';
                 }
             }
 
@@ -90,15 +98,15 @@ namespace Algos
             if (output > target)
             {
                 inputCeiling = inputCeiling - (inputCeiling - inputFloor) / 2;
-                std::cout << "--> DECREASING CEILING";
+                outputFile << "--> DECREASING CEILING";
             }
             else if (output < target)
             {
                 inputFloor = inputFloor + (inputCeiling - inputFloor) / 2;
-                std::cout << "--> INCREASING FLOOR";
+                outputFile << "--> INCREASING FLOOR";
             }
 
-            std::cout << std::endl;
+            outputFile << std::endl;
 		}
 
         ////////////////////////////////////////////////////
@@ -145,23 +153,26 @@ namespace Algos
             if (outputInt == targetRoundedToTwoSignificant)
             {
                 zValCorrectToTwoSignificant = inputsOutputs[i].first;
-                std::cout << "\n==== FOUND 'z' CORRECT UP TO TWO SIGNIFICANT FIGURES: " << zValCorrectToTwoSignificant << std::endl;
+                outputFile << "\n==== FOUND 'z' CORRECT UP TO TWO SIGNIFICANT FIGURES: " << zValCorrectToTwoSignificant << std::endl;
                 break;
             }
         }
 
         /////////////////////////////////////////////////////
         /// Final Answers
-        std::cout << "\n=================================================================\n"
+        outputFile << "\n=================================================================\n"
                   << "a) z value correct to 2 significant figures: "
                   << std::right << std::setw(columnWidth / 2) << zValCorrectToTwoSignificant
                   << "\n================================================================="
                   << std::endl;
 
-        std::cout << "=================================================================\n"
+        outputFile << "=================================================================\n"
                   << "b) z value correct to the decimal place: "
                   << std::right << std::setw(columnWidth / 2) << inputsOutputs[inputsOutputs.size() - 1].first
                   << "\n================================================================="
                   << std::endl;
+
+
+        outputFile.close();
 	}
 }
