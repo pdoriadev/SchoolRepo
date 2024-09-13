@@ -18,14 +18,13 @@ namespace Algos
 		const char separator = ' ';
         const int columnWidth = 16;
         std::cout
-            << std::left << std::setw(columnWidth) << "Iteration" << std::setfill(separator)
-            << std::left << std::setw(columnWidth) << "Floor" << std::setfill(separator)
-            << std::left << std::setw(columnWidth) << "Ceiling" << std::setfill(separator)
+            << std::left << std::setw(columnWidth) << "ITERATION" << std::setfill(separator)
+            << std::left << std::setw(columnWidth) << "FLOOR" << std::setfill(separator)
+            << std::left << std::setw(columnWidth) << "CEILING" << std::setfill(separator)
             << std::left << std::setw(columnWidth) << "z" << std::setfill(separator)
             << std::left << std::setw(columnWidth) << "|z - A|" << std::setfill(separator)
-            << std::left << std::setw(columnWidth) << "Target" << std::setfill(separator)
-            << std::left << std::setw(columnWidth) << "f(z)" << std::setfill(separator)
-			<< std::endl;
+            << std::left << std::setw(columnWidth) << "TARGET" << std::setfill(separator)
+            << std::left << std::setw(columnWidth) << "f(z)" << std::setfill(separator);
 
         double inputFloor = startingInputFloor;
         double inputCeiling = startingInputCeiling;
@@ -47,6 +46,8 @@ namespace Algos
 
             // output results of computation
             iteration++;
+            std::cout <<  std::setfill('_') << std::setw(columnWidth * 7) <<'\n' << std::setfill(' ') << std::endl;
+
             std::cout
                 << std::left << std::setw(columnWidth) << std::setprecision(7) << iteration
                 << std::left << std::setw(columnWidth) << std::setprecision(7) << inputFloor
@@ -89,12 +90,12 @@ namespace Algos
             if (output > target)
             {
                 inputCeiling = inputCeiling - (inputCeiling - inputFloor) / 2;
-                std::cout << "--> DECREASING CEILING" << '\n';
+                std::cout << "--> DECREASING CEILING";
             }
             else if (output < target)
             {
                 inputFloor = inputFloor + (inputCeiling - inputFloor) / 2;
-                std::cout << "--> INCREASING FLOOR" << '\n';
+                std::cout << "--> INCREASING FLOOR";
             }
 
             std::cout << std::endl;
