@@ -22,8 +22,6 @@ namespace Algos
 		double output = inputCeiling;
 		std::vector<std::pair<double, double>> orderedPairs;
 
-		orderedPairs.push_back(std::make_pair(input, output));
-
 		const char separator = ' ';
 		const int columnWidth = 8;
 		std::cout << std::left << std::setw(columnWidth) << "Floor" 
