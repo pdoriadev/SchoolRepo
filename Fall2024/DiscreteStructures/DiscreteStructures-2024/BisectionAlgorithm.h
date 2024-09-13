@@ -49,13 +49,13 @@ namespace Algos
             std::cout <<  std::setfill('_') << std::setw(columnWidth * 7) <<'\n' << std::setfill(' ') << std::endl;
 
             std::cout
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << iteration
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << inputFloor
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << inputCeiling << std::setfill(separator)
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << input << std::setfill(separator)
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << input - inputFloor << std::setfill(separator)
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << target << std::setfill(separator)
-                << std::left << std::setw(columnWidth) << std::setprecision(7) << output << std::setfill(separator)
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << iteration
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << inputFloor
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << inputCeiling << std::setfill(separator)
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << input << std::setfill(separator)
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << input - inputFloor << std::setfill(separator)
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << target << std::setfill(separator)
+                << std::left << std::setw(columnWidth) << std::setprecision(10) << output << std::setfill(separator)
                 << '\n';
 
             // Test to see if equal up to decimal places.
