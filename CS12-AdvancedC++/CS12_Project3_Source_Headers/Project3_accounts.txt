@@ -1,0 +1,14 @@
+sc Alfred 512 9
+sc Ira 5 10
+sc Amir 65536 10
+nsc Bernice 1024 40 1.011
+nsc Helios 32768 50 1.0012
+hich Frodo 500 20 1.018
+hich Bilbo 600 0 1.02
+hisav David 4096 1.024
+hisav Akira 300 1.02
+sav George 16384 1.0011
+sav Jer 131072 1.0014
+sav Cary 2048 1.012
+cd Ernesto 256 1.014 1 2024 3
+cd Francesco 8192 1.018 9 2022 24

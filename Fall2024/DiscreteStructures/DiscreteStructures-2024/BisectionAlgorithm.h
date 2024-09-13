@@ -1,8 +1,9 @@
 #pragma once
-#include <iostream>
-#include <iomanip>
-#include <math.h>
 #include <vector>
+#include <math.h>
+#include <stdio.h>
+#include <iomanip>
+#include <iostream>
 
 namespace Algos
 {/*1. f(x) must be a continuous and computable function.
@@ -77,5 +78,6 @@ namespace Algos
 		}
 
 		return output;
+
 	}
 }
