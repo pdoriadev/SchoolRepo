@@ -13,7 +13,7 @@ int main()
 	//
 	//Algos::decimalToBinary(22, true);
 
-	Algos::bisectionAlgorithm(2, 16, 7548609, 0.005);
+    Algos::bisectionAlgorithm(10, 13, 7548609);
 
 	return 0;
 }
