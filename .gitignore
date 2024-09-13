@@ -7,8 +7,8 @@
 */Project-1/*.user
 *.pro.user
 # ignores all directories that start with "Build" or "build"
-*/[Bb]uild*/
-
+**/[Bb]uild*/
+/Fall2024/
 
 ###################
 # Visual Studio directory ignores
