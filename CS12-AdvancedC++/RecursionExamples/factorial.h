@@ -6,17 +6,18 @@ namespace Factorial
 	///////////////////////////////////////////
 	// Factorial
 	///////////////////////////////////////////
+	// example of directly recursive function
 	int factorial(int n, bool verbose)
-	{
+	{	
 		static int calls = 0;
 		calls++;
-
 		if (calls > 5)
 		{
 			std::cout << "\n\t\t";
 			calls = 0;
 		}
 
+		// base case
 		if (n == 0)
 		{
 			if (verbose)
@@ -31,7 +32,8 @@ namespace Factorial
 		{
 			std::cout << n << " * ";
 		}
-		return n * factorial(n - 1, true);
+		// general case
+		return n * factorial(n - 1, true); // tail recursive
 	}
 }
 //////////////////////////////////////////////
